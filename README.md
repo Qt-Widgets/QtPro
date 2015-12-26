@@ -1,8 +1,10 @@
 # Pharmacy Client 1.0.0                                                                                            
 
 
-## libraries
+## libraries:
 
 * PyQt 5.5.1
 * pyodbc 3.0.10
+
+## Database:
 * MSSQL2008R2
