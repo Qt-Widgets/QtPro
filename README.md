@@ -7,4 +7,4 @@
 * pyodbc 3.0.10
 
 ## Database:
-* MSSQL2008R2
+* MSSQL 2008R2
