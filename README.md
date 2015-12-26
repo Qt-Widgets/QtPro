@@ -1,4 +1,4 @@
-# [Pharmacy desktop Client 1.0.0]                                                                                             
+# [Pharmacy desktop Client 1.0.0]                                                                                              
 
 
 ## libraries
