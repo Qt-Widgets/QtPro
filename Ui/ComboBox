@@ -1,1 +1,6 @@
+#include "stdafx.h"
 
+#include "animation.h"
+
+#include "mainwidget.h"
+#include "window.h"
