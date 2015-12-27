@@ -9,10 +9,11 @@ class SearchBox(QLineEdit):
         super(SearchBox, self).__init__()
         self.setMinimumHeight(30)
         self.setFocusPolicy(Qt.StrongFocus)
+        self.setPlaceholderText(' Search....')
 
         self.search_button=QToolButton(self)
         self.search_button.setFocusPolicy(Qt.NoFocus)
-        self.search_button.setIcon(QIcon('E:/Python/PyQt/Pharmacy/Icons/search74-6 - Copy.png'))
+        self.search_button.setIcon(QIcon('E:/Python/PyQt/Pharmacy/Icons/Search#7e7e7e.png'))
         self.search_button.setStyleSheet("QToolButton {border: 0px; padding: 0px;}")
 
         self.clear_button=QToolButton(self)
@@ -82,3 +83,11 @@ class SearchBox(QLineEdit):
             self.clear_button.setVisible(0)
         else:
             self.clear_button.setVisible(1)
+            
+    def focusInEvent(self, event):
+        self.search_button.setIcon(QIcon('E:/Python/PyQt/Pharmacy/Icons/Search#2FA9E2.png'))
+        QLineEdit.focusInEvent(self, QFocusEvent(QEvent.FocusIn))
+
+    def focusOutEvent(self, event):
+        self.search_button.setIcon(QIcon('E:/Python/PyQt/Pharmacy/Icons/Search#7e7e7e.png'))
+        QLineEdit.focusOutEvent(self, QFocusEvent(QEvent.FocusOut))
