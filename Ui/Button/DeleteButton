@@ -1,26 +1,18 @@
-
+# ---Ui/DeleteButton---
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4 import QtCore
+from SaveButton import *
 
-
-class DeleteButton(QPushButton):
+class DeleteButton(SaveButton):
     def __init__(self):
         super(DeleteButton, self).__init__()
         self.setStyleSheet("""
-        QPushButton {
         background-color: white ;
         border:none;
         color: #EA4B2F ;
-        }
         """)
         self.setText('Delete')
-        self.setMinimumSize(90,40)
-        self.setCursor(Qt.PointingHandCursor)
-        font=QFont()
-        font.setFamily('Open Sans')
-        font.setPointSize(14)
-        self.setFont(font)
 
     def getColor(self):
         return Qt.black
