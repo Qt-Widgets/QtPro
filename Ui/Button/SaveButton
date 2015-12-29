@@ -1,0 +1,47 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4 import QtCore
+
+class SaveButton(QPushButton):
+    def __init__(self):
+        super(SaveButton, self).__init__()
+        self.setMinimumSize(90,40)
+        self.setText('Save')
+        self.setCursor(Qt.PointingHandCursor)
+        font=QFont()
+        font.setFamily('Open Sans')
+        font.setPointSize(14)
+        self.setFont(font)
+        self.setStyleSheet("""
+        QPushButton {
+        background-color: white ;
+        border:none;
+        color: #2a98cb ;
+        }
+        """)
+
+    def getColor(self):
+        return Qt.black
+
+    def setColor(self, Color):
+        self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
+                           "color: #2a98cb ;"
+                           "border-radius: 6px;".format(Color.red(), Color.green(), Color.blue()))
+
+    color=QtCore.pyqtProperty(QColor, getColor, setColor)
+
+    def enterEvent(self, event):
+        global anim
+        anim=QPropertyAnimation(self, "color")
+        anim.setDuration(200)
+        anim.setStartValue(QColor("#ffffff"))
+        anim.setEndValue(QColor("#EDF7FF"))
+        anim.start()
+
+    def leaveEvent(self, event):
+        global anim
+        anim=QPropertyAnimation(self, "color")
+        anim.setDuration(200)
+        anim.setStartValue(QColor("#eaf6fb"))
+        anim.setEndValue(QColor("#ffffff"))
+        anim.start()
