@@ -1,1 +1,74 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4 import QtCore
 
+class CancelButton(QPushButton):
+    def __init__(self):
+        super(CancelButton, self).__init__()
+        self.setStyleSheet("""
+        QPushButton {
+        background-color: white ;
+        border:none;
+        color: #868686;
+        }
+        """)
+        self.setText('Cancel')
+        font=QFont()
+        font.setFamily('Open Sans')
+        font.setPointSize(14)
+        self.setFont(font)
+        self.setMinimumSize(90, 40)
+        self.setCursor(Qt.PointingHandCursor)
+
+    def get_text_color(self):
+        return Qt.black
+
+    def set_text_color(self, color):
+        self.setStyleSheet("color: rgb({0}, {1}, {2});"
+                           "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
+
+    def get_color(self):
+        return Qt.black
+
+    def set_color(self, color):
+            self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
+                           "color:#2a98cb ;"
+                           "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
+
+    def set(self, color):
+        self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
+                           "color: #868686 ;"
+                           "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
+
+    def get(self):
+        return Qt.black
+
+    text=QtCore.pyqtProperty(QColor, get_text_color, set_text_color)
+    color=QtCore.pyqtProperty(QColor, get_color, set_color)
+    color0=QtCore.pyqtProperty(QColor, get, set)
+
+    def enterEvent(self, event):
+        global text_anim,color_anim
+        text_anim=QPropertyAnimation(self, "text")
+        color_anim=QPropertyAnimation(self, "color")
+        text_anim.setDuration(200)
+        color_anim.setDuration(200)
+        text_anim.setStartValue(QColor("#868686"))
+        color_anim.setStartValue(QColor("#FFFFFF"))
+        text_anim.setEndValue(QColor("#2a98cb"))
+        color_anim.setEndValue(QColor("#EDF7FF"))
+        text_anim.start()
+        color_anim.start()
+
+    def leaveEvent(self, event):
+        global text_anim,color_anim
+        text_anim=QPropertyAnimation(self, "text")
+        color_anim=QPropertyAnimation(self, "color0")
+        color_anim.setDuration(200)
+        text_anim.setDuration(200)
+        text_anim.setStartValue(QColor("#2a98cb"))
+        color_anim.setStartValue(QColor("#EDF7FF"))
+        text_anim.setEndValue(QColor("#868686"))
+        color_anim.setEndValue(QColor("#FFFFFF"))
+        text_anim.start()
+        color_anim.start()
