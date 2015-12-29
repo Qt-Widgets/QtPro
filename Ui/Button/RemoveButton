@@ -4,7 +4,6 @@ from PyQt4.QtCore import *
 from PyQt4 import QtCore
 from InsertButton import *
 
-
 class RemoveButton(InsertButton):
     def __init__(self):
         super(RemoveButton, self).__init__()
@@ -30,4 +29,20 @@ class RemoveButton(InsertButton):
         back_anim.setStartValue(QColor("#bc5040"))
         back_anim.setEndValue(QColor("#DB6352"))
         back_anim.start()
-  
+
+    def mousePressEvent(self, event):
+        if event.button()==Qt.LeftButton:
+            self.setStyleSheet("""
+            QPushButton:hover:pressed {
+            padding-top: 4px ;
+            background: #bc5040;
+            border:none;
+            color:white;
+            }
+            QPushButton:hover:!pressed {
+            background: #bc5040;
+            color:white;
+            border:none;
+            }
+            """)
+        QPushButton.mousePressEvent(self, event)
