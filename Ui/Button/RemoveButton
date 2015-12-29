@@ -1,35 +1,24 @@
+# ---Ui/RemoveButton---
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4 import QtCore
+from RemoveButton import *
 
-class RemoveButton(QPushButton):
+
+class RemoveButton(InsertButton):
     def __init__(self):
         super(RemoveButton, self).__init__()
-        self.setMinimumSize(150,50)
         self.setStyleSheet("""
-        QPushButton {
         background: #DB6352;
         border:none;
         color:white;
-        }
         """)
         self.setText('Remove')
-        self.setMinimumSize(150, 50)
-        font=QFont()
-        font.setFamily('Open Sans')
-        font.setPointSize(14)
-        self.setFont(font)
-        self.setCursor(Qt.PointingHandCursor)
-
-    def getColor(self):
-        return Qt.black
 
     def setColor(self, Color):
         self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
                            "color: white ;"
                            "border-radius: 0px;".format(Color.red(), Color.green(), Color.blue()))
-
-    color=QtCore.pyqtProperty(QColor, getColor, setColor)
 
     def enterEvent(self, event):
         global back_anim
@@ -46,3 +35,4 @@ class RemoveButton(QPushButton):
         back_anim.setStartValue(QColor("#bc5040"))
         back_anim.setEndValue(QColor("#DB6352"))
         back_anim.start()
+  
