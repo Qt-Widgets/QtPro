@@ -1,16 +1,5 @@
-# Pharmacy Management Client 1.0.0                                                                                            
 
-
-
-* 
-
-
-
-
-
-
-
-# [][Pharmacy Management Client 1.0.0 ]
+# [Pharmacy Management Client 1.0.0 ]
 
 basic desktop client app for pharmacy management based on qt and mssql
 
