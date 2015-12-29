@@ -1,0 +1,47 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+from PyQt4 import QtCore
+
+class InsertButton(QPushButton):
+    def __init__(self):
+        super(InsertButton, self).__init__()
+        self.setStyleSheet("""
+        QPushButton {
+        background: #2FA9E2;
+        border:none;
+        color:white;
+        }
+        """)
+        self.setText('Insert')
+        self.setMinimumSize(150, 50)
+        font=QFont()
+        font.setFamily('Open Sans')
+        font.setPointSize(14)
+        self.setFont(font)
+        self.setCursor(Qt.PointingHandCursor)
+
+    def getColor(self):
+        return Qt.black
+
+    def setColor(self, Color):
+        self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
+                           "color: white ;"
+                           "border-radius: 0px;".format(Color.red(), Color.green(), Color.blue()))
+
+    color=QtCore.pyqtProperty(QColor, getColor, setColor)
+
+    def enterEvent(self, event):
+        global back_anim
+        back_anim=QPropertyAnimation(self, "color")
+        back_anim.setDuration(200)
+        back_anim.setStartValue(QColor("#2FA9E2"))
+        back_anim.setEndValue(QColor("#238abb"))
+        back_anim.start()
+
+    def leaveEvent(self, event):
+        global back_anim
+        back_anim=QPropertyAnimation(self, "color")
+        back_anim.setDuration(200)
+        back_anim.setStartValue(QColor("#238abb"))
+        back_anim.setEndValue(QColor("#2FA9E2"))
+        back_anim.start()
