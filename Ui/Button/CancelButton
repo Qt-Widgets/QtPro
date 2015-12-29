@@ -1,38 +1,24 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from PyQt4 import QtCore
+from SaveButton import *
 
-class CancelButton(QPushButton):
+
+class CancelButton(SaveButton):
     def __init__(self):
         super(CancelButton, self).__init__()
         self.setStyleSheet("""
-        QPushButton {
         background-color: white ;
         border:none;
         color: #868686;
-        }
         """)
         self.setText('Cancel')
-        font=QFont()
-        font.setFamily('Open Sans')
-        font.setPointSize(14)
-        self.setFont(font)
-        self.setMinimumSize(90, 40)
-        self.setCursor(Qt.PointingHandCursor)
 
     def get_text_color(self):
         return Qt.black
 
     def set_text_color(self, color):
         self.setStyleSheet("color: rgb({0}, {1}, {2});"
-                           "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
-
-    def get_color(self):
-        return Qt.black
-
-    def set_color(self, color):
-            self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
-                           "color:#2a98cb ;"
                            "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
 
     def set(self, color):
@@ -44,7 +30,6 @@ class CancelButton(QPushButton):
         return Qt.black
 
     text=QtCore.pyqtProperty(QColor, get_text_color, set_text_color)
-    color=QtCore.pyqtProperty(QColor, get_color, set_color)
     color0=QtCore.pyqtProperty(QColor, get, set)
 
     def enterEvent(self, event):
