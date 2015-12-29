@@ -15,7 +15,7 @@ class InsertButton(QPushButton):
         self.setText('Insert')
         self.setMinimumSize(150, 50)
         font=QFont()
-        font.setFamily('Open Sans')
+        font.setFamily('Roboto Condensed')
         font.setPointSize(14)
         self.setFont(font)
         self.setCursor(Qt.PointingHandCursor)
@@ -45,3 +45,20 @@ class InsertButton(QPushButton):
         back_anim.setStartValue(QColor("#238abb"))
         back_anim.setEndValue(QColor("#2FA9E2"))
         back_anim.start()
+
+    def mousePressEvent(self, event):
+        if event.button()==Qt.LeftButton:
+            self.setStyleSheet("""
+            QPushButton:hover:pressed {
+            padding-top: 4px ;
+            background: #238abb;
+            border:none;
+            color:white;
+            }
+            QPushButton:hover:!pressed {
+            background: #238abb;
+            color:white;
+            border:none;
+            }
+            """)
+        QPushButton.mousePressEvent(self, event)
