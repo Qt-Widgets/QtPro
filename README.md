@@ -10,5 +10,5 @@
 ## Database:
 * MSSQL 2008R2
 
-## Build Tools
+## Build Tools :
 * PyCharm Community Edition 5.0.2
