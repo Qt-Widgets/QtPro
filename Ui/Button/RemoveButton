@@ -15,11 +15,6 @@ class RemoveButton(InsertButton):
         """)
         self.setText('Remove')
 
-    def setColor(self, Color):
-        self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
-                           "color: white ;"
-                           "border-radius: 0px;".format(Color.red(), Color.green(), Color.blue()))
-
     def enterEvent(self, event):
         global back_anim
         back_anim=QPropertyAnimation(self, "color")
