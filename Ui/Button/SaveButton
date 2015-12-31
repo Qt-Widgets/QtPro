@@ -5,20 +5,14 @@ from PyQt4 import QtCore
 class SaveButton(QPushButton):
     def __init__(self):
         super(SaveButton, self).__init__()
-        self.setMinimumSize(90,40)
+        self.setStyleSheet("background-color: white ;border:none;color: #2a98cb ;")
+        self.setMinimumSize(70,40)
         self.setText('Save')
         self.setCursor(Qt.PointingHandCursor)
         font=QFont()
-        font.setFamily('Open Sans')
+        font.setFamily('Roboto Condensed')
         font.setPointSize(14)
         self.setFont(font)
-        self.setStyleSheet("""
-        QPushButton {
-        background-color: white ;
-        border:none;
-        color: #2a98cb ;
-        }
-        """)
 
     def getColor(self):
         return Qt.black
@@ -31,17 +25,15 @@ class SaveButton(QPushButton):
     color=QtCore.pyqtProperty(QColor, getColor, setColor)
 
     def enterEvent(self, event):
-        global anim
-        anim=QPropertyAnimation(self, "color")
-        anim.setDuration(200)
-        anim.setStartValue(QColor("#ffffff"))
-        anim.setEndValue(QColor("#EDF7FF"))
-        anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#ffffff"))
+        self.anim.setEndValue(QColor("#EDF7FF"))
+        self.anim.start()
 
     def leaveEvent(self, event):
-        global anim
-        anim=QPropertyAnimation(self, "color")
-        anim.setDuration(200)
-        anim.setStartValue(QColor("#eaf6fb"))
-        anim.setEndValue(QColor("#ffffff"))
-        anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#eaf6fb"))
+        self.anim.setEndValue(QColor("#ffffff"))
+        self.anim.start()
