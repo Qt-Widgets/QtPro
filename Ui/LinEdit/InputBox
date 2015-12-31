@@ -9,7 +9,7 @@ class InputBox(QLineEdit):
         self.setAlignment(Qt.AlignCenter)
         self.setMinimumHeight(30)
         font=QFont()
-        font.setFamily('Roboto Condensed')
+        font.setFamily('boto Condensed')
         font.setPointSize(12)
         self.setFont(font)
         self.setStyleSheet("""
@@ -17,8 +17,9 @@ class InputBox(QLineEdit):
         border-radius:3px;
         border: 0.5px solid white;
         color:black;
+        padding-top:5px;
         """)
-        self.setPlaceholderText('InputText')
+        self.setPlaceholderText('Input text')
 
     def get_border(self):
         return Qt.black
@@ -34,8 +35,8 @@ class InputBox(QLineEdit):
         global anim
         anim=QPropertyAnimation(self, "border")
         anim.setStartValue(QColor("#FFFFFF"))
-        anim.setEndValue(QColor("#80CFF9"))
-        anim.setDuration(350)
+        anim.setEndValue(QColor("#82CDF8"))
+        anim.setDuration(300)
         anim.start()
         self.setStyleSheet('background:white;border:none;border-radius:3px;')
         QLineEdit.focusInEvent(self, event)
