@@ -7,28 +7,22 @@ from InsertButton import *
 class RemoveButton(InsertButton):
     def __init__(self):
         super(RemoveButton, self).__init__()
-        self.setStyleSheet("""
-        background: #DB6352;
-        border:none;
-        color:white;
-        """)
+        self.setStyleSheet("background: #DB6352;border:none;color:white;")
         self.setText('Remove')
 
     def enterEvent(self, event):
-        global back_anim
-        back_anim=QPropertyAnimation(self, "color")
-        back_anim.setDuration(200)
-        back_anim.setStartValue(QColor("#DB6352"))
-        back_anim.setEndValue(QColor("#bc5040"))
-        back_anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#DB6352"))
+        self.anim.setEndValue(QColor("#bc5040"))
+        self.anim.start()
 
     def leaveEvent(self, event):
-        global back_anim
-        back_anim=QPropertyAnimation(self, "color")
-        back_anim.setDuration(200)
-        back_anim.setStartValue(QColor("#bc5040"))
-        back_anim.setEndValue(QColor("#DB6352"))
-        back_anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#bc5040"))
+        self.anim.setEndValue(QColor("#DB6352"))
+        self.anim.start()
 
     def mousePressEvent(self, event):
         if event.button()==Qt.LeftButton:
