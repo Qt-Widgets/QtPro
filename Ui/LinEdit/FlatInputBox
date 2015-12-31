@@ -1,3 +1,7 @@
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+
 class FlatInputBox(InputBox):
     def __init__(self):
         super(FlatInputBox, self).__init__()
