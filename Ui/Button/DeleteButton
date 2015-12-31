@@ -7,11 +7,7 @@ from SaveButton import *
 class DeleteButton(SaveButton):
     def __init__(self):
         super(DeleteButton, self).__init__()
-        self.setStyleSheet("""
-        background-color: white ;
-        border:none;
-        color: #EA4B2F ;
-        """)
+        self.setStyleSheet("border:none;color: #EA4B2F ;")
         self.setText('Delete')
 
     def getColor(self):
@@ -25,17 +21,15 @@ class DeleteButton(SaveButton):
     color=QtCore.pyqtProperty(QColor, getColor, setColor)
 
     def enterEvent(self, event):
-        global anim
-        anim=QPropertyAnimation(self, "color")
-        anim.setDuration(200)
-        anim.setStartValue(QColor("#ffffff"))
-        anim.setEndValue(QColor("#FFF0ED"))
-        anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#ffffff"))
+        self.anim.setEndValue(QColor("#FFF0ED"))
+        self.anim.start()
 
     def leaveEvent(self, event):
-        global anim
-        anim=QPropertyAnimation(self, "color")
-        anim.setDuration(200)
-        anim.setStartValue(QColor("#FFF0ED"))
-        anim.setEndValue(QColor("#FFFFFF"))
-        anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#FFF0ED"))
+        self.anim.setEndValue(QColor("#FFFFFF"))
+        self.anim.start()
