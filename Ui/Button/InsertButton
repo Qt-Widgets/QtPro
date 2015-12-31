@@ -5,13 +5,7 @@ from PyQt4 import QtCore
 class InsertButton(QPushButton):
     def __init__(self):
         super(InsertButton, self).__init__()
-        self.setStyleSheet("""
-        QPushButton {
-        background: #2FA9E2;
-        border:none;
-        color:white;
-        }
-        """)
+        self.setStyleSheet("background: #2FA9E2;border:none;color:white;")
         self.setText('Insert')
         self.setMinimumSize(150, 50)
         font=QFont()
@@ -26,25 +20,23 @@ class InsertButton(QPushButton):
     def setColor(self, Color):
         self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
                            "color: white ;"
-                           "border-radius: 0px;".format(Color.red(), Color.green(), Color.blue()))
+                           "border:none;".format(Color.red(), Color.green(), Color.blue()))
 
     color=QtCore.pyqtProperty(QColor, getColor, setColor)
 
     def enterEvent(self, event):
-        global back_anim
-        back_anim=QPropertyAnimation(self, "color")
-        back_anim.setDuration(200)
-        back_anim.setStartValue(QColor("#2FA9E2"))
-        back_anim.setEndValue(QColor("#238abb"))
-        back_anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#2FA9E2"))
+        self.anim.setEndValue(QColor("#238abb"))
+        self.anim.start()
 
     def leaveEvent(self, event):
-        global back_anim
-        back_anim=QPropertyAnimation(self, "color")
-        back_anim.setDuration(200)
-        back_anim.setStartValue(QColor("#238abb"))
-        back_anim.setEndValue(QColor("#2FA9E2"))
-        back_anim.start()
+        self.anim=QPropertyAnimation(self, "color")
+        self.anim.setDuration(200)
+        self.anim.setStartValue(QColor("#238abb"))
+        self.anim.setEndValue(QColor("#2FA9E2"))
+        self.anim.start()
 
     def mousePressEvent(self, event):
         if event.button()==Qt.LeftButton:
