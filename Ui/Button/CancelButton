@@ -4,23 +4,11 @@ from PyQt4.QtCore import *
 from PyQt4 import QtCore
 from SaveButton import *
 
-
 class CancelButton(SaveButton):
     def __init__(self):
         super(CancelButton, self).__init__()
-        self.setStyleSheet("""
-        background-color: white ;
-        border:none;
-        color: #868686;
-        """)
+        self.setStyleSheet("border:none;color: #868686;")
         self.setText('Cancel')
-
-    def get_text_color(self):
-        return Qt.black
-
-    def set_text_color(self, color):
-        self.setStyleSheet("color: rgb({0}, {1}, {2});"
-                           "border-radius: 6px;".format(color.red(), color.green(), color.blue()))
 
     def set(self, color):
         self.setStyleSheet("background-color: rgb({0}, {1}, {2});"
@@ -30,31 +18,18 @@ class CancelButton(SaveButton):
     def get(self):
         return Qt.black
 
-    text=QtCore.pyqtProperty(QColor, get_text_color, set_text_color)
     color0=QtCore.pyqtProperty(QColor, get, set)
 
     def enterEvent(self, event):
-        global text_anim,color_anim
-        text_anim=QPropertyAnimation(self, "text")
-        color_anim=QPropertyAnimation(self, "color")
-        text_anim.setDuration(200)
-        color_anim.setDuration(200)
-        text_anim.setStartValue(QColor("#868686"))
-        color_anim.setStartValue(QColor("#FFFFFF"))
-        text_anim.setEndValue(QColor("#2a98cb"))
-        color_anim.setEndValue(QColor("#EDF7FF"))
-        text_anim.start()
-        color_anim.start()
+        self.color_anim=QPropertyAnimation(self, "color")
+        self.color_anim.setDuration(200)
+        self.color_anim.setStartValue(QColor("#FFFFFF"))
+        self.color_anim.setEndValue(QColor("#EDF7FF"))
+        self.color_anim.start()
 
     def leaveEvent(self, event):
-        global text_anim,color_anim
-        text_anim=QPropertyAnimation(self, "text")
-        color_anim=QPropertyAnimation(self, "color0")
-        color_anim.setDuration(200)
-        text_anim.setDuration(200)
-        text_anim.setStartValue(QColor("#2a98cb"))
-        color_anim.setStartValue(QColor("#EDF7FF"))
-        text_anim.setEndValue(QColor("#868686"))
-        color_anim.setEndValue(QColor("#FFFFFF"))
-        text_anim.start()
-        color_anim.start()
+        self.color_anim=QPropertyAnimation(self, "color0")
+        self.color_anim.setDuration(200)
+        self.color_anim.setStartValue(QColor("#EDF7FF"))
+        self.color_anim.setEndValue(QColor("#FFFFFF"))
+        self.color_anim.start()
