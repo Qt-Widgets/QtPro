@@ -1,0 +1,83 @@
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+import sys
+import pyodbc
+
+
+class Login(QDialog):
+    def __init__(self):
+        super(Login, self).__init__()
+        self.setWindowTitle('ورود کاربر')
+        self.setWindowIcon(QIcon('images/login.png'))
+        self.UI()
+
+    def UI(self):
+        # lable
+        self.user_name_lable=QLabel('نام کاربری')
+        self.password_lable=QLabel('رمز ورود')
+        # line edit
+        self.password_line_edit=QLineEdit()
+        self.password_line_edit.setEchoMode(QLineEdit.Password)
+        self.password_line_edit.textChanged.connect(self.login)
+        # self.password_line_edit.setStyleSheet(" QLineEdit {border : 1.5px solid gray;border-radius : 10px;selection-background-color: darkgray;}")
+        # button
+        self.log_in=QPushButton('تنظیمات دیتابیس')
+        self.log_in.setIcon(QIcon('images/database.png'))
+        self.log_in.setIconSize(QSize(40,40))
+        self.log_in.clicked.connect(self.database)
+        # self.log_in.setStyleSheet(" QPushButton {border-style: outset;border-style: outset;border-width: 2px;border-radius: 10px;border-color: black;} ")
+        # combo box
+        self.users_combo_box=QComboBox()
+        self.users_combo_box_items=[]
+        self.users_combo_box_items=self.getusers()
+        self.users_combo_box.addItems(self.users_combo_box_items)
+        # right layouts
+        self.right_layout_0=QVBoxLayout()
+        self.right_layout_0.addWidget(self.user_name_lable)
+        self.right_layout_0.addWidget(self.password_lable)
+
+        self.right_layout_1=QVBoxLayout()
+        self.right_layout_1.addWidget(self.users_combo_box)
+        self.right_layout_1.addWidget(self.password_line_edit)
+        # right layout
+        self.right_layout=QGridLayout()
+        self.right_layout.addLayout(self.right_layout_1,0,0)
+        self.right_layout.addLayout(self.right_layout_0,0,1)
+        # left layout
+        self.left_layout=QVBoxLayout()
+        self.left_layout.addWidget(self.log_in)
+        # main layout
+        self.main_layout=QHBoxLayout()
+        self.main_layout.addLayout(self.left_layout)
+        self.main_layout.addLayout(self.right_layout)
+        self.setLayout(self.main_layout)
+
+    def login(self, text):
+        if text=='123':
+            #new=MainWindow()
+            self.close()
+            #new.exec_()
+
+    def getusers(self):
+        with open("credential.txt",mode="r",encoding="utf-8") as myfile:
+            list0=myfile.read().splitlines()
+        con=pyodbc.connect(driver='{SQL Server Native Client 10.0}',server=list0[0],database='Pharmacy',
+                                  uid=list0[1],pwd=list0[2])
+        cursor=con.cursor()
+        list1=[]
+        cursor.execute("select * from Users")
+        for row in cursor.fetchall():
+            list1.append(row[2])
+        con.close()
+        return list1
+
+    def database(self):
+        new=SqlDialog()
+        new.exec_()
+
+if __name__ == '__main__':
+    app=QApplication(sys.argv)
+    new=Login()
+    new.show()
+    app.exec_()
