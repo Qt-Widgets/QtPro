@@ -1,5 +1,4 @@
 #include "temp.h"
-#include <QtWidgets/QApplication>
 
 Login::Login()
 {
@@ -29,9 +28,24 @@ Login::Login()
 
 void Login::messagebox()
 {
-	QMessageBox *message = new QMessageBox(this);
-	message->setText("Message");
-	message->setInformativeText("CLicked SIGNA has been Emited ! ");
-	message->setStandardButtons(QMessageBox::Ok);
-	message->show();
+	QString temp;
+	temp=password_lineedit->text();
+	if (temp=="123")
+	{
+		QMessageBox *message = new QMessageBox(this);
+		message->setText("Message");
+		message->setIcon(QMessageBox::Information);
+		message->setInformativeText("Correct Password ! ");
+		message->setStandardButtons(QMessageBox::Ok);
+		message->exec();
+	}
+	else
+	{
+		QMessageBox *message = new QMessageBox(this);
+		message->setText("Message");
+		message->setIcon(QMessageBox::Critical);
+		message->setInformativeText("Incorrect Password ! ");
+		message->setStandardButtons(QMessageBox::Ok);
+		message->exec();
+	}
 }
