@@ -3,6 +3,7 @@
 #include <QtWidgets>
 
 class Login : public QDialog {
+	Q_OBJECT
 private:
 	QLabel *user_name_label = new QLabel;
 	QLabel *password_label = new QLabel;
