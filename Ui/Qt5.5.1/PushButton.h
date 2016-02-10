@@ -5,13 +5,14 @@
 class QPainter;
 class QPainterPath;
 
-class paint : public QWidget
+
+class PushButton : public QWidget
 {
 	Q_OBJECT
-
+	
 public:
-	explicit paint(QWidget *parent = 0);
-	~paint();
+	explicit PushButton(QWidget *parent = 0);
+	~PushButton();
 	void setText(QString Text);
 	QString text();
 protected:
