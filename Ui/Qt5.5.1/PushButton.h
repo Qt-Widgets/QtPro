@@ -11,7 +11,7 @@ class PushButton : public QWidget
 	Q_OBJECT
 	
 public:
-	explicit PushButton(QString text);
+	explicit PushButton(QString text = "");
 	~PushButton();
 	void setText(QString Text);
 	QString text();
