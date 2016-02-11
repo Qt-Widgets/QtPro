@@ -21,7 +21,7 @@ protected:
 	void paintEvent(QPaintEvent *);
 	void enterEvent(QEvent *);
 	void leaveEvent(QEvent *);
-	void mousePressEvent(QMouseEvent *e);
+	void mousePressEvent(QMouseEvent *);
 	void mouseReleaseEvent(QMouseEvent *);
 private:
 	QString _text , _fontfamily = "Calibri";
