@@ -21,7 +21,6 @@ void PushButton::paintEvent(QPaintEvent *e) {
 	painter.setPen(QPen(_color));
 	painter.setFont(QFont(_fontfamily, _pointsize));
 	painter.drawText(rect(), Qt::AlignCenter, _text);
-	//painter.setFont(_fontfamily);
 }
 
 void PushButton::setText(QString Text) {
