@@ -27,7 +27,6 @@ private:
 	QString _text , _fontfamily = "Calibri";
 	QColor _border = "#ADADAD", _back = "#E1E1E1", _color = "#000000";
 	int _pointsize = 12;
-	float _opacity = 1.0;
 	void set_back_Color(QColor color);
 	void set_border_Color(QColor color);
 	QColor back_color();
