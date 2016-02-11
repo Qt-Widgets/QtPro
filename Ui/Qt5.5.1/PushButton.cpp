@@ -3,6 +3,7 @@
 PushButton::PushButton(QString text,QWidget *parent)
 	:QWidget(parent) {
 	setText(text);
+	setBaseSize(120, 50);
 }
 
 PushButton::~PushButton() {}
