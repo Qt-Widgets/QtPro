@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PUSHBUTTON_H
 #define PUSHBUTTON_H
 
@@ -9,9 +10,10 @@ class QPainterPath;
 class PushButton : public QWidget
 {
 	Q_OBJECT
-	
+	Q_PROPERTY(QColor back_color READ back_color WRITE set_back_Color)
+	Q_PROPERTY(QColor border_color READ border_color WRITE set_border_Color)
 public:
-	explicit PushButton(QString text = "");
+	explicit PushButton(QString text = "", QWidget *parent = 0);
 	~PushButton();
 	void setText(QString Text);
 	QString text();
@@ -23,11 +25,15 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *);
 private:
 	QString _text , _fontfamily = "Calibri";
-	QColor border = "#ADADAD", back = "#E1E1E1", color = "#000000";
+	QColor _border = "#ADADAD", _back = "#E1E1E1", _color = "#000000";
 	int _pointsize = 12;
+	float _opacity = 1.0;
+	void set_back_Color(QColor color);
+	void set_border_Color(QColor color);
+	QColor back_color();
+	QColor border_color();
 signals:
 	void clicked();
-	public slots:
 };
 
 #endif // PUSHBUTTON_H
