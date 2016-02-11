@@ -21,6 +21,7 @@ void PushButton::paintEvent(QPaintEvent *e) {
 	painter.setPen(QPen(_color));
 	painter.setFont(QFont(_fontfamily, _pointsize));
 	painter.drawText(rect(), Qt::AlignCenter, _text);
+	//painter.setFont(_fontfamily);
 }
 
 void PushButton::setText(QString Text) {
@@ -116,12 +117,14 @@ void PushButton::mouseReleaseEvent(QMouseEvent *) {
 
 void PushButton::set_back_Color(QColor color) {
 	_back = color;
-	repaint();
+	//repaint();
+	update();
 }
 
 void PushButton::set_border_Color(QColor color) {
 	_border = color;
-	repaint();
+	//repaint();
+	update();
 }
 
 QColor PushButton::back_color() {
