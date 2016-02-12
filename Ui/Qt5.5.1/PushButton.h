@@ -28,7 +28,7 @@ public:
 	~PushButton();
 	void setText(QString Text);
 	QString text();
-	void setDefault(bool Default);
+	void setDefault(bool);
 	void setDisable(bool);
 protected:
 	void paintEvent(QPaintEvent *);
