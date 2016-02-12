@@ -5,7 +5,8 @@
 #include <QtWidgets>
 class QPainter;
 class QPainterPath;
-
+class QPropertyAnimation;
+class QParallelAnimationGroup;
 
 
 class PushButton : public QWidget
