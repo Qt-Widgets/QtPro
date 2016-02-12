@@ -149,7 +149,7 @@ void PushButton::setDisable(bool) {
 	}
 }
 
-void PushButton::setDefault(bool Defualt) {
+void PushButton::setDefault(bool) {
 	if (true)
 	{
 		_border_weight = 2;
