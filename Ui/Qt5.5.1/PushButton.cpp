@@ -11,7 +11,7 @@ PushButton::~PushButton() {}
 void PushButton::paintEvent(QPaintEvent *e) {
 	QPainter painter(this);
 	QPainterPath path;
-	path.addRect(QRect(5, 5, rect().width(), rect().height()));
+	path.addRect(QRect(5, 5, 300, 100));
 	painter.setPen(QPen(_border, _border_weight));
 	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
 	painter.fillPath(path, QBrush(_back));
@@ -29,8 +29,13 @@ void PushButton::setText(QString Text) {
 }
 
 void PushButton::enterEvent(QEvent * event) {
-	
-	if (_state=Normal)
+	switch (_state==Normal)
+	{
+	case PushButton::Disable:
+		break;
+	case PushButton::Default:
+		break;
+	case PushButton::Normal:
 	{
 		QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
 		//border
@@ -50,72 +55,111 @@ void PushButton::enterEvent(QEvent * event) {
 		group_animation->addAnimation(border_animation);
 		group_animation->start();
 	}
+		break;
+	default:
+		break;
+	}
 }
 
 void PushButton::leaveEvent(QEvent *) {
+	switch (_state)
+	{
+	case PushButton::Disable:
+		break;
+	case PushButton::Default:
+		break;
+	case PushButton::Normal:
+	{
+		QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
+		//border
+		QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
+		border_animation->setDuration(200);
+		border_animation->setStartValue(_border);
+		_border = "#ADADAD";
+		border_animation->setEndValue(_border);
+		//background
+		QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
+		back_animation->setDuration(200);
+		back_animation->setStartValue(_back);
+		_back = "#E1E1E1";
+		back_animation->setEndValue(_back);
 
-	QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
-	//border
-	QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
-	border_animation->setDuration(200);
-	border_animation->setStartValue(_border);
-	_border = "#ADADAD";
-	border_animation->setEndValue(_border);
-	//background
-	QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
-	back_animation->setDuration(200);
-	back_animation->setStartValue(_back);
-	_back = "#E1E1E1";
-	back_animation->setEndValue(_back);
-
-	group_animation->addAnimation(back_animation);
-	group_animation->addAnimation(border_animation);
-	group_animation->start();
-	
+		group_animation->addAnimation(back_animation);
+		group_animation->addAnimation(border_animation);
+		group_animation->start();
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void PushButton::mousePressEvent(QMouseEvent *) {
+	switch (_state)
+	{
+	case PushButton::Disable:
+		break;
+	case PushButton::Default:
+		break;
+	case PushButton::Normal:
+	{
+		QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
+		//border
+		QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
+		border_animation->setDuration(200);
+		border_animation->setStartValue(_border);
+		_border = "#00569D";
+		border_animation->setEndValue(_border);
+		//background
+		QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
+		back_animation->setDuration(200);
+		back_animation->setStartValue(_back);
+		_back = "#CDE4F7";
+		back_animation->setEndValue(_back);
 
-	QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
-	//border
-	QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
-	border_animation->setDuration(200);
-	border_animation->setStartValue(_border);
-	_border = "#00569D";
-	border_animation->setEndValue(_border);
-	//background
-	QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
-	back_animation->setDuration(200);
-	back_animation->setStartValue(_back);
-	_back = "#CDE4F7";
-	back_animation->setEndValue(_back);
+		group_animation->addAnimation(back_animation);
+		group_animation->addAnimation(border_animation);
+		group_animation->start();
 
-	group_animation->addAnimation(back_animation);
-	group_animation->addAnimation(border_animation);
-	group_animation->start();
-
-	emit clicked();
+		emit clicked();
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void PushButton::mouseReleaseEvent(QMouseEvent *) {
+	switch (_state)
+	{
+	case PushButton::Disable:
+		break;
+	case PushButton::Default:
+		break;
+	case PushButton::Normal:
+	{
+		QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
+		//border
+		QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
+		border_animation->setDuration(200);
+		border_animation->setStartValue(_border);
+		_border = "#0078D7";
+		border_animation->setEndValue(_border);
+		//background
+		QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
+		back_animation->setDuration(200);
+		back_animation->setStartValue(_back);
+		_back = "#E5F1FB";
+		back_animation->setEndValue(_back);
 
-	QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
-	//border
-	QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
-	border_animation->setDuration(200);
-	border_animation->setStartValue(_border);
-	_border = "#0078D7";
-	border_animation->setEndValue(_border);
-	//background
-	QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
-	back_animation->setDuration(200);
-	back_animation->setStartValue(_back);
-	_back = "#E5F1FB";
-	back_animation->setEndValue(_back);
-
-	group_animation->addAnimation(back_animation);
-	group_animation->addAnimation(border_animation);
-	group_animation->start();
+		group_animation->addAnimation(back_animation);
+		group_animation->addAnimation(border_animation);
+		group_animation->start();
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void PushButton::set_back_Color(QColor color) {
