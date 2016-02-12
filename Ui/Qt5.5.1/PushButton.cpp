@@ -11,8 +11,9 @@ PushButton::~PushButton() {}
 void PushButton::paintEvent(QPaintEvent *e) {
 	QPainter painter(this);
 	QPainterPath path;
-	path.addRect(QRect(0, 0, rect().width(), rect().height()));
-	painter.setPen(QPen(_border,1));
+	path.addRect(QRect(5, 5, 300, 100));
+	painter.setPen(QPen(_border, _border_weight));
+	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
 	painter.fillPath(path, QBrush(_back));
 	painter.drawPath(path);
 
@@ -27,25 +28,28 @@ void PushButton::setText(QString Text) {
 	_text = Text;
 }
 
-void PushButton::enterEvent(QEvent *) {
+void PushButton::enterEvent(QEvent * event) {
 	
-	QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
-	//border
-	QPropertyAnimation *border_animation = new QPropertyAnimation(this,"border_color");
-	border_animation->setDuration(200);
-	border_animation->setStartValue(_border);
-	_border = "#0078D7";
-	border_animation->setEndValue(_border);
-	//background
-	QPropertyAnimation *back_animation = new QPropertyAnimation(this,"back_color");
-	back_animation->setDuration(200);
-	back_animation->setStartValue(_back);
-	_back = "#E5F1FB";
-	back_animation->setEndValue(_back);
+	if (_state=Normal)
+	{
+		QParallelAnimationGroup *group_animation = new QParallelAnimationGroup;
+		//border
+		QPropertyAnimation *border_animation = new QPropertyAnimation(this, "border_color");
+		border_animation->setDuration(200);
+		border_animation->setStartValue(_border);
+		_border = "#0078D7";
+		border_animation->setEndValue(_border);
+		//background
+		QPropertyAnimation *back_animation = new QPropertyAnimation(this, "back_color");
+		back_animation->setDuration(200);
+		back_animation->setStartValue(_back);
+		_back = "#E5F1FB";
+		back_animation->setEndValue(_back);
 
-	group_animation->addAnimation(back_animation);
-	group_animation->addAnimation(border_animation);
-	group_animation->start();
+		group_animation->addAnimation(back_animation);
+		group_animation->addAnimation(border_animation);
+		group_animation->start();
+	}
 }
 
 void PushButton::leaveEvent(QEvent *) {
@@ -132,4 +136,25 @@ QColor PushButton::back_color() {
 
 QColor PushButton::border_color() {
 	return _border;
+}
+
+void PushButton::setDisable(bool) {
+	if (true)
+	{
+		_back = "#CCCCCC";
+		_border = "#BFBFBF";
+		_color = "#5f5f5f";
+		_state = Disable;
+		update();
+	}
+}
+
+void PushButton::setDefault(bool Defualt) {
+	if (true)
+	{
+		_border_weight = 2;
+		_border = "#0078D7";
+		_state = Default;
+		update();
+	}
 }
