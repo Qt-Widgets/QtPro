@@ -23,7 +23,7 @@ private:
 	void set_border_Color(QColor color);
 	QColor back_color();
 	QColor border_color();
-	State _state;
+	State _state = Normal;
 public:
 	explicit PushButton(QString text = "", QWidget *parent = 0);
 	~PushButton();
@@ -32,11 +32,11 @@ public:
 	void setDefault(bool);
 	void setDisable(bool);
 protected:
-	void paintEvent(QPaintEvent *);
-	void enterEvent(QEvent *);
-	void leaveEvent(QEvent *);
-	void mousePressEvent(QMouseEvent *);
-	void mouseReleaseEvent(QMouseEvent *);
+	virtual void paintEvent(QPaintEvent *);
+	virtual void enterEvent(QEvent *);
+	virtual void leaveEvent(QEvent *);
+	virtual void mousePressEvent(QMouseEvent *);
+	virtual void mouseReleaseEvent(QMouseEvent *);
 signals:
 	void clicked();
 };
