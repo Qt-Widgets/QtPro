@@ -11,7 +11,7 @@ PushButton::~PushButton() {}
 void PushButton::paintEvent(QPaintEvent *e) {
 	QPainter painter(this);
 	QPainterPath path;
-	path.addRect(QRect(5, 5, 300, 100));
+	path.addRect(QRect(0, 0, rect().width(), rect().height()));
 	painter.setPen(QPen(_border, _border_weight));
 	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
 	painter.fillPath(path, QBrush(_back));
@@ -29,7 +29,7 @@ void PushButton::setText(QString Text) {
 }
 
 void PushButton::enterEvent(QEvent * event) {
-	switch (_state==Normal)
+	switch (_state)
 	{
 	case PushButton::Disable:
 		break;
