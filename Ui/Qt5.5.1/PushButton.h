@@ -19,8 +19,8 @@ private:
 	QString _text, _fontfamily = "Calibri";
 	QColor _border = "#ADADAD", _back = "#E1E1E1", _color = "#000000";
 	int _pointsize = 12, _border_weight = 1;
-	void set_back_Color(QColor color);
-	void set_border_Color(QColor color);
+	void set_back_Color(const QColor color);
+	void set_border_Color(const QColor color);
 	QColor back_color() const ;
 	QColor border_color() const ;
 	State _state = Normal;
