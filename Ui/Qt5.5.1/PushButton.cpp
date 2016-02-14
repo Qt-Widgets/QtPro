@@ -10,7 +10,7 @@ PushButton::~PushButton() {}
 void PushButton::paintEvent(QPaintEvent *e) {
 	QPainter painter(this);
 	QPainterPath path;
-	path.addRect(QRect(0, 0, rect().width() - 1, rect().height() - 1));
+	path.addRect(QRect(0, 0, width() - 1, height() - 1));
 	painter.setPen(QPen(_border, _border_weight));
 	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
 	painter.fillPath(path, QBrush(_back));
