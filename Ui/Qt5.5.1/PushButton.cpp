@@ -1,9 +1,8 @@
 #include "PushButton.h"
 
-PushButton::PushButton(QString text,QWidget *parent)
+PushButton::PushButton(QString text, QWidget *parent)
 	:QWidget(parent) {
 	setText(text);
-	setBaseSize(120, 50);
 }
 
 PushButton::~PushButton() {}
@@ -55,7 +54,7 @@ void PushButton::enterEvent(QEvent * event) {
 		group_animation->addAnimation(border_animation);
 		group_animation->start();
 	}
-		break;
+	break;
 	default:
 		break;
 	}
@@ -88,7 +87,7 @@ void PushButton::leaveEvent(QEvent *) {
 		group_animation->addAnimation(border_animation);
 		group_animation->start();
 	}
-		break;
+	break;
 	default:
 		break;
 	}
@@ -123,7 +122,7 @@ void PushButton::mousePressEvent(QMouseEvent *) {
 
 		emit clicked();
 	}
-		break;
+	break;
 	default:
 		break;
 	}
@@ -156,29 +155,29 @@ void PushButton::mouseReleaseEvent(QMouseEvent *) {
 		group_animation->addAnimation(border_animation);
 		group_animation->start();
 	}
-		break;
+	break;
 	default:
 		break;
 	}
 }
 
-void PushButton::set_back_Color(QColor color) {
+void PushButton::set_back_Color(const QColor color) {
 	_back = color;
 	//repaint();
 	update();
 }
 
-void PushButton::set_border_Color(QColor color) {
+void PushButton::set_border_Color(const QColor color) {
 	_border = color;
 	//repaint();
 	update();
 }
 
-QColor PushButton::back_color() {
+QColor PushButton::back_color() const {
 	return _back;
 }
 
-QColor PushButton::border_color() {
+QColor PushButton::border_color() const {
 	return _border;
 }
 
