@@ -21,14 +21,14 @@ private:
 	int _pointsize = 12, _border_weight = 1;
 	void set_back_Color(QColor color);
 	void set_border_Color(QColor color);
-	QColor back_color();
-	QColor border_color();
+	QColor back_color() const ;
+	QColor border_color() const ;
 	State _state = Normal;
 public:
 	explicit PushButton(QString text = "", QWidget *parent = 0);
 	~PushButton();
 	void setText(const QString Text);
-	QString text();
+	QString text() const ;
 	void setDefault(bool);
 	void setDisable(bool);
 protected:
