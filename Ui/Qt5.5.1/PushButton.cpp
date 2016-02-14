@@ -24,7 +24,7 @@ void PushButton::paintEvent(QPaintEvent *e) {
 	painter.drawText(rect(), Qt::AlignCenter, _text);
 }
 
-void PushButton::setText(QString Text) {
+void PushButton::setText(const QString Text) {
 	_text = Text;
 }
 
