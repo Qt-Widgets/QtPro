@@ -27,7 +27,7 @@ private:
 public:
 	explicit PushButton(QString text = "", QWidget *parent = 0);
 	~PushButton();
-	void setText(QString Text);
+	void setText(const QString Text);
 	QString text();
 	void setDefault(bool);
 	void setDisable(bool);
