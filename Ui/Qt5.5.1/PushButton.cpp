@@ -119,13 +119,13 @@ void PushButton::mousePressEvent(QMouseEvent *) {
 		group_animation->addAnimation(back_animation);
 		group_animation->addAnimation(border_animation);
 		group_animation->start();
-
-		emit clicked();
 	}
 	break;
 	default:
 		break;
 	}
+	
+	emit clicked();
 }
 
 void PushButton::mouseReleaseEvent(QMouseEvent *) {
