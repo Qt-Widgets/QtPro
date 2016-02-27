@@ -1,6 +1,6 @@
 #include "PushButton.h"
 
-PushButton::PushButton(QString text, QWidget *parent)
+PushButton::PushButton(const QString text, QWidget *parent)
 	:QWidget(parent) {
 	setText(text);
 }
