@@ -25,7 +25,7 @@ private:
 	QColor border_color() const ;
 	State _state = Normal;
 public:
-	explicit PushButton(QString text = "", QWidget *parent = 0);
+	explicit PushButton(const QString text = "", QWidget *parent = 0);
 	~PushButton();
 	void setText(const QString Text);
 	QString text() const ;
