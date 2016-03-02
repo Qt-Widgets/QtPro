@@ -9,15 +9,13 @@ PushButton::~PushButton() {}
 
 void PushButton::paintEvent(QPaintEvent *e) {
 	QPainter painter(this);
-	QPainterPath path;
-	path.addRect(QRect(0, 0, width() - 1, height() - 1));
 	painter.setPen(QPen(_border, _border_weight));
-	painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
-	painter.fillPath(path, QBrush(_back));
-	painter.drawPath(path);
-
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.drawRect(rect());
+	QRect Rectangle = QRect(rect().x() + _border_weight/2, rect().y() + _border_weight/2,
+		                    rect().width() - _border_weight, rect().height() - _border_weight);
+	painter.fillRect(Rectangle, _back);
 	painter.save();
-
 	painter.setPen(QPen(_color));
 	painter.setFont(QFont(_fontfamily, _pointsize));
 	painter.drawText(rect(), Qt::AlignCenter, _text);
