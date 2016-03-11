@@ -12,7 +12,11 @@ class GitButton : public QWidget {
     // setup timer
     connect(&timer, SIGNAL(timeout()), this, SLOT(timercall()));
   }
-
+ private:
+  QColor Hover;
+  QRect ColorEffect;
+  QTimer timer;
+  int Step;
  protected:
   virtual void enterEvent(QEvent*) {
     // start the timer
@@ -54,11 +58,6 @@ class GitButton : public QWidget {
     repaint();
 
   }
- private:
-  QColor Hover;
-  QRect ColorEffect;
-  QTimer timer;
-  int Step;
 };
 
 #endif // GITBUTTON_H
