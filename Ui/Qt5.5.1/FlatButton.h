@@ -1,44 +1,30 @@
-#pragma once
-#ifndef PUSHBUTTON_H
-#define PUSHBUTTON_H
+#ifndef SAMPLE_H
+#define SAMPLE_H
 
 #include <QtWidgets>
+class QWidget;
 class QPainter;
-class QPainterPath;
-class QPropertyAnimation;
-class QParallelAnimationGroup;
+class QTimer;
 
-
-class PushButton : public QWidget
+class FlatButton : public QWidget
 {
 	Q_OBJECT
-		Q_PROPERTY(QColor back_color READ back_color WRITE set_back_Color)
-		Q_PROPERTY(QColor border_color READ border_color WRITE set_border_Color)
-private:
-	enum State { Disable, Default, Normal };
-	QString _text, _fontfamily = "Open Sans";
-	QColor _border = "#ADADAD", _back = "#2FA9E2", _color = "#FFFFFF";
-	int _pointsize = 16, _border_weight = 1;
-	void set_back_Color(QColor color);
-	void set_border_Color(QColor color);
-	QColor back_color();
-	QColor border_color();
-	State _state = Normal;
 public:
-	explicit PushButton(QString text = "", QWidget *parent = 0);
-	~PushButton();
-	void setText(const QString Text);
-	QString text();
-	void setDefault(bool);
-	void setDisable(bool);
+	FlatButton(QWidget *parent = 0);
+	~FlatButton();
+private:
+	QColor _back = "#2FA9E2", _color="#FFFFFF";
+	qreal _opacity = 0.850;
+	QString _fontfamily = "Open Sans", _text = "Submit";
+	qint16 _pointsize = 12;
+	QTimer _timer_in, _timer_out;
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void enterEvent(QEvent *);
 	virtual void leaveEvent(QEvent *);
-	virtual void mousePressEvent(QMouseEvent *);
-	virtual void mouseReleaseEvent(QMouseEvent *);
-signals:
-	void clicked();
+	public slots:
+	void in_timer();
+	void out_timer();
 };
 
-#endif // PUSHBUTTON_H
+#endif // SAMPLE_H
