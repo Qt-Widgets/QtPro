@@ -23,6 +23,8 @@ protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void enterEvent(QEvent *);
 	virtual void leaveEvent(QEvent *);
+	virtual void mousePressEvent(QMouseEvent *);
+	virtual void mouseReleaseEvent(QMouseEvent *);
 	public slots:
 	void in_timer();
 	void out_timer();
