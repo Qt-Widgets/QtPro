@@ -20,12 +20,12 @@ void FlatButton::paintEvent(QPaintEvent *) {
 }
 
 void FlatButton::enterEvent(QEvent *) {
-	_timer_in.start(1.7);
+	_timer_in.start(2);
 	setCursor(Qt::PointingHandCursor);
 }
 
 void FlatButton::leaveEvent(QEvent *) {
-	_timer_out.start(1.7);
+	_timer_out.start(2);
 }
 
 void FlatButton::in_timer() {
