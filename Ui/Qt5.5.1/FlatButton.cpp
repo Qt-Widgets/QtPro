@@ -16,7 +16,7 @@ void FlatButton::paintEvent(QPaintEvent *) {
 	painter.save();
 	painter.setFont(QFont(_fontfamily, _pointsize));
 	painter.setPen(QPen(_color));
-	painter.drawText(rect(), Qt::AlignCenter, _text);
+	painter.drawText(QRect(rect().x(), rect().y(), rect().width(), rect().height() - _margin), Qt::AlignCenter, _text);
 }
 
 void FlatButton::enterEvent(QEvent *) {
@@ -47,11 +47,11 @@ void FlatButton::out_timer() {
 }
 
 void FlatButton::mousePressEvent(QMouseEvent *) {
-	_pointsize = 16;
+	_margin = -4;
 	update();
 }
 
 void FlatButton::mouseReleaseEvent(QMouseEvent *) {
-	_pointsize = 12;
+	_margin = 0;
 	update();
 }
