@@ -17,7 +17,7 @@ private:
 	QColor _back = "#2FA9E2", _color="#FFFFFF";
 	qreal _opacity = 0.850;
 	QString _fontfamily = "Open Sans", _text = "Submit";
-	qint16 _pointsize = 12;
+	qint16 _pointsize = 12, _margin = 0;
 	QTimer _timer_in, _timer_out;
 protected:
 	virtual void paintEvent(QPaintEvent *);
