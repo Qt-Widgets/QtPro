@@ -45,3 +45,13 @@ void FlatButton::out_timer() {
 	}
 	update();
 }
+
+void FlatButton::mousePressEvent(QMouseEvent *) {
+	_pointsize = 16;
+	update();
+}
+
+void FlatButton::mouseReleaseEvent(QMouseEvent *) {
+	_pointsize = 12;
+	update();
+}
