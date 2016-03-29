@@ -10,7 +10,7 @@ FlatButton::~FlatButton() {}
 void FlatButton::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	QRect Rectangle = QRect(100, 100, width() - 200, height() - 200);
+	QRect Rectangle = QRect(0, 0, width(), height());
 	painter.setOpacity(_opacity);
 	painter.fillRect(Rectangle, _back);
 	painter.save();
@@ -20,16 +20,16 @@ void FlatButton::paintEvent(QPaintEvent *) {
 }
 
 void FlatButton::enterEvent(QEvent *) {
-	_timer_in.start(2);
+	_timer_in.start(1);
 	setCursor(Qt::PointingHandCursor);
 }
 
 void FlatButton::leaveEvent(QEvent *) {
-	_timer_out.start(2);
+	_timer_out.start(1);
 }
 
 void FlatButton::in_timer() {
-	_opacity += 0.001;
+	_opacity += 0.002;
 	if (_opacity > 0.950)
 	{
 		_timer_in.stop();
@@ -38,8 +38,8 @@ void FlatButton::in_timer() {
 }
 
 void FlatButton::out_timer() {
-	_opacity -= 0.001;
-	if (_opacity < 0.850)
+	_opacity -= 0.002;
+	if (_opacity < 0.750)
 	{
 		_timer_out.stop();
 	}
