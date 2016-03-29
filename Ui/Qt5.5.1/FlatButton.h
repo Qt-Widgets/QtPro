@@ -15,7 +15,7 @@ public:
 	~FlatButton();
 private:
 	QColor _back = "#1ABC9C", _color="#FFFFFF";
-	qreal _opacity = 0.850;
+	qreal _opacity = 0.750;
 	QString _fontfamily = "Open Sans", _text = "Submit";
 	qint16 _pointsize = 12, _margin = 0;
 	QTimer _timer_in, _timer_out;
