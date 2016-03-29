@@ -22,11 +22,11 @@ void CircleButton::paintEvent(QPaintEvent *) {
 }
 
 void CircleButton::enterEvent(QEvent *) {
-	_timer_in.start(2);
+	_timer_in.start(1.7);
 }
 
 void CircleButton::leaveEvent(QEvent *) {
-	_timer_out.start(2);
+	_timer_out.start(1.7);
 	update();
 }
 
@@ -41,7 +41,7 @@ void CircleButton::in_timer() {
 
 void CircleButton::out_timer() {
 	_blank += 1;
-	if (_blank > 150)
+	if (_blank >= 150)
 	{
 		_timer_out.stop();
 	}
