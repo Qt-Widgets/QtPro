@@ -11,7 +11,7 @@ void CircleButton::paintEvent(QPaintEvent *) {
 	painter.setPen(Qt::NoPen);
 	painter.drawEllipse(rect());
 	painter.save();
-	QPixmap img("C:/Users/Zahra/Desktop/Arrow-1.png");
+	QPixmap img("QtPro/Resources/Icons/Arrow-1.png");
 	QRect center(rect().x(), rect().y() + _margin, rect().width(), rect().height() - (2 * _margin));
 	painter.drawPixmap(center , img);
 }
