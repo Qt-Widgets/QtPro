@@ -19,7 +19,7 @@ private:
 	QString _fontfamily = "Open Sans", _text = "Submit";
 	qint16 _pointsize = 12, _margin = 25, _blank = 150;
 	QTimer _timer_in, _timer_out;
-	QPixmap _image = "C:/Users/Zahra/Desktop/Arrow-2.png";
+	QPixmap _image, _image1 = "C:/Users/Zahra/Desktop/Arrow-2.png", _image0 = "C:/Users/Zahra/Desktop/Arrow-1.png";
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void enterEvent(QEvent *);
