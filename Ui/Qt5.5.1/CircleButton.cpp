@@ -3,6 +3,7 @@ CircleButton::CircleButton(QWidget *parent)
 {
 	setFixedHeight(150);
 	setFixedWidth(150);
+	_image = _image1;
 	connect(&_timer_in, SIGNAL(timeout()), this, SLOT(in_timer()));
 	connect(&_timer_out, SIGNAL(timeout()), this, SLOT(out_timer()));
 }
