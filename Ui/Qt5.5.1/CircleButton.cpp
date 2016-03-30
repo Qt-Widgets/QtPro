@@ -12,22 +12,23 @@ CircleButton::~CircleButton() {}
 void CircleButton::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setBrush(QBrush(_back));
 	painter.setPen(QPen(_back, 2));
+	painter.drawEllipse(rect());
+	painter.setBrush(QBrush(_back));
 	painter.drawEllipse(QRect(rect().x() + (_blank / 2), rect().y() + (_blank / 2), rect().width() - _blank, rect().height() - _blank));
-	painter.save();
-	QPixmap img(_image);
 	QRect center(rect().x() - _margin / 2, rect().y() + _margin, rect().width(), rect().height() - (2 * _margin));
-	painter.drawPixmap(center , img);
+	painter.drawPixmap(center , _image);
 }
 
 void CircleButton::enterEvent(QEvent *) {
+	_image = _image0;
+	setCursor(Qt::PointingHandCursor);
 	_timer_in.start(1.7);
 }
 
 void CircleButton::leaveEvent(QEvent *) {
+	_image = _image1;
 	_timer_out.start(1.7);
-	update();
 }
 
 void CircleButton::in_timer() {
