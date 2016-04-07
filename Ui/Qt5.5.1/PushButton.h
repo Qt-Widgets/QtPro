@@ -37,6 +37,8 @@ protected:
 	virtual void leaveEvent(QEvent *);
 	virtual void mousePressEvent(QMouseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
+	virtual QSize minimumSizeHint() const;
+	virtual QSize sizeHint() const;
 signals:
 	void clicked();
 };
