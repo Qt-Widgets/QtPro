@@ -199,3 +199,11 @@ void PushButton::setDefault(bool) {
 		update();
 	}
 }
+
+QSize PushButton::minimumSizeHint() const {
+	return QSize(75, 20);
+}
+
+QSize PushButton::sizeHint() const {
+	return QSize(130, 40);
+}
