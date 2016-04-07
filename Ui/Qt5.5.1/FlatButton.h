@@ -18,7 +18,9 @@ private:
 	qreal _opacity = 0.750;
 	QString _fontfamily = "Open Sans", _text = "Submit";
 	qint16 _pointsize = 12, _margin = 0;
-	QTimer _timer_in, _timer_out;
+	QTimer _timer;
+	enum State { hover,over};
+	State _state;
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void enterEvent(QEvent *);
@@ -26,8 +28,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	public slots:
-	void in_timer();
-	void out_timer();
+	void tiemrcall();
 };
 
 #endif // SAMPLE_H
