@@ -1,8 +1,7 @@
 FlatButton::FlatButton(QWidget *parent)
 	: QWidget(parent)
 {
-	connect(&_timer_in, SIGNAL(timeout()), this, SLOT(in_timer()));
-	connect(&_timer_out, SIGNAL(timeout()), this, SLOT(out_timer()));
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 FlatButton::~FlatButton() {}
@@ -20,28 +19,39 @@ void FlatButton::paintEvent(QPaintEvent *) {
 }
 
 void FlatButton::enterEvent(QEvent *) {
-	_timer_in.start(1);
+	_state = hover;
+	_timer_in.start(2);
 	setCursor(Qt::PointingHandCursor);
 }
 
 void FlatButton::leaveEvent(QEvent *) {
-	_timer_out.start(1);
+	_state = over;
+	_timer_out.start(2);
 }
 
-void FlatButton::in_timer() {
-	_opacity += 0.002;
-	if (_opacity > 0.950)
+void FlatButton::timercall() {
+	switch (_state)
 	{
-		_timer_in.stop();
+	case FlatButton::hover:
+	{
+		_opacity += 0.002;
+		if (_opacity > 0.950)
+		{
+			_timer.stop();
+		}
 	}
-	update();
-}
-
-void FlatButton::out_timer() {
-	_opacity -= 0.002;
-	if (_opacity < 0.750)
+		break;
+	case FlatButton::over:
 	{
-		_timer_out.stop();
+		_opacity -= 0.002;
+		if (_opacity < 0.750)
+		{
+			_timer.stop();
+		}
+	}
+		break;
+	default:
+		break;
 	}
 	update();
 }
