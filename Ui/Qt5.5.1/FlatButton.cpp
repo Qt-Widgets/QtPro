@@ -20,13 +20,13 @@ void FlatButton::paintEvent(QPaintEvent *) {
 
 void FlatButton::enterEvent(QEvent *) {
 	_state = hover;
-	_timer_in.start(2);
+	_timer.start(2);
 	setCursor(Qt::PointingHandCursor);
 }
 
 void FlatButton::leaveEvent(QEvent *) {
 	_state = over;
-	_timer_out.start(2);
+	_timer.start(2);
 }
 
 void FlatButton::timercall() {
