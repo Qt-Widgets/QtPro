@@ -28,7 +28,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *);
 	virtual void mouseReleaseEvent(QMouseEvent *);
 	public slots:
-	void tiemrcall();
+	void timercall();
 };
 
 #endif // SAMPLE_H
