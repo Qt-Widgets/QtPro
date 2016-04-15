@@ -23,8 +23,12 @@ Window {
             onClicked: {
                 console.log("Submit!")
             }
-            onEntered: {animateOpacity0.start()}
-            onExited: {animateOpacity1.start()}
+            onEntered: {
+            animateOpacity0.start()
+            }
+            onExited: {
+            animateOpacity1.start()
+            }
             cursorShape: Qt.PointingHandCursor
         }
         NumberAnimation {
