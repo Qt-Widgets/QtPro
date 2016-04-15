@@ -14,8 +14,8 @@ Window {
             id: buttonlable
             text: qsTr("Submit")
             color: "#FFFFFF"
-            x: (flatButton.width/3)+5
-            y: flatButton.height/3
+            x: ((flatButton.width)/2)-18
+            y: ((flatButton.height)/2)-8
             font.family: "Open Sans"
         }
         MouseArea {
