@@ -1,4 +1,4 @@
-import QtQuick 2.3
+import QtQuick 2.5
 import QtQuick.Window 2.2
 
 Window {
@@ -22,7 +22,7 @@ Window {
             anchors.fill: parent
             hoverEnabled: true
             onPressed: {
-                console.log("Submit !")
+                console.log("Submit Clicked!")
                 marginPlus.start()
             }
             onReleased: {
