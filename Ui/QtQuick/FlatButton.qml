@@ -23,22 +23,22 @@ Window {
             hoverEnabled: true
             onPressed: {
                 console.log("Submit !")
-                animatey0.start()
+                marginPlus.start()
             }
             onReleased: {
-                animatey1.start()
+                marginMinus.start()
             }
 
             onEntered: {
-                animateOpacity0.start()
+                fadeIn.start()
             }
             onExited: {
-                animateOpacity1.start()
+                fadeOut.start()
             }
             cursorShape: Qt.PointingHandCursor
         }
         NumberAnimation {
-                id: animateOpacity0
+                id: fadeIn
                 target: flatButton
                 properties: "opacity"
                 from: 0.750
@@ -47,7 +47,7 @@ Window {
            }
         NumberAnimation {
 
-                id: animateOpacity1
+                id: fadeOut
                 target: flatButton
                 properties: "opacity"
                 from: 0.950
@@ -55,7 +55,7 @@ Window {
                 duration: 200
            }
         NumberAnimation {
-            id:animatey0
+            id:marginPlus
             target: buttonlable
             properties: "y"
             from:buttonlable.y
@@ -63,7 +63,7 @@ Window {
             duration: 80
         }
         NumberAnimation {
-            id:animatey1
+            id:marginMinus
             target: buttonlable
             properties: "y"
             from:buttonlable.y
