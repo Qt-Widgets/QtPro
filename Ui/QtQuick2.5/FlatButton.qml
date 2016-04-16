@@ -46,7 +46,6 @@ Window {
                 duration: 200
            }
         NumberAnimation {
-
                 id: fadeOut
                 target: flatButton
                 properties: "opacity"
