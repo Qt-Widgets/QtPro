@@ -1,6 +1,5 @@
 Window::Window() {
   setWindowFlags(Qt::FramelessWindowHint);
-  setWindowFlags(Qt::FramelessWindowHint);
 	_layout.setMargin(0);
 	_layout.setSpacing(0);
 	setLayout(&_layout);
