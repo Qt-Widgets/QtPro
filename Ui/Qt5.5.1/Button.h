@@ -3,27 +3,23 @@
 #define BUTTON_H
 
 #include <QtWidgets>
+
 class QPainter;
-enum State
-{
-	Normal,
-	Disable,
-	Hover,
-	Over
-};
 
 class Button : public QWidget
 {
 	Q_OBJECT
 private:
-	QString _text, _fontfamily = "Open Sans";
-	int _pointsize = 12, _border_weight = 1;
+	enum State
+	{
+		Normal,
+		Disable,
+		Hover,
+		Over
+	};
 public:
-	explicit Button(const QString text = "", QWidget *parent = 0);
+	explicit Button(QWidget *parent = 0);
 	~Button();
-	void setText(const QString Text);
-	void setDisable(bool);
-	QString text() const;
 	State _state = Normal;
 protected:
 	virtual void paintEvent(QPaintEvent *);
