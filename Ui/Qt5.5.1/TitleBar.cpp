@@ -1,15 +1,16 @@
 TitleBar::TitleBar(QWidget *parent)
-	: QWidget(parent)
+	:QWidget(parent)
 {
-	setWindowFlags(Qt::FramelessWindowHint);
+	setFixedHeight(30);
+	_pixelmap = NULL;
 }
+
 
 TitleBar::~TitleBar() {}
 
-void TitleBar::mouseMoveEvent(QMouseEvent *e) {
-	if (e->buttons() && Qt::LeftButton)
-	{
-		move(e->globalPos() - e->pos());
-		e->accept();
-	}
+void TitleBar::paintEvent(QPaintEvent *) {
+	QPainter painter(this);
+	painter.setBrush(_background);
+	painter.setPen(Qt::NoPen);
+	painter.drawRect(0, 0, width(), height());
 }
