@@ -4,6 +4,7 @@
 
 #include <QtWidgets>
 // #include /.../TitleBar.h
+
 class QWidget;
 class QPainter;
 class QGridLayout;
