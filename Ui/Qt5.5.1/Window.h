@@ -3,6 +3,7 @@
 #define WINDOW_H
 
 #include <QtWidgets>
+// #include /.../TitleBar.h
 class QWidget;
 class QPainter;
 class QGridLayout;
@@ -13,6 +14,7 @@ class Window : public QWidget {
 private:
 	QColor _background = "#FFFFFF";
 	QGridLayout _layout;
+	TitleBar _titlebar;
 public:
 	explicit Window();
 	~Window();
