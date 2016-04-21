@@ -3,6 +3,7 @@
 #define TITLEBAR_H
 
 #include <QtWidgets>
+#include "TitleButton.h"
 
 class QWidget;
 class QPainter;
@@ -12,13 +13,14 @@ class TitleBar : public QWidget {
 
 private:
 	QColor _background = "#00A0B4";
-	QPixmap *_pixelmap;
+	QHBoxLayout _l;
 public:
+	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), *_maxmimize = new TitleButton(Maxmimize), *_tb2 = new TitleButton(Close);
 	explicit TitleBar(QWidget *parent = 0);
 	~TitleBar();
 protected:
 	virtual void paintEvent(QPaintEvent *);
-	virtual void resizeEvent(QResizeEvent *);
 };
 
 #endif // !TITLEBAR_H
+
