@@ -5,6 +5,8 @@
 #include <QtWidgets>
 
 class QPainter;
+class QTimer;
+
 enum Type
 {
 	Close,
