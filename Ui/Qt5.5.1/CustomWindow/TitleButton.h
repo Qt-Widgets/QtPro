@@ -29,10 +29,9 @@ private:
 	State _state = Normal;
 	Type _type = Close;
 	QColor _color = "#FFFFFF";
-	qint16 _weight = 2;
+	qint16 _weight = 2, _size = 15;
 	qreal _opacity = 0.650, _step = 0.002;
 	QTimer _timer;
-	QPixmap _image = "C:/Users/IMAN/Downloads/media.png";
 
 public:
 	explicit TitleButton(Type _tp, QWidget *parent = 0);
