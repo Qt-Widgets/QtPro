@@ -1,6 +1,3 @@
-#include "TitleButton.h"
-
-
 TitleButton::TitleButton(Type _tp ,QWidget *parent)
 	:QWidget(parent)
 {
@@ -24,6 +21,7 @@ TitleButton::TitleButton(Type _tp ,QWidget *parent)
 
 
 TitleButton::~TitleButton() {}
+
 
 void TitleButton::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
@@ -54,15 +52,18 @@ void TitleButton::paintEvent(QPaintEvent *) {
 	}
 }
 
+
 void TitleButton::enterEvent(QEvent *) {
 	_state = Hover;
 	_timer.start(1);
 }
 
+
 void TitleButton::leaveEvent(QEvent *) {
 	_state = Over;
 	_timer.start(3);
 }
+
 
 void TitleButton::mousePressEvent(QMouseEvent *e) {
 	if (e->type() == QEvent::MouseButtonPress && e->button() == Qt::LeftButton)
@@ -73,13 +74,16 @@ void TitleButton::mousePressEvent(QMouseEvent *e) {
 	}
 }
 
+
 QSize TitleButton::sizeHint() const {
 	return QSize(13, 13);
 }
 
+
 QSize TitleButton::minimumSizeHint() const {
 	return QSize(10, 10);
 }
+
 
 void TitleButton::timercall() {
 	switch (_state)
@@ -107,6 +111,7 @@ void TitleButton::timercall() {
 	}
 	update();
 }
+
 
 void TitleButton::clicked(Qt::MouseButton _button) {
 	Q_UNUSED(_button);
