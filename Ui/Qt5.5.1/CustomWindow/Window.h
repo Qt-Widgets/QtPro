@@ -3,7 +3,7 @@
 #define WINDOW_H
 
 #include <QtWidgets>
-// #include /.../TitleBar.h
+#include "TitleBar.h"
 
 class QWidget;
 class QPainter;
@@ -21,6 +21,8 @@ public:
 	~Window();
 protected:
 	virtual void paintEvent(QPaintEvent *);
+	public slots:
+	void closeEvent();
 };
 
 #endif // !WINDOW_H
