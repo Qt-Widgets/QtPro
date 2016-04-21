@@ -14,6 +14,7 @@ class TitleBar : public QWidget {
 
 private:
 	QColor _background = "#00A0B4";
+	qint16 _width = 35;
 	QHBoxLayout _l;
 public:
 	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), 
