@@ -1,6 +1,3 @@
-#include "TitleButton.h"
-
-
 TitleButton::TitleButton(Type _tp ,QWidget *parent)
 	:QWidget(parent)
 {
@@ -23,6 +20,7 @@ TitleButton::TitleButton(Type _tp ,QWidget *parent)
 
 
 TitleButton::~TitleButton() {}
+
 
 void TitleButton::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
@@ -65,23 +63,28 @@ void TitleButton::paintEvent(QPaintEvent *) {
 	}
 }
 
+
 QSize TitleButton::minimumSizeHint() const {
 	return QSize(10, 10);
 }
 
+
 QSize TitleButton::sizeHint() const {
 	return QSize(13, 13);
 }
+
 
 void TitleButton::enterEvent(QEvent *) {
 	_state = Hover;
 	_timer.start(1);
 }
 
+
 void TitleButton::leaveEvent(QEvent *) {
 	_state = Over;
 	_timer.start(1);
 }
+
 
 void TitleButton::timercall() {
 	switch (_state)
