@@ -15,7 +15,8 @@ private:
 	QColor _background = "#00A0B4";
 	QHBoxLayout _l;
 public:
-	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), *_maxmimize = new TitleButton(Maxmimize), *_tb2 = new TitleButton(Close);
+	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), 
+	            *_maxmimize = new TitleButton(Maxmimize), *_tb2 = new TitleButton(Close);
 	explicit TitleBar(QWidget *parent = 0);
 	~TitleBar();
 protected:
