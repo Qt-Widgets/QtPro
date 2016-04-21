@@ -16,7 +16,7 @@ private:
 	QHBoxLayout _l;
 public:
 	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), 
-	            *_maxmimize = new TitleButton(Maxmimize), *_tb2 = new TitleButton(Close);
+	            *_maxmimize = new TitleButton(Maxmimize);
 	explicit TitleBar(QWidget *parent = 0);
 	~TitleBar();
 protected:
