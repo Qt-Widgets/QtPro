@@ -4,7 +4,7 @@
 TitleBar::TitleBar(QWidget *parent)
 	:QWidget(parent)
 {
-	setFixedHeight(35);
+	setFixedHeight(_width);
 	_l.addStretch(10);
 	_l.addWidget(_minimize);
 	_l.addWidget(_maxmimize);
