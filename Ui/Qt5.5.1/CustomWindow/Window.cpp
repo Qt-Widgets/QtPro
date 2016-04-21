@@ -1,6 +1,9 @@
+#include "customwindow.h"
+
 Window::Window() {
-  setWindowFlags(Qt::FramelessWindowHint);
-  	// _layout Settings
+	setWindowFlags(Qt::FramelessWindowHint);
+	setMinimumSize(640, 480);
+	// _layout Settings
 	_layout.setMargin(0);
 	_layout.setSpacing(0);
 	_layout.setRowStretch(1, 1);
@@ -15,4 +18,8 @@ void Window::paintEvent(QPaintEvent *) {
 	painter.setBrush(_background);
 	painter.setPen(Qt::NoPen);
 	painter.drawRect(0, 0, width(), height());
+}
+
+void Window::closeEvent() {
+	close();
 }
