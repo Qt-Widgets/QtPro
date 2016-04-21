@@ -1,6 +1,6 @@
 #pragma once
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef TITLEBUTTON_H
+#define TITLEBUTTON_H
 
 #include <QtWidgets>
 
@@ -53,4 +53,4 @@ public slots:
 
 };
 
-#endif // BUTTON_H
+#endif // !TITLEBUTTON_H
