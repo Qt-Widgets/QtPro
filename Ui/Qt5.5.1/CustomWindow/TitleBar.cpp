@@ -38,6 +38,10 @@ void TitleBar::setText(const QString &_text) {
 }
 
 void TitleBar::setIcon(const QPixmap &_pixelmap) {
+	if (!_hastext)
+	{
+		delete _l;
+	}
 	delete _primary;
 
 	_window_icon->setPixmap(_pixelmap);
