@@ -30,8 +30,8 @@ void TitleButton::paintEvent(QPaintEvent *) {
 	{
 	case Close:
 	{
-		painter.drawLine(0, 0, _size, _size);
-		painter.drawLine(0, _size, _size, 0);
+		painter.drawLine(1, 1, _size - 2, _size - 2);
+		painter.drawLine(1, _size - 2, _size - 2, 1);
 	}
 	break;
 	case Minimize:
