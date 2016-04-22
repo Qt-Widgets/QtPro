@@ -15,15 +15,17 @@ class TitleBar : public QWidget {
 private:
 	QColor _background = "#00A0B4";
 	qint16 _width = 35;
-	QHBoxLayout _l;
+	QHBoxLayout *_l = new QHBoxLayout(), *_primary = new QHBoxLayout(), *_secoundry = new QHBoxLayout();
+	QLabel *_window_icon = new QLabel(), *_Title = new QLabel();
 public:
-	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize), 
-	            *_maxmimize = new TitleButton(Maxmimize);
+	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize),
+		        *_maxmimize = new TitleButton(Maxmimize);
 	explicit TitleBar(QWidget *parent = 0);
 	~TitleBar();
+	void setText(const QString &_text);
+	void setIcon(const QPixmap &_pixelmap);
 protected:
 	virtual void paintEvent(QPaintEvent *);
 };
 
 #endif // !TITLEBAR_H
-
