@@ -14,16 +14,18 @@ class Window : public QWidget {
 	Q_OBJECT
 
 private:
-	QColor _background = "#FFFFFF";
-	QGridLayout _layout;
-	TitleBar _titlebar;
+	QGridLayout *_layout = new QGridLayout();
+	QByteArray _state;
+	TitleBar *_titlebar = new TitleBar();
 public:
-	explicit Window();
+	explicit Window(QWidget *parent = 0);
+	explicit Window(const QString &_title, QWidget *parent = 0);
 	~Window();
+	void setIcon(const QPixmap &_icon);
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	public slots:
-	void closeEvent();
+	void change();
 };
 
 #endif // !WINDOW_H
