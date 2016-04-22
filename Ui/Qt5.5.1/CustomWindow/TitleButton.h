@@ -1,9 +1,10 @@
 #pragma once
-#ifndef TITLEBUTTON_H
-#define TITLEBUTTON_H
+#ifndef BUTTON_H
+#define BUTTON_H
 
 #include <QtWidgets>
 
+class QWidget;
 class QPainter;
 class QTimer;
 
@@ -11,7 +12,7 @@ enum Type
 {
 	Close,
 	Minimize,
-	Maxmimize
+	Maxmimize 
 };
 
 class TitleButton : public QWidget
@@ -29,13 +30,15 @@ private:
 	State _state = Normal;
 	Type _type = Close;
 	QColor _color = "#FFFFFF";
-	qint16 _weight = 2, _size = 15;
-	qreal _opacity = 0.650, _step = 0.002;
+	qint16 _weight = 2, _size = 14;
+	qreal _opacity = 0.550, _step = 0.003;
 	QTimer _timer;
+	bool _maxmized = 0;
 
 public:
 	explicit TitleButton(Type _tp, QWidget *parent = 0);
 	~TitleButton();
+	void setMaximized(bool _control);
 
 protected:
 	virtual void paintEvent(QPaintEvent *);
@@ -46,11 +49,11 @@ protected:
 	virtual QSize sizeHint() const;
 
 	signals:
-	void clicked(Qt::MouseButton _button);
+	void clicked();
 
 public slots:
 	void timercall();
 
 };
 
-#endif // !TITLEBUTTON_H
+#endif // BUTTON_H
