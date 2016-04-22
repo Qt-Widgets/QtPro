@@ -18,6 +18,7 @@ private:
 	qint16 _width = 35;
 	QHBoxLayout *_l = new QHBoxLayout(), *_primary = new QHBoxLayout(), *_secoundry = new QHBoxLayout();
 	QLabel *_window_icon = new QLabel(), *_Title = new QLabel();
+	bool _hastext = 0;
 public:
 	TitleButton *_close = new TitleButton(Close), *_minimize = new TitleButton(Minimize),
 		        *_maxmimize = new TitleButton(Maxmimize);
