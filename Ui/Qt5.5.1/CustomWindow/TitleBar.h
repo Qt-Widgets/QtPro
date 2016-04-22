@@ -8,6 +8,7 @@
 class QWidget;
 class QPainter;
 class TitleButton;
+class QHBoxLayout;
 
 class TitleBar : public QWidget {
 	Q_OBJECT
