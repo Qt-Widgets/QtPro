@@ -19,7 +19,6 @@ TitleButton::TitleButton(Type _tp ,QWidget *parent)
 	}
 }
 
-
 TitleButton::~TitleButton() {}
 
 void TitleButton::paintEvent(QPaintEvent *) {
@@ -31,58 +30,67 @@ void TitleButton::paintEvent(QPaintEvent *) {
 	{
 	case Close:
 	{
-		painter.drawLine(0, 0, width(), height());
-		painter.drawLine(0, height(), width(), 0);
+		painter.drawLine(0, 0, _size, _size);
+		painter.drawLine(0, _size, _size, 0);
 	}
-		break;
+	break;
 	case Minimize:
 	{
-		painter.drawLine(0, height()-2, width()-2, height()-2);
+		painter.drawLine(0, _size - 1, _size, _size - 1);
 	}
-		break;
+	break;
 	case Maxmimize:
 	{
-		painter.drawLine(1, 2, 1, height()-3);
-		painter.drawLine(0, height() - 2, width() - 2, height() - 2);
-		painter.drawLine(0, 1, width()-2 , 1);
-		painter.drawLine(width() - 1, 0, width() - 1, height() - 2);
+		if (_maxmized)
+		{
+			// inner
+			painter.drawLine(1, 5, 1, 12);
+			painter.drawLine(3, 12, 8, 12);
+			painter.drawLine(8, 10, 8, 5);
+			painter.drawLine(6, 5, 3, 5);
+			// outer
+			painter.drawLine(4, 3, 4, 0);
+			painter.drawLine(6, 1, 12, 1);
+			painter.drawLine(12, 3, 12, 8);
+			painter.drawLine(10, 8, 10, 8);
+		}
+		else
+		{
+			painter.drawLine(1, 1, 13, 1);
+			painter.drawLine(13, 3, 13, 13);
+			painter.drawLine(11, 13, 1, 13);
+			painter.drawLine(1, 11, 1, 3);
+		}
 	}
-		break;
+	break;
 	}
 }
-
 
 void TitleButton::enterEvent(QEvent *) {
 	_state = Hover;
 	_timer.start(1);
 }
 
-
 void TitleButton::leaveEvent(QEvent *) {
 	_state = Over;
-	_timer.start(3);
+	_timer.start(1.5);
 }
-
 
 void TitleButton::mousePressEvent(QMouseEvent *e) {
 	if (e->type() == QEvent::MouseButtonPress && e->button() == Qt::LeftButton)
 	{
-		Qt::MouseButton button = e->button();
 		e->accept();
-		emit clicked(button);
+		emit clicked();
 	}
 }
 
-
 QSize TitleButton::sizeHint() const {
-	return QSize(13, 13);
+	return QSize(15, 15);
 }
-
 
 QSize TitleButton::minimumSizeHint() const {
 	return QSize(10, 10);
 }
-
 
 void TitleButton::timercall() {
 	switch (_state)
@@ -99,7 +107,7 @@ void TitleButton::timercall() {
 	case TitleButton::Over:
 	{
 		_opacity -= _step;
-		if (_opacity < 0.750)
+		if (_opacity < 0.550)
 		{
 			_timer.stop();
 		}
@@ -111,8 +119,7 @@ void TitleButton::timercall() {
 	update();
 }
 
-
-void TitleButton::clicked(Qt::MouseButton _button) {
-	Q_UNUSED(_button);
-	qDebug("////////////////Clicked/////////////////");
+void TitleButton::setMaximized(bool _control) {
+	_maxmized = _control;
+	update();
 }
