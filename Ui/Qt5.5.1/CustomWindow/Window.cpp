@@ -42,14 +42,12 @@ void Window::change() {
 	if (windowState() == Qt::WindowMaximized)
 	{
 		_titlebar->_maxmimize->setMaximized(false);
-		setToolTip("Restore Down");
 		restoreGeometry(_state);
 	}
 	else
 	{
 		_state = saveGeometry();
 		_titlebar->_maxmimize->setMaximized(true);
-		setToolTip("Maximize");
 		showMaximized();
 	}
 }
