@@ -21,7 +21,7 @@ void TitleBar::paintEvent(QPaintEvent *) {
 
 void TitleBar::setText(const QString &_text) {
 	delete _l;
-
+	_hastext = 1;
 	_Title->setText(_text);
 	_Title->setMinimumHeight(_width / 2);
 	_Title->setStyleSheet("color:white;");
@@ -43,9 +43,8 @@ void TitleBar::setIcon(const QPixmap &_pixelmap) {
 		delete _l;
 	}
 	delete _primary;
-
 	_window_icon->setPixmap(_pixelmap);
-	_window_icon->setFixedSize(_width / 2, _width / 2);
+	_window_icon->setFixedSize((_width / 2) + 3, (_width / 2) + 3);
 	_window_icon->setScaledContents(true);
 
 	_secoundry->addWidget(_window_icon);
