@@ -1,3 +1,6 @@
+#include "TitleButton.h"
+
+
 TitleButton::TitleButton(Type _tp ,QWidget *parent)
 	:QWidget(parent)
 {
@@ -44,22 +47,22 @@ void TitleButton::paintEvent(QPaintEvent *) {
 		if (_maxmized)
 		{
 			// inner
-			painter.drawLine(1, 5, 1, 12);
-			painter.drawLine(3, 12, 8, 12);
-			painter.drawLine(8, 10, 8, 5);
-			painter.drawLine(6, 5, 3, 5);
+			painter.drawLine(1, 5, 1, 13);
+			painter.drawLine(3, 13, 10, 13);
+			painter.drawLine(10, 11, 10, 5);
+			painter.drawLine(8, 5, 3, 5);
 			// outer
-			painter.drawLine(4, 3, 4, 0);
-			painter.drawLine(6, 1, 12, 1);
-			painter.drawLine(12, 3, 12, 8);
-			painter.drawLine(10, 8, 10, 8);
+			painter.drawLine(4, 3, 4, 1);
+			painter.drawLine(6, 1, 14, 1);
+			painter.drawLine(14, 3, 14, 11);
+			painter.drawLine(12, 11, 12, 11);
 		}
 		else
 		{
-			painter.drawLine(1, 1, 13, 1);
-			painter.drawLine(13, 3, 13, 13);
-			painter.drawLine(11, 13, 1, 13);
-			painter.drawLine(1, 11, 1, 3);
+			painter.drawLine(1, 1, _size-1, 1);
+			painter.drawLine(_size - 1, 3, _size - 1, _size - 1);
+			painter.drawLine(_size - 3, _size - 1, 1, _size - 1);
+			painter.drawLine(1, _size - 3, 1, 3);
 		}
 	}
 	break;
@@ -121,5 +124,13 @@ void TitleButton::timercall() {
 
 void TitleButton::setMaximized(bool _control) {
 	_maxmized = _control;
+	if (_control)
+	{
+		setFixedSize(15, 15);
+	}
+	else
+	{
+		setFixedSize(14, 14);
+	}
 	update();
 }
