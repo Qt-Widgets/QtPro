@@ -6,7 +6,7 @@ TitleBar::TitleBar(QWidget *parent)
 	_l->addWidget(_maxmimize);
 	_l->addWidget(_close);
 	_l->setMargin(10);
-	_l->setSpacing(12);
+	_l->setSpacing((_width / 2) - 2);
 	setLayout(_l);
 }
 
@@ -23,9 +23,9 @@ void TitleBar::setText(const QString &_text) {
 	delete _l;
 	_hastext = 1;
 	_Title->setText(_text);
-	_Title->setMinimumHeight(_width / 2);
+	_Title->setMinimumHeight((_width / 2) + 3);
 	_Title->setStyleSheet("color:white;");
-	_Title->setFont(QFont("San Francisco Display Thin", 12));
+	_Title->setFont(QFont("San Francisco Display Thin", (_width / 2) - 3));
 
 	_primary->addWidget(_Title);
 	_primary->addStretch(10);
@@ -33,7 +33,7 @@ void TitleBar::setText(const QString &_text) {
 	_primary->addWidget(_maxmimize);
 	_primary->addWidget(_close);
 	_primary->setMargin(10);
-	_primary->setSpacing(12);
+	_primary->setSpacing((_width / 2) - 2);
 	setLayout(_primary);
 }
 
@@ -54,6 +54,7 @@ void TitleBar::setIcon(const QPixmap &_pixelmap) {
 	_secoundry->addWidget(_maxmimize);
 	_secoundry->addWidget(_close);
 	_secoundry->setMargin(10);
-	_secoundry->setSpacing(12);
+	_secoundry->setSpacing((_width / 2) - 2);
 	setLayout(_secoundry);
 }
+
