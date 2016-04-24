@@ -14,8 +14,8 @@ class TitleBar : public QWidget {
 	Q_OBJECT
 
 private:
-	QColor _background = "#00A0B4";
-	qint16 _width = 35;
+	QColor _background = "#00A0B4";//#1976D2
+	qint16 _width = 32;
 	QHBoxLayout *_l = new QHBoxLayout(), *_primary = new QHBoxLayout(), *_secoundry = new QHBoxLayout();
 	QLabel *_window_icon = new QLabel(), *_Title = new QLabel();
 	bool _hastext = 0;
@@ -31,3 +31,4 @@ protected:
 };
 
 #endif // !TITLEBAR_H
+
