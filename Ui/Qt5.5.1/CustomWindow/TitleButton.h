@@ -13,7 +13,7 @@ enum Type
 	Close,
 	Minimize,
 	Maxmimize 
-};a
+};
 
 class TitleButton : public QWidget
 {
