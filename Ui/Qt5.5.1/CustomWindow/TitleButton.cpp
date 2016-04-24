@@ -1,6 +1,3 @@
-#include "TitleButton.h"
-
-
 TitleButton::TitleButton(Type _tp ,QWidget *parent)
 	:QWidget(parent)
 {
@@ -54,8 +51,8 @@ void TitleButton::paintEvent(QPaintEvent *) {
 			// outer
 			painter.drawLine(4, 3, 4, 1);
 			painter.drawLine(6, 1, 14, 1);
-			painter.drawLine(14, 3, 14, 11);
-			painter.drawLine(12, 11, 12, 11);
+			painter.drawLine(14, 3, 14, 10);
+			painter.drawLine(12, 10, 12, 10);
 		}
 		else
 		{
