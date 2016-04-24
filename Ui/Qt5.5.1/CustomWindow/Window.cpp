@@ -1,6 +1,7 @@
 Window::Window(QWidget *parent)
 	:QWidget(parent) {
-	setWindowFlags(Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_TranslucentBackground, true);
 	setMinimumSize(640, 480);
 	connect(_titlebar->_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(_titlebar->_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
@@ -15,7 +16,8 @@ Window::Window(QWidget *parent)
 
 Window::Window(const QString &_title, QWidget *parent)
 :QWidget(parent) {
-	setWindowFlags(Qt::FramelessWindowHint);
+	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_TranslucentBackground, true);
 	setMinimumSize(640, 480);
 	connect(_titlebar->_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(_titlebar->_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
