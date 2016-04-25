@@ -1,133 +1,57 @@
-TitleButton::TitleButton(Type _tp ,QWidget *parent)
+TitleBar::TitleBar(QWidget *parent)
 	:QWidget(parent)
 {
-	setMouseTracking(true);
-	setFixedSize(_size, _size);
-	_state = Normal;
-	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
-	switch (_tp)
-	{
-	case Close:
-		_type = Close;
-		break;
-	case Minimize:
-		_type = Minimize;
-		break;
-	case Maxmimize:
-		_type = Maxmimize;
-		break;
-	}
+	_l->addStretch();
+	_l->addWidget(_minimize);
+	_l->addWidget(_maxmimize);
+	_l->addWidget(_close);
+	_l->setMargin((_width / 2) - 4);
+	_l->setSpacing(_width / 2);
+	setLayout(_l);
 }
 
-TitleButton::~TitleButton() {}
+TitleBar::~TitleBar() {}
 
-void TitleButton::paintEvent(QPaintEvent *) {
+void TitleBar::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
-	painter.setRenderHint(QPainter::Antialiasing);
-	painter.setPen(QPen(_color, _weight));
-	painter.setOpacity(_opacity);
-	switch (_type)
-	{
-	case Close:
-	{
-		painter.drawLine(1, 1, _size - 2, _size - 2);
-		painter.drawLine(1, _size - 2, _size - 2, 1);
-	}
-	break;
-	case Minimize:
-	{
-		painter.drawLine(0, _size - 1, _size, _size - 1);
-	}
-	break;
-	case Maxmimize:
-	{
-		if (_maxmized)
-		{
-			// inner
-			painter.drawLine(1, 5, 1, 13);
-			painter.drawLine(3, 13, 10, 13);
-			painter.drawLine(10, 11, 10, 5);
-			painter.drawLine(8, 5, 3, 5);
-			// outer
-			painter.drawLine(4, 3, 4, 1);
-			painter.drawLine(6, 1, 14, 1);
-			painter.drawLine(14, 3, 14, 10);
-			painter.drawLine(12, 10, 12, 10);
-		}
-		else
-		{
-			painter.drawLine(1, 1, _size-1, 1);
-			painter.drawLine(_size - 1, 3, _size - 1, _size - 1);
-			painter.drawLine(_size - 3, _size - 1, 1, _size - 1);
-			painter.drawLine(1, _size - 3, 1, 3);
-		}
-	}
-	break;
-	}
+	painter.setBrush(_background);
+	painter.setPen(Qt::NoPen);
+	painter.drawRect(0, 0, width(), height());
 }
 
-void TitleButton::enterEvent(QEvent *) {
-	_state = Hover;
-	_timer.start(1);
+void TitleBar::setText(const QString &_text) {
+	delete _l;
+	_hastext = 1;
+	_Title->setText(_text);
+	_Title->setMinimumHeight((_width / 2) + 3);
+	_Title->setStyleSheet("color:white;");
+	_Title->setFont(QFont("San Francisco Display Thin", (_width / 2) - 3));
+
+	_primary->addWidget(_Title);
+	_primary->addWidget(_minimize);
+	_primary->addWidget(_maxmimize);
+	_primary->addWidget(_close);
+	_primary->setMargin((_width / 2) - 6);
+	_primary->setSpacing(_width / 2);
+	setLayout(_primary);
 }
 
-void TitleButton::leaveEvent(QEvent *) {
-	_state = Over;
-	_timer.start(1.5);
-}
+void TitleBar::setIcon(const QPixmap &_pixelmap) {
+	if (!_hastext)
+	{
+		delete _l;
+	}
+	delete _primary;
+	_window_icon->setPixmap(_pixelmap);
+	_window_icon->setFixedSize((_width / 2) + 4, (_width / 2) + 4);
+	_window_icon->setScaledContents(true);
 
-void TitleButton::mousePressEvent(QMouseEvent *e) {
-	if (e->type() == QEvent::MouseButtonPress && e->button() == Qt::LeftButton)
-	{
-		e->accept();
-		emit clicked();
-	}
-}
-
-QSize TitleButton::sizeHint() const {
-	return QSize(15, 15);
-}
-
-QSize TitleButton::minimumSizeHint() const {
-	return QSize(10, 10);
-}
-
-void TitleButton::timercall() {
-	switch (_state)
-	{
-	case TitleButton::Hover:
-	{
-		_opacity += _step;
-		if (_opacity > 1.000)
-		{
-			_timer.stop();
-		}
-	}
-		break;
-	case TitleButton::Over:
-	{
-		_opacity -= _step;
-		if (_opacity < 0.550)
-		{
-			_timer.stop();
-		}
-	}
-		break;
-	default:
-		break;
-	}
-	update();
-}
-
-void TitleButton::setMaximized(bool _control) {
-	_maxmized = _control;
-	if (_control)
-	{
-		setFixedSize(15, 15);
-	}
-	else
-	{
-		setFixedSize(14, 14);
-	}
-	update();
+	_secoundry->addWidget(_window_icon);
+	_secoundry->addWidget(_Title);
+	_secoundry->addWidget(_minimize);
+	_secoundry->addWidget(_maxmimize);
+	_secoundry->addWidget(_close);
+	_secoundry->setMargin((_width / 2) - 6);
+	_secoundry->setSpacing((_width / 2) - 1);
+	setLayout(_secoundry);
 }
