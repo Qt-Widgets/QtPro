@@ -30,13 +30,13 @@ private:
 	};
 	State _state;
 	Type _type ;
-	QColor _color = "#FFFFFF";
-	qint16 _weight = 2;
-	qint16 _size = 38;
-	qreal _opacity = 0.550;
-	qreal _step = 0.003;
+	QColor _color;
+	qint16 _weight;
+	qint16 _size;
+	qreal _opacity;
+	qreal _step;
 	QTimer *_timer = new QTimer();
-	bool _maxmized = 0;
+	bool _maxmized;
 	QPixmap _pixelmap;
 
 public:
