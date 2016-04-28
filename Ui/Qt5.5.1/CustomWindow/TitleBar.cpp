@@ -115,7 +115,7 @@ void TitleBar::mouseMoveEvent(QMouseEvent *e) {
 			if (_parent->windowState().testFlag(Qt::WindowMaximized))
 			{
 				_parent->setWindowState(_parent->windowState() & ~Qt::WindowMaximized);
-				_start = e->globalPos() - ((frameGeometry().topLeft()) + (frameGeometry().topRight())) / 2;//frameGeometry().topLeft()+frameGeometry().topRight()
+				_start = e->globalPos() - ((frameGeometry().topLeft()) + (frameGeometry().topRight())) / 2;
 				e->accept();
 			} else {
 				_parent->move(e->globalPos() - _start);
