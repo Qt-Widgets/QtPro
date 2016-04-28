@@ -1,11 +1,12 @@
 #pragma once
-#ifndef BUTTON_H
-#define BUTTON_H
+#ifndef TITLEWIDGET_H
+#define TITLEWIDGET_H
 
 #include <QtWidgets>
 
 class QWidget;
 class QPainter;
+class QPainterPath;
 class QTimer;
 
 enum Type
@@ -61,4 +62,4 @@ public slots:
 
 };
 
-#endif // BUTTON_H
+#endif // !TITLEWIDGET_H
