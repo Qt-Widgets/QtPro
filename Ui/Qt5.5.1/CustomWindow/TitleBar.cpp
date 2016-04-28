@@ -1,7 +1,13 @@
-#include "TitleBar.h"
-
 TitleBar::TitleBar(QWidget *parent) 
-	:QWidget(parent), _parent(parent)
+	:QWidget(parent),
+	_parent(parent),
+	_hastext(false),
+	_hasicon(false),
+	_draging(false),
+	_start(0,0),
+	_background("#00A0B4"),
+	_width(38),
+	_textwidth(0)
 {
 	setFixedHeight(_width);
 	connect(_close, SIGNAL(clicked()), parent, SLOT(close()));
@@ -20,7 +26,7 @@ TitleBar::~TitleBar() {}
 
 void TitleBar::setText(const QString &_text) {
 	delete _l;
-	_hastext = 1;
+	_hastext = true;
 	_textwidth += _text.size();
 
 	_Title->setText("  " + _text);
@@ -47,7 +53,7 @@ void TitleBar::setIcon(const QPixmap &_pixelmap) {
 	{
 		delete _l;
 	}
-	_hasicon = 1;
+	_hasicon = true;
 	_window_icon->setPixmap(_pixelmap);
 	_secoundry->addWidget(_window_icon);
 	_secoundry->addWidget(_Title);
@@ -60,7 +66,7 @@ void TitleBar::setIcon(const QPixmap &_pixelmap) {
 }
 
 qint16 TitleBar::minimumwidth() const {
-	qint16 minimumwidth = (_close->width()) * 3 + (_maxmimize->width()) * 3 + (_minimize->width()) * 3;
+	qint16 minimumwidth = _close->width() + _maxmimize->width() + _minimize->width();
 	if (_hastext)
 	{
 		minimumwidth += _textwidth;
@@ -76,32 +82,65 @@ void TitleBar::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	painter.setBrush(_background);
 	painter.setPen(Qt::NoPen);
-	painter.drawRect(0, 0, width(), height());
+	painter.setRenderHint(QPainter::Antialiasing);
+
+	QPainterPath path;
+	path.setFillRule(Qt::WindingFill);
+	path.addRoundedRect(QRect(0, 0, width(), height()), 5.0, 5.0);
+	//bottomRight
+	path.addRect(QRect(width() - 5, height() - 5, 5, 5)); 
+	//bottomLeft
+	path.addRect(QRect(0, height() - 5, 5, 5)); 
+	painter.drawPath(path.simplified());
 }
 
 void TitleBar::mousePressEvent(QMouseEvent *e) {
-	if (e->type() == QMouseEvent::MouseButtonPress && e->button() == Qt::LeftButton)
+	if (e->buttons() && Qt::LeftButton)
 	{
+		_start = e->globalPos() - _parent->frameGeometry().topLeft();
+	_draging = true;
 	e->accept();
-	_start = e->globalPos() - _parent->frameGeometry().topLeft();
 	}
 }
 
+void TitleBar::mouseReleaseEvent(QMouseEvent *e) {
+	_draging = false;
+}
+
 void TitleBar::mouseMoveEvent(QMouseEvent *e) {
-	e->accept();
-	_delta = e->globalPos() - _start;
-	_parent->move(x() + _delta.x(), y() + _delta.y());
+	if (e->buttons() & Qt::LeftButton)
+	{
+		if (_draging)
+		{
+			if (_parent->windowState().testFlag(Qt::WindowMaximized))
+			{
+				_parent->setWindowState(_parent->windowState() & ~Qt::WindowMaximized);
+				_start = e->globalPos() - ((frameGeometry().topLeft()) + (frameGeometry().topRight())) / 2;//frameGeometry().topLeft()+frameGeometry().topRight()
+				e->accept();
+			} else {
+				_parent->move(e->globalPos() - _start);
+				_maxmimize->setMaximized(false);
+				e->accept();
+			}
+		} 
+	}
+	else if (_draging)
+	{
+		_draging = false;
+	}
 }
 
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *e) {
-	if (e->type() == QMouseEvent::MouseButtonDblClick && e->button() == Qt::LeftButton)
+	if (e->type() == QMouseEvent::MouseButtonDblClick & e->button() == Qt::LeftButton)
 	{
 		Qt::WindowStates s(_parent->windowState());
 		if (s.testFlag(Qt::WindowMaximized))
 		{
 			_parent->setWindowState(s & ~Qt::WindowMaximized);
+			_maxmimize->setMaximized(false);
 			e->accept();
 		} else {
+			_maxmimize->setMaximized(true);
 			_parent->setWindowState(s | Qt::WindowMaximized);
 			e->accept();
 		}
@@ -109,19 +148,12 @@ void TitleBar::mouseDoubleClickEvent(QMouseEvent *e) {
 }
 
 void TitleBar::changeState() {
-	if (_maximized)
+	if (_parent->windowState().testFlag(Qt::WindowMaximized))
 	{
-		_maximized = 0;
-		_maxmimize->setMaximized(0);
-		_parent->restoreGeometry(_state);
-	}
-	else
-	{
-		_maximized = 1;
-		_maxmimize->setMaximized(1);
-		_state = _parent->saveGeometry();
-		_parent->showMaximized();
+		_maxmimize->setMaximized(false);
+		_parent->setWindowState(_parent->windowState() & ~Qt::WindowMaximized);
+	} else {
+		_maxmimize->setMaximized(true);
+		_parent->setWindowState(_parent->windowState() | Qt::WindowMaximized);
 	}
 }
-
-
