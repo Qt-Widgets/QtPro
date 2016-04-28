@@ -12,10 +12,11 @@ enum Type
 {
 	Close,
 	Minimize,
-	Maxmimize 
+	Maxmimize,
+	Icon
 };
 
-class TitleButton : public QWidget
+class TitleWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -27,18 +28,22 @@ private:
 		Hover,
 		Over
 	};
-	State _state = Normal;
-	Type _type = Close;
+	State _state;
+	Type _type ;
 	QColor _color = "#FFFFFF";
-	qint16 _weight = 2, _size = 14;
-	qreal _opacity = 0.550, _step = 0.003;
-	QTimer _timer;
+	qint16 _weight = 2;
+	qint16 _size = 38;
+	qreal _opacity = 0.550;
+	qreal _step = 0.003;
+	QTimer *_timer = new QTimer();
 	bool _maxmized = 0;
+	QPixmap _pixelmap;
 
 public:
-	explicit TitleButton(Type _tp, QWidget *parent = 0);
-	~TitleButton();
-	void setMaximized(bool _control);
+	explicit TitleWidget(Type _tp, QWidget *parent = 0);
+	~TitleWidget();
+	void setMaximized(const bool _control);
+	void setPixmap(const QPixmap _pixmap);
 
 protected:
 	virtual void paintEvent(QPaintEvent *);
