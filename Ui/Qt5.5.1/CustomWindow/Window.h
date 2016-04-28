@@ -7,6 +7,7 @@
 
 class QWidget;
 class QPainter;
+class QPainterPath;
 class QGridLayout;
 class TitleBar;
 
