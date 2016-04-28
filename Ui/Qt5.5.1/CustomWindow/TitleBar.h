@@ -16,19 +16,17 @@ class TitleBar : public QWidget {
 
 private:
 	QWidget *_parent;
-	QColor _background = "#00A0B4";//#1976D2
-	qint16 _width = 38;
-	qint16 _textwidth = 0;
+	QColor _background;//#1976D2
+	qint16 _width;
+	qint16 _textwidth;
 	QHBoxLayout *_l = new QHBoxLayout();
 	QHBoxLayout *_primary = new QHBoxLayout();
 	QHBoxLayout *_secoundry = new QHBoxLayout();
 	QLabel *_Title = new QLabel();
-	bool _hastext = 0;
-	bool _maximized = 0;
-	bool _hasicon = 0;
+	bool _hastext;
+	bool _hasicon;
+	bool _draging;
 	QPoint _start;
-	QPoint _delta;
-	QByteArray _state;
 	TitleWidget *_close = new TitleWidget(Close);
 	TitleWidget *_minimize = new TitleWidget(Minimize);
 	TitleWidget *_maxmimize = new TitleWidget(Maxmimize);
@@ -44,6 +42,7 @@ public:
 protected:
 	virtual void paintEvent(QPaintEvent *);
 	virtual void mousePressEvent(QMouseEvent *e);
+	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent *e);
 	virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
