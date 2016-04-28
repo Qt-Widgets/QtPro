@@ -1,57 +1,144 @@
-TitleBar::TitleBar(QWidget *parent)
+#include "TitleButton.h"
+
+TitleWidget::TitleWidget(Type _tp, QWidget *parent)
 	:QWidget(parent)
 {
-	_l->addStretch();
-	_l->addWidget(_minimize);
-	_l->addWidget(_maxmimize);
-	_l->addWidget(_close);
-	_l->setMargin((_width / 2) - 4);
-	_l->setSpacing(_width / 2);
-	setLayout(_l);
-}
-
-TitleBar::~TitleBar() {}
-
-void TitleBar::paintEvent(QPaintEvent *) {
-	QPainter painter(this);
-	painter.setBrush(_background);
-	painter.setPen(Qt::NoPen);
-	painter.drawRect(0, 0, width(), height());
-}
-
-void TitleBar::setText(const QString &_text) {
-	delete _l;
-	_hastext = 1;
-	_Title->setText(_text);
-	_Title->setMinimumHeight((_width / 2) + 3);
-	_Title->setStyleSheet("color:white;");
-	_Title->setFont(QFont("San Francisco Display Thin", (_width / 2) - 3));
-
-	_primary->addWidget(_Title);
-	_primary->addWidget(_minimize);
-	_primary->addWidget(_maxmimize);
-	_primary->addWidget(_close);
-	_primary->setMargin((_width / 2) - 6);
-	_primary->setSpacing(_width / 2);
-	setLayout(_primary);
-}
-
-void TitleBar::setIcon(const QPixmap &_pixelmap) {
-	if (!_hastext)
+	setMouseTracking(true);
+	setFixedSize(_size, _size);
+	_state = Normal;
+	connect(_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+	switch (_tp)
 	{
-		delete _l;
+	case Close:
+		_type = Close;
+		break;
+	case Minimize:
+		_type = Minimize;
+		break;
+	case Maxmimize:
+		_type = Maxmimize;
+		break;
+	case Icon:
+		_type = Icon;
 	}
-	delete _primary;
-	_window_icon->setPixmap(_pixelmap);
-	_window_icon->setFixedSize((_width / 2) + 4, (_width / 2) + 4);
-	_window_icon->setScaledContents(true);
+}
 
-	_secoundry->addWidget(_window_icon);
-	_secoundry->addWidget(_Title);
-	_secoundry->addWidget(_minimize);
-	_secoundry->addWidget(_maxmimize);
-	_secoundry->addWidget(_close);
-	_secoundry->setMargin((_width / 2) - 6);
-	_secoundry->setSpacing((_width / 2) - 1);
-	setLayout(_secoundry);
+TitleWidget::~TitleWidget() {}
+
+void TitleWidget::setMaximized(const bool _control) {
+	_maxmized = _control;
+	update();
+}
+
+void TitleWidget::setPixmap(const QPixmap _pixmap) {
+	_pixelmap = _pixmap;
+	update();
+}
+
+void TitleWidget::paintEvent(QPaintEvent *) {
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::HighQualityAntialiasing);
+	painter.setPen(QPen(_color, _weight));
+	painter.setOpacity(_opacity);
+	switch (_type)
+	{
+	case Close:
+	{
+		painter.drawLine((_size / 2) - 6, (_size / 2) - 6, (_size / 2) - 1, (_size / 2) - 1);
+		painter.drawLine((_size / 2) + 1, (_size / 2) + 1, (_size / 2) + 6, (_size / 2) + 6);
+		painter.drawLine((_size / 2) + 6, (_size / 2) - 6, (_size / 2) - 6, (_size / 2) + 6);
+	}
+	break;
+	case Minimize:
+	{
+		painter.drawLine((_size / 2) - 7, (_size / 2) + 7, (_size / 2) + 7, (_size / 2) + 7);
+	}
+	break;
+	case Maxmimize:
+	{
+		if (_maxmized)
+		{
+			painter.drawLine((_size / 2) - 7, (_size / 2) - 2, (_size / 2) - 7, (_size / 2) + 7);
+			painter.drawLine((_size / 2) - 5, (_size / 2) + 7, (_size / 2) + 4, (_size / 2) + 7);
+			painter.drawLine((_size / 2) + 4, (_size / 2) + 5, (_size / 2) + 4, (_size / 2) - 2);
+			painter.drawLine((_size / 2) + 2, (_size / 2) - 2, (_size / 2) - 5, (_size / 2) - 2);
+
+			painter.drawLine((_size / 2) - 4, (_size / 2) - 4, (_size / 2) - 4, (_size / 2) - 6);
+			painter.drawLine((_size / 2) - 2, (_size / 2) - 6, (_size / 2) + 8, (_size / 2) - 6);
+			painter.drawLine((_size / 2) + 8, (_size / 2) - 4, (_size / 2) + 8, (_size / 2) + 4);
+			painter.drawLine((_size / 2) + 6, (_size / 2) + 4, (_size / 2) + 6, (_size / 2) + 4);
+		}
+		else
+		{
+			painter.drawLine((_size / 2) - 7, (_size / 2) - 7, (_size / 2) - 7, (_size / 2) + 7);
+			painter.drawLine((_size / 2) - 5, (_size / 2) + 7, (_size / 2) + 7, (_size / 2) + 7);
+			painter.drawLine((_size / 2) + 7, (_size / 2) + 5, (_size / 2) + 7, (_size / 2) - 7);
+			painter.drawLine((_size / 2) + 5, (_size / 2) - 7, (_size / 2) - 5, (_size / 2) - 7);
+
+		}
+	}
+	case Icon:
+	{
+		painter.setPen(Qt::NoPen);
+		painter.setOpacity(1.0);
+		painter.setRenderHint(QPainter::SmoothPixmapTransform);
+		_pixelmap = _pixelmap.scaled((_size / 2) + 5, (_size / 2) + 5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+		QRect _rect = QRect((_size / 2) - 12, (_size / 2) - 12, (_size / 2) + 3, (_size / 2) + 3);
+		painter.drawPixmap(_rect, _pixelmap);
+	}
+	break;
+	}
+}
+
+void TitleWidget::enterEvent(QEvent *) {
+	_state = Hover;
+	_timer->start(1);
+}
+
+void TitleWidget::leaveEvent(QEvent *) {
+	_state = Over;
+	_timer->start(1.5);
+}
+
+void TitleWidget::mousePressEvent(QMouseEvent *e) {
+	if (e->type() == QMouseEvent::MouseButtonPress && e->button() == Qt::LeftButton)
+	{
+		e->accept();
+		emit clicked();
+	}
+}
+
+QSize TitleWidget::minimumSizeHint() const {
+	return sizeHint();
+}
+
+QSize TitleWidget::sizeHint() const {
+	return QSize(_size, _size);
+}
+
+void TitleWidget::timercall() {
+	switch (_state)
+	{
+	case TitleWidget::Hover:
+	{
+		_opacity += _step;
+		if (_opacity > 1.000)
+		{
+			_timer->stop();
+		}
+	}
+	break;
+	case TitleWidget::Over:
+	{
+		_opacity -= _step;
+		if (_opacity < 0.550)
+		{
+			_timer->stop();
+		}
+	}
+	break;
+	default:
+		break;
+	}
+	update();
 }
