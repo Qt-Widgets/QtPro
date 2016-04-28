@@ -94,13 +94,17 @@ void TitleBar::mouseMoveEvent(QMouseEvent *e) {
 }
 
 void TitleBar::mouseDoubleClickEvent(QMouseEvent *e) {
-	Q_UNUSED(e);
-	Qt::WindowStates s(_parent->windowState());
-	if (s.testFlag(Qt::WindowMaximized))
+	if (e->type() == QMouseEvent::MouseButtonDblClick && e->button() == Qt::LeftButton)
 	{
-		_parent->setWindowState(s & ~Qt::WindowMaximized);
-	} else {
-		_parent->setWindowState(s | Qt::WindowMaximized);
+		Qt::WindowStates s(_parent->windowState());
+		if (s.testFlag(Qt::WindowMaximized))
+		{
+			_parent->setWindowState(s & ~Qt::WindowMaximized);
+			e->accept();
+		} else {
+			_parent->setWindowState(s | Qt::WindowMaximized);
+			e->accept();
+		}
 	}
 }
 
