@@ -1,11 +1,9 @@
+#include "customwindow.h"
+
 Window::Window(QWidget *parent)
 	:QWidget(parent) {
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-	setAttribute(Qt::WA_TranslucentBackground, true);
-	setMinimumSize(640, 480);
-	connect(_titlebar->_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(_titlebar->_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
-	connect(_titlebar->_maxmimize, SIGNAL(clicked()), this, SLOT(change()));
+	setMinimumWidth(_titlebar->minimumwidth());
 	// _layout Settings
 	_layout->setMargin(0);
 	_layout->setSpacing(0);
@@ -17,12 +15,8 @@ Window::Window(QWidget *parent)
 Window::Window(const QString &_title, QWidget *parent)
 :QWidget(parent) {
 	setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-	setAttribute(Qt::WA_TranslucentBackground, true);
-	setMinimumSize(640, 480);
-	connect(_titlebar->_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(_titlebar->_minimize, SIGNAL(clicked()), this, SLOT(showMinimized()));
-	connect(_titlebar->_maxmimize, SIGNAL(clicked()), this, SLOT(change()));
 	_titlebar->setText(_title);
+	setMinimumWidth(_titlebar->minimumwidth());
 	// _layout Settings
 	_layout->setMargin(0);
 	_layout->setSpacing(0);
@@ -33,27 +27,13 @@ Window::Window(const QString &_title, QWidget *parent)
 
 Window::~Window() {}
 
+void Window::setIcon(const QPixmap &_icon) {
+	_titlebar->setIcon(_icon);
+}
+
 void Window::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
 	painter.setBrush(QColor("#FFFFFF"));
 	painter.setPen(Qt::NoPen);
 	painter.drawRect(0, 0, width(), height());
-}
-
-void Window::change() {
-	if (windowState() == Qt::WindowMaximized)
-	{
-		_titlebar->_maxmimize->setMaximized(false);
-		restoreGeometry(_state);
-	}
-	else
-	{
-		_state = saveGeometry();
-		_titlebar->_maxmimize->setMaximized(true);
-		showMaximized();
-	}
-}
-
-void Window::setIcon(const QPixmap &_icon) {
-	_titlebar->setIcon(_icon);
 }
