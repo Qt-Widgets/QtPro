@@ -1,11 +1,15 @@
-#include "TitleButton.h"
-
 TitleWidget::TitleWidget(Type _tp, QWidget *parent)
-	:QWidget(parent)
+	:QWidget(parent),
+	_state(Normal),
+	_color("#FFFFFF"),
+	_weight(2),
+	_size(38),
+	_opacity(0.550),
+	_step(0.003),
+	_maxmized(false)
 {
 	setMouseTracking(true);
 	setFixedSize(_size, _size);
-	_state = Normal;
 	connect(_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 	switch (_tp)
 	{
@@ -58,11 +62,12 @@ void TitleWidget::paintEvent(QPaintEvent *) {
 	{
 		if (_maxmized)
 		{
+			//inner
 			painter.drawLine((_size / 2) - 7, (_size / 2) - 2, (_size / 2) - 7, (_size / 2) + 7);
 			painter.drawLine((_size / 2) - 5, (_size / 2) + 7, (_size / 2) + 4, (_size / 2) + 7);
 			painter.drawLine((_size / 2) + 4, (_size / 2) + 5, (_size / 2) + 4, (_size / 2) - 2);
 			painter.drawLine((_size / 2) + 2, (_size / 2) - 2, (_size / 2) - 5, (_size / 2) - 2);
-
+			//outer
 			painter.drawLine((_size / 2) - 4, (_size / 2) - 4, (_size / 2) - 4, (_size / 2) - 6);
 			painter.drawLine((_size / 2) - 2, (_size / 2) - 6, (_size / 2) + 8, (_size / 2) - 6);
 			painter.drawLine((_size / 2) + 8, (_size / 2) - 4, (_size / 2) + 8, (_size / 2) + 4);
@@ -82,7 +87,8 @@ void TitleWidget::paintEvent(QPaintEvent *) {
 		painter.setPen(Qt::NoPen);
 		painter.setOpacity(1.0);
 		painter.setRenderHint(QPainter::SmoothPixmapTransform);
-		_pixelmap = _pixelmap.scaled((_size / 2) + 5, (_size / 2) + 5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+		if (_pixelmap.isNull()) IGNORE;
+		else _pixelmap = _pixelmap.scaled((_size / 2) + 5, (_size / 2) + 5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 		QRect _rect = QRect((_size / 2) - 12, (_size / 2) - 12, (_size / 2) + 3, (_size / 2) + 3);
 		painter.drawPixmap(_rect, _pixelmap);
 	}
