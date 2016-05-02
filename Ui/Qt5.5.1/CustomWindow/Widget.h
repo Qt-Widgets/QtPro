@@ -31,6 +31,6 @@ private:
 	void calculateCursorPosition(const QPoint &pos);
 
 protected:
-	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;.
 	bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
 };
