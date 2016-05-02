@@ -4,7 +4,7 @@ class Widget : public QWidget {
 public:
 	explicit Widget();
 	~Widget();
-	void setBorderWidth(const qint16 borderWidth);
+	void setBorderWidth(const qint16 &borderWidth);
 
 private:
 	enum Edge
