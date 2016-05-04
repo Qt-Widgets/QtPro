@@ -73,7 +73,7 @@ void Widget::mousePress(QMouseEvent *e) {
 		_leftButtonPressed = true;
 		if (_edge != None) {
 			updateRubberBand();
-			_rubberband->setGeometry(frameGeometry().x(), frameGeometry().y(), frameGeometry().width(), frameGeometry().height());
+			_rubberband->setGeometry(frameGeometry());
 		}
 	}
 }
