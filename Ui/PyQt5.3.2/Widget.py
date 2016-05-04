@@ -147,14 +147,44 @@ class Widget(QWidget):
             self._rubberBand = False
 
     def __calculateCursorPosition(self, pos):
-        onLeft = pos.x() <= self.frameGeometry().x() + self._borderWidth and pos.x() >= self.frameGeometry().x() and pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and pos.y() >= self.frameGeometry().y() + self._borderWidth
-        onRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and pos.y() >= self.frameGeometry().y() + self._borderWidth and pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth - 2
-        onBottom = pos.x() >= self.frameGeometry().x() + self._borderWidth and pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth - 2 and pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
-        onTop = pos.x() >= self.frameGeometry().x() + self._borderWidth and pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and pos.y() >= self.frameGeometry().y() and pos.y() <= self.frameGeometry().y() + self._borderWidth
-        onBottomLeft = pos.x() <= self.frameGeometry().x() + self._borderWidth and pos.x() >= self.frameGeometry().x() and pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() and pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth
-        onBottomRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
-        onTopRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and pos.y() >= self.frameGeometry().y() and pos.y() <= self.frameGeometry().y() + self._borderWidth
-        onTopLeft = pos.x() >= self.frameGeometry().x() and pos.x() <= self.frameGeometry().x() + self._borderWidth and pos.y() >= self.frameGeometry().y() and pos.y() <= self.frameGeometry().y() + self._borderWidth
+        onLeft = pos.x() <= self.frameGeometry().x() + self._borderWidth and \
+                 pos.x() >= self.frameGeometry().x() and \
+                 pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
+                 pos.y() >= self.frameGeometry().y() + self._borderWidth
+        
+        onRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
+                  pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
+                  pos.y() >= self.frameGeometry().y() + self._borderWidth and \
+                  pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth - 2
+        
+        onBottom = pos.x() >= self.frameGeometry().x() + self._borderWidth and \
+                   pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth - 2 and \
+                   pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
+                   pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
+        
+        onTop = pos.x() >= self.frameGeometry().x() + self._borderWidth and \
+                pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
+                pos.y() >= self.frameGeometry().y() and pos.y() <= self.frameGeometry().y() + self._borderWidth
+        
+        onBottomLeft = pos.x() <= self.frameGeometry().x() + self._borderWidth and \
+                       pos.x() >= self.frameGeometry().x() and \
+                       pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() and \
+                       pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth
+        
+        onBottomRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
+                        pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
+                        pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
+                        pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
+        
+        onTopRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
+                     pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
+                     pos.y() >= self.frameGeometry().y() and \
+                     pos.y() <= self.frameGeometry().y() + self._borderWidth
+        
+        onTopLeft = pos.x() >= self.frameGeometry().x() and \
+                    pos.x() <= self.frameGeometry().x() + self._borderWidth and \
+                    pos.y() >= self.frameGeometry().y() and \
+                    pos.y() <= self.frameGeometry().y() + self._borderWidth
         if onLeft:
             self._edge = Edge.Left
         else:
