@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+import sys
 
 
 class Edge(object):
@@ -74,7 +75,6 @@ class Widget(QWidget):
             if self._edge != Edge.NoEdge:
                 self.__updateRubberBand()
                 self._rubberBand.setGeometry(self.geometry())
-                self._rubberBand.show()
 
     def __mouseRelease(self, event):
         self._leftButtonPressed = False
@@ -83,7 +83,7 @@ class Widget(QWidget):
             self.__updateRubberBand()
 
     def __mouseMove(self, event):
-        if self._leftButtonPressed and self._edge != Edge.NoEdge:
+        if self._leftButtonPressed :
             originalRect = self._rubberBand.frameGeometry()
             left = originalRect.left()
             top = originalRect.top()
@@ -91,24 +91,31 @@ class Widget(QWidget):
             bottom = originalRect.bottom()
             if self._edge == Edge.Top:
                 top = event.globalPos().y()
-            if self._edge == Edge.Bottom:
-                bottom == event.globalPos().y()
-            if self._edge == Edge.Right:
-                right == event.globalPos().x()
-            if self._edge == Edge.Left:
-                left == event.globalPos().x()
-            if self._edge == Edge.TopLeft:
-                top = event.globalPos().y()
-                left = event.globalPos().x()
-            if self._edge == Edge.TopRight:
-                top = event.globalPos().y()
-                left = event.globalPos().x()
-            if self._edge == Edge.BottomLeft:
-                bottom = event.globalPos().y()
-                right = event.globalPos().x()
-            if self._edge == Edge.BottomRight:
-                bottom = event.globalPos().y()
-                right == event.globalPos().x()
+            else:
+                if self._edge == Edge.Bottom:
+                    bottom = event.globalPos().y()
+                else:
+                    if self._edge == Edge.Right:
+                        right = event.globalPos().x()
+                    else:
+                        if self._edge == Edge.Left:
+                            left = event.globalPos().x()
+                        else:
+                            if self._edge == Edge.TopRight:
+                                top = event.globalPos().y()
+                                right = event.globalPos().x()
+                            else:
+                                if self._edge == Edge.TopLeft:
+                                    top = event.globalPos().y()
+                                    left = event.globalPos().x()
+                                else:
+                                    if self._edge == Edge.BottomLeft:
+                                        bottom = event.globalPos().y()
+                                        left = event.globalPos().x()
+                                    else:
+                                        if self._edge == Edge.BottomRight:
+                                            bottom = event.globalPos().y()
+                                            right = event.globalPos().x()
             self._rubberBand.setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)))
             self.setGeometry(self._rubberBand.geometry())
 
@@ -140,9 +147,7 @@ class Widget(QWidget):
     def __updateRubberBand(self):
         if not self._rubberBand:
             self._rubberBand = QRubberBand(QRubberBand.Rectangle)
-            print("1")
         else:
-            print("0")
             self._rubberBand = False
 
     def __calculateCursorPosition(self, pos):
@@ -150,36 +155,36 @@ class Widget(QWidget):
                  pos.x() >= self.frameGeometry().x() and \
                  pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
                  pos.y() >= self.frameGeometry().y() + self._borderWidth
-        
+
         onRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
                   pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
                   pos.y() >= self.frameGeometry().y() + self._borderWidth and \
                   pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth - 2
-        
+
         onBottom = pos.x() >= self.frameGeometry().x() + self._borderWidth and \
                    pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth - 2 and \
                    pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
                    pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
-        
+
         onTop = pos.x() >= self.frameGeometry().x() + self._borderWidth and \
                 pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
                 pos.y() >= self.frameGeometry().y() and pos.y() <= self.frameGeometry().y() + self._borderWidth
-        
+
         onBottomLeft = pos.x() <= self.frameGeometry().x() + self._borderWidth and \
                        pos.x() >= self.frameGeometry().x() and \
                        pos.y() <= self.frameGeometry().y() + self.frameGeometry().height() and \
                        pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth
-        
+
         onBottomRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
                         pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
                         pos.y() >= self.frameGeometry().y() + self.frameGeometry().height() - self._borderWidth and \
                         pos.y() <= self.frameGeometry().y() + self.frameGeometry().height()
-        
+
         onTopRight = pos.x() >= self.frameGeometry().x() + self.frameGeometry().width() - self._borderWidth and \
                      pos.x() <= self.frameGeometry().x() + self.frameGeometry().width() and \
                      pos.y() >= self.frameGeometry().y() and \
                      pos.y() <= self.frameGeometry().y() + self._borderWidth
-        
+
         onTopLeft = pos.x() >= self.frameGeometry().x() and \
                     pos.x() <= self.frameGeometry().x() + self._borderWidth and \
                     pos.y() >= self.frameGeometry().y() and \
