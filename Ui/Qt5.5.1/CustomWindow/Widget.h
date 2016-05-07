@@ -1,13 +1,3 @@
-#pragma once
-#ifndef WIDGET_H
-#define WIDGET_H
-#include <QtWidgets>
-
-class QWidget;
-class QPainter;
-class QpainterPath;
-class QRubberBand;
-
 class Widget : public QWidget {
 	Q_OBJECT
 
@@ -49,5 +39,3 @@ protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 	bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
 };
-
-#endif // !WIDGET_H
