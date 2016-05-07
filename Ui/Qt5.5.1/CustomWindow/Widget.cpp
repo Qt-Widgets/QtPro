@@ -1,3 +1,5 @@
+#include "Widget.h"
+
 Widget::Widget() :
 _cursorchanged(false),
 _borderWidth(4),
@@ -208,4 +210,16 @@ void Widget::updateRubberBand() {
 
 void Widget::setBorderWidth(const qint16 &borderWidth) {
 	_borderWidth = borderWidth;
+}
+
+qint16 Widget::borderWidth() const  {
+	return _borderWidth;
+}
+
+void Widget::setRadius(const qreal &radius) {
+	_radius = radius;
+}
+
+qreal Widget::radius() const {
+	return _radius;
 }
