@@ -16,6 +16,8 @@ public:
 	~Widget();
 	void setRadius(const qreal &radius);
 	qreal radius() const;
+	void setBorderWidth(const qint16 &borderWidth);
+	qint16 borderWidth() const;
 
 private:
 	enum Edge
