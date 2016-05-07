@@ -2,17 +2,18 @@
 
 Widget::Widget() :
 _cursorchanged(false),
-_borderWidth(4),
-_edge(None),
 _leftButtonPressed(false),
-_rubberband(0),
-_radius(5.0) 
+_radius(5.0),
+_mousePress(None),
+_mouseMove(None),
+_borderWidth(5)
 {
 	setMouseTracking(true);
 	setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 	setAttribute(Qt::WA_Hover);
 	setAttribute(Qt::WA_TranslucentBackground);
 	installEventFilter(this);
+	_rubberband = new QRubberBand(QRubberBand::Rectangle);
 }
 
 Widget::~Widget() {}
@@ -70,16 +71,16 @@ void Widget::mouseHover(QHoverEvent *e) {
 
 void Widget::mouseLeave(QEvent *e) {
 	Q_UNUSED(e);
-	unsetCursor();
-	_leftButtonPressed = false;
-	_edge = None;
+	if (!_leftButtonPressed) {
+		unsetCursor();
+	}
 }
 
 void Widget::mousePress(QMouseEvent *e) {
 	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = true;
-		if (_edge != None) {
-			updateRubberBand();
+		calculateCursorPosition(e->globalPos(), frameGeometry(), _mousePress);
+		if (_mousePress != None) {
 			_rubberband->setGeometry(frameGeometry());
 		}
 	}
@@ -88,51 +89,46 @@ void Widget::mousePress(QMouseEvent *e) {
 void Widget::mouseRealese(QMouseEvent *e) {
 	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = false;
-		_edge = None;
 		if (_rubberband) {
-			updateRubberBand();
+			setGeometry(_rubberband->frameGeometry());
 		}
 	}
 }
 
 void Widget::mouseMove(QMouseEvent *e) {
-	if (_leftButtonPressed) {
-		if (_edge != None) {
-			QRect originalRect = _rubberband->frameGeometry();
-			int left = originalRect.left();
-			int top = originalRect.top();
-			int right = originalRect.right();
-			int bottom = originalRect.bottom();
-			if (_edge == Top) {
+	if (_leftButtonPressed)
+	{
+		if (_mousePress != None)
+		{
+			QRect origRect = _rubberband->frameGeometry();
+			int left = origRect.left();
+			int top = origRect.top();
+			int right = origRect.right();
+			int bottom = origRect.bottom();
+			origRect.getCoords(&left, &top, &right, &bottom);
+			if (_mousePress == Top) {
 				top = e->globalPos().y();
-			}
-			else if (_edge == Bottom) {
+			} else if (_mousePress == Bottom) {
 				bottom = e->globalPos().y();
-			}
-			else if (_edge == Left) {
+			} else if (_mousePress == Left) {
 				left = e->globalPos().x();
-			}
-			else if (_edge == Right) {
+			} else if (_mousePress == Right) {
 				right = e->globalPos().x();
-			}
-			else if (_edge == TopLeft) {
+			} else if (_mousePress == TopLeft) {
+				top = e->globalPos().y();
 				left = e->globalPos().x();
-				top = e->globalPos().y();
-			}
-			else if (_edge == TopRight) {
-				top = e->globalPos().y();
+			} else if (_mousePress == TopRight) {
 				right = e->globalPos().x();
-			}
-			else if (_edge == BottomLeft) {
-				left = e->globalPos().x();
+				top = e->globalPos().y();
+			} else if (_mousePress == BottomLeft) {
 				bottom = e->globalPos().y();
-			}
-			else if (_edge == BottomRight) {
+				left = e->globalPos().x();
+			} else if (_mousePress == BottomRight) {
 				bottom = e->globalPos().y();
 				right = e->globalPos().x();
 			}
+			setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
 			_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
-			setGeometry(_rubberband->geometry());
 		}
 	} else {
 		updateCursorShape(e->globalPos());
@@ -140,56 +136,55 @@ void Widget::mouseMove(QMouseEvent *e) {
 }
 
 void Widget::updateCursorShape(const QPoint &pos) {
-	if (isFullScreen() || isMaximized()) {
+	if (isFullScreen() || isMaximized() ) {
 		if (_cursorchanged) {
 			unsetCursor();
-			return;
 		}
+		return;
 	}
-	calculateCursorPosition(pos);
-	if (_edge == TopLeft || _edge == BottomRight) {
-		setCursor(Qt::SizeFDiagCursor);
-		_cursorchanged = true;
-	} else if (_edge == TopRight || _edge == BottomLeft) {
-		setCursor(Qt::SizeBDiagCursor);
-		_cursorchanged = true;
-	} else if (_edge == Right || _edge == Left) {
-		setCursor(Qt::SizeHorCursor);
-		_cursorchanged = true;
-	} else if (_edge == Top || _edge == Bottom) {
+	calculateCursorPosition(pos, frameGeometry(), _mouseMove);
+	if (_mouseMove == Top || _mouseMove == Bottom) {
 		setCursor(Qt::SizeVerCursor);
 		_cursorchanged = true;
+	} else if (_mouseMove == Left || _mouseMove == Right) {
+		setCursor(Qt::SizeHorCursor);
+		_cursorchanged = true;
+	} else if (_mouseMove == TopLeft || _mouseMove == BottomRight) {
+		setCursor(Qt::SizeFDiagCursor);
+		_cursorchanged = true;
+	} else if (_mouseMove == TopRight || _mouseMove == BottomLeft) {
+		setCursor(Qt::SizeBDiagCursor);
+		_cursorchanged = true;
 	} else if (_cursorchanged) {
-		_cursorchanged = false;
 		unsetCursor();
+		_cursorchanged = false;
 	}
-
 }
 
-void Widget::calculateCursorPosition(const QPoint &pos) {
-	bool onLeft = pos.x() >= frameGeometry().x() - _borderWidth && pos.x() <= frameGeometry().x() + _borderWidth &&
-		pos.y() <= frameGeometry().y() + frameGeometry().height() - _borderWidth && pos.y() >= frameGeometry().y() + _borderWidth;
+void Widget::calculateCursorPosition(const QPoint &pos, const QRect &framerect, Edge &_edge) {
+	bool onLeft = pos.x() >= framerect.x() - _borderWidth && pos.x() <= framerect.x() + _borderWidth &&
+		pos.y() <= framerect.y() + framerect.height() - _borderWidth && pos.y() >= framerect.y() + _borderWidth;
 
-	bool onRight = pos.x() >= frameGeometry().x() + frameGeometry().width() - _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() &&
-		pos.y() >= frameGeometry().y() + _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height() - _borderWidth;
+	bool onRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() &&
+		pos.y() >= framerect.y() + _borderWidth && pos.y() <= framerect.y() + framerect.height() - _borderWidth;
 
-	bool onBottom = pos.x() >= frameGeometry().x() + _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() - _borderWidth  &&
-		pos.y() >= frameGeometry().y() + frameGeometry().height() - _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height();
+	bool onBottom = pos.x() >= framerect.x() + _borderWidth && pos.x() <= framerect.x() + framerect.width() - _borderWidth  &&
+		pos.y() >= framerect.y() + framerect.height() - _borderWidth && pos.y() <= framerect.y() + framerect.height();
 
-	bool onTop = pos.x() >= frameGeometry().x() + _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() - _borderWidth &&
-		pos.y() >= frameGeometry().y() - _borderWidth && pos.y() <= frameGeometry().y() + _borderWidth;
+	bool onTop = pos.x() >= framerect.x() + _borderWidth && pos.x() <= framerect.x() + framerect.width() - _borderWidth &&
+		pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
 
-	bool  onBottomLeft = pos.x() <= frameGeometry().x() + _borderWidth && pos.x() >= frameGeometry().x() - _borderWidth &&
-		pos.y() <= frameGeometry().y() + frameGeometry().height() + _borderWidth && pos.y() >= frameGeometry().y() + frameGeometry().height() - _borderWidth;
+	bool  onBottomLeft = pos.x() <= framerect.x() + _borderWidth && pos.x() >= framerect.x() &&
+		pos.y() <= framerect.y() + framerect.height() && pos.y() >= framerect.y() + framerect.height() - _borderWidth;
 
-	bool onBottomRight = pos.x() >= frameGeometry().x() + frameGeometry().width() - _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() &&
-		pos.y() >= frameGeometry().y() + frameGeometry().height() - _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height();
+	bool onBottomRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() &&
+		pos.y() >= framerect.y() + framerect.height() - _borderWidth && pos.y() <= framerect.y() + framerect.height();
 
-	bool onTopRight = pos.x() >= frameGeometry().x() + frameGeometry().width() - _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() + _borderWidth &&
-		pos.y() >= frameGeometry().y() - _borderWidth && pos.y() <= frameGeometry().y() + _borderWidth;
+	bool onTopRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() &&
+		pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
 
-	bool onTopLeft = pos.x() >= frameGeometry().x() - _borderWidth && pos.x() <= frameGeometry().x() + _borderWidth &&
-		pos.y() >= frameGeometry().y() - _borderWidth && pos.y() <= frameGeometry().y() + _borderWidth;
+	bool onTopLeft = pos.x() >= framerect.x() && pos.x() <= framerect.x() + _borderWidth &&
+		pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
 
 	if (onLeft) {
 		_edge = Left;
@@ -212,27 +207,18 @@ void Widget::calculateCursorPosition(const QPoint &pos) {
 	}
 }
 
-void Widget::updateRubberBand() {
-	if (!_rubberband) {
-		_rubberband = new QRubberBand(QRubberBand::Rectangle);
-	} else {
-		delete _rubberband;
-		_rubberband = 0;
-	}
-}
-
-void Widget::setBorderWidth(const qint16 &borderWidth) {
-	_borderWidth = borderWidth;
-}
-
-qint16 Widget::borderWidth() const  {
-	return _borderWidth;
-}
-
 void Widget::setRadius(const qreal &radius) {
 	_radius = radius;
 }
 
 qreal Widget::radius() const {
 	return _radius;
+}
+
+void Widget::setBorderWidth(const qint16 &borderWidth) {
+	_borderWidth = borderWidth;
+}
+
+qint16 Widget::borderWidth() const {
+	return _borderWidth;
 }
