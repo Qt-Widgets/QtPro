@@ -1,5 +1,3 @@
-#include "Widget.h"
-
 Widget::Widget() :
 _cursorchanged(false),
 _borderWidth(4),
@@ -69,7 +67,7 @@ void Widget::mouseLeave(QEvent *e) {
 }
 
 void Widget::mousePress(QMouseEvent *e) {
-	if (e->buttons() && Qt::LeftButton) {
+	if (e->buttons() & Qt::LeftButton) {
 		_leftButtonPressed = true;
 		if (_edge != None) {
 			updateRubberBand();
@@ -87,7 +85,7 @@ void Widget::mouseRealese(QMouseEvent *e) {
 }
 
 void Widget::mouseMove(QMouseEvent *e) {
-	if (_leftButtonPressed && _edge != None) {
+	if (_leftButtonPressed & _edge != None) {
 		QRect originalRect = _rubberband->frameGeometry();
 		int left = originalRect.left();
 		int top = originalRect.top();
@@ -114,8 +112,11 @@ void Widget::mouseMove(QMouseEvent *e) {
 			bottom = e->globalPos().y();
 			right = e->globalPos().x();
 		}
-		_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
+		QRect newRect(QPoint(left, top), QPoint(right, bottom));
+		_rubberband->setGeometry(newRect);
 		setGeometry(_rubberband->geometry());
+		//_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
+		//setGeometry(_rubberband->geometry());
 	}
 }
 
@@ -126,7 +127,7 @@ void Widget::updateCursorShape(const QPoint &pos) {
 			return;
 		}
 	}
-	calculateCursorPosition((pos));
+	calculateCursorPosition(pos);
 	if (_edge == TopLeft || _edge == BottomRight) {
 		setCursor(Qt::SizeFDiagCursor);
 		_cursorchanged = true;
@@ -159,7 +160,7 @@ void Widget::calculateCursorPosition(const QPoint &pos) {
 	bool onTop = pos.x() >= frameGeometry().x() + _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() - _borderWidth &&
 		pos.y() >= frameGeometry().y() && pos.y() <= frameGeometry().y() + _borderWidth;
 
-	bool  onBottomleft = pos.x() <= frameGeometry().x() + _borderWidth && pos.x() >= frameGeometry().x() &&
+	bool  onBottomLeft = pos.x() <= frameGeometry().x() + _borderWidth && pos.x() >= frameGeometry().x() &&
 		pos.y() <= frameGeometry().y() + frameGeometry().height() && pos.y() >= frameGeometry().y() + frameGeometry().height() - _borderWidth;
 
 	bool onBottomRight = pos.x() >= frameGeometry().x() + frameGeometry().width() - _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() &&
@@ -171,23 +172,31 @@ void Widget::calculateCursorPosition(const QPoint &pos) {
 	bool onTopLeft = pos.x() >= frameGeometry().x() && pos.x() <= frameGeometry().x() + _borderWidth &&
 		pos.y() >= frameGeometry().y() && pos.y() <= frameGeometry().y() + _borderWidth;
 
-    if (onLeft) {
+	if (onLeft) {
 		_edge = Left;
-	} else if (onRight) {
+	}
+	else if (onRight) {
 		_edge = Right;
-	} else if (onBottom) {
+	}
+	else if (onBottom) {
 		_edge = Bottom;
-	} else if (onTop) {
+	}
+	else if (onTop) {
 		_edge = Top;
-	} else if (onBottomleft) {
+	}
+	else if (onBottomLeft) {
 		_edge = BottomLeft;
-	} else if (onBottomRight) {
+	}
+	else if (onBottomRight) {
 		_edge = BottomRight;
-	} else if (onTopRight) {
+	}
+	else if (onTopRight) {
 		_edge = TopRight;
-	} else if (onTopLeft) {
+	}
+	else if (onTopLeft) {
 		_edge = TopLeft;
-	} else {
+	}
+	else {
 		_edge = None;
 	}
 }
