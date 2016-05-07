@@ -14,19 +14,17 @@ class Widget : public QWidget {
 public:
 	explicit Widget();
 	~Widget();
-	void setBorderWidth(const qint16 &borderWidth);
 	void setRadius(const qreal &radius);
-	qint16 borderWidth() const;
 	qreal radius() const;
 
 private:
 	enum Edge
 	{
 		None,
-		Top,
-		Bottom,
 		Left,
+		Top,
 		Right,
+		Bottom,
 		TopLeft,
 		TopRight,
 		BottomLeft,
@@ -35,9 +33,10 @@ private:
 	QRubberBand *_rubberband;
 	bool _cursorchanged;
 	bool _leftButtonPressed;
-	qint16 _borderWidth;
-	Edge _edge;
 	qreal _radius;
+	Edge _mousePress;
+	Edge _mouseMove;
+	qint16 _borderWidth;
 
 private:
 	void mouseHover(QHoverEvent *e);
@@ -46,8 +45,8 @@ private:
 	void mouseRealese(QMouseEvent *e);
 	void mouseMove(QMouseEvent *e);
 	void updateCursorShape(const QPoint &pos);
-	void calculateCursorPosition(const QPoint &pos);
 	void updateRubberBand();
+	void calculateCursorPosition(const QPoint &pos, const QRect &framerect,Edge &_edge);
 
 protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
