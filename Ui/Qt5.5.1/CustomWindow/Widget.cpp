@@ -36,7 +36,7 @@ bool Widget::eventFilter(QObject *o, QEvent*e) {
 		e->type() == QEvent::MouseButtonPress ||
 		e->type() == QEvent::MouseButtonRelease) {
 
-		switch (e->type()) 
+		switch (e->type())
 		{
 		case QEvent::MouseMove:
 			mouseMove(static_cast<QMouseEvent*>(e));
@@ -59,7 +59,8 @@ bool Widget::eventFilter(QObject *o, QEvent*e) {
 			return true;
 			break;
 		}
-	} else {
+	}
+	else {
 		return false;
 	}
 }
@@ -108,56 +109,79 @@ void Widget::mouseMove(QMouseEvent *e) {
 			origRect.getCoords(&left, &top, &right, &bottom);
 			if (_mousePress == Top) {
 				top = e->globalPos().y();
-			} else if (_mousePress == Bottom) {
+			}
+			else if (_mousePress == Bottom) {
 				bottom = e->globalPos().y();
-			} else if (_mousePress == Left) {
+			}
+			else if (_mousePress == Left) {
 				left = e->globalPos().x();
-			} else if (_mousePress == Right) {
+			}
+			else if (_mousePress == Right) {
 				right = e->globalPos().x();
-			} else if (_mousePress == TopLeft) {
+			}
+			else if (_mousePress == TopLeft) {
 				top = e->globalPos().y();
 				left = e->globalPos().x();
-			} else if (_mousePress == TopRight) {
+			}
+			else if (_mousePress == TopRight) {
 				right = e->globalPos().x();
 				top = e->globalPos().y();
-			} else if (_mousePress == BottomLeft) {
+			}
+			else if (_mousePress == BottomLeft) {
 				bottom = e->globalPos().y();
 				left = e->globalPos().x();
-			} else if (_mousePress == BottomRight) {
+			}
+			else if (_mousePress == BottomRight) {
 				bottom = e->globalPos().y();
 				right = e->globalPos().x();
+			}
+			QRect newRect(QPoint(left, top), QPoint(right, bottom));
+			if (newRect.width() < minimumWidth() ) {
+				left = frameGeometry().x();
+			}
+			else if (newRect.height() < minimumHeight()  )
+			{
+				top = frameGeometry().y();
 			}
 			setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
 			_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
 		}
-	} else {
+	}
+	else {
 		updateCursorShape(e->globalPos());
 	}
 }
 
 void Widget::updateCursorShape(const QPoint &pos) {
-	if (isFullScreen() || isMaximized() ) {
+	if (isFullScreen() || isMaximized()) {
 		if (_cursorchanged) {
 			unsetCursor();
 		}
 		return;
 	}
-	calculateCursorPosition(pos, frameGeometry(), _mouseMove);
-	if (_mouseMove == Top || _mouseMove == Bottom) {
-		setCursor(Qt::SizeVerCursor);
-		_cursorchanged = true;
-	} else if (_mouseMove == Left || _mouseMove == Right) {
-		setCursor(Qt::SizeHorCursor);
-		_cursorchanged = true;
-	} else if (_mouseMove == TopLeft || _mouseMove == BottomRight) {
-		setCursor(Qt::SizeFDiagCursor);
-		_cursorchanged = true;
-	} else if (_mouseMove == TopRight || _mouseMove == BottomLeft) {
-		setCursor(Qt::SizeBDiagCursor);
-		_cursorchanged = true;
-	} else if (_cursorchanged) {
-		unsetCursor();
-		_cursorchanged = false;
+	if (!_leftButtonPressed)
+	{
+		calculateCursorPosition(pos, frameGeometry(), _mouseMove);
+		if (_mouseMove == Top || _mouseMove == Bottom) {
+			setCursor(Qt::SizeVerCursor);
+			_cursorchanged = true;
+		}
+		else if (_mouseMove == Left || _mouseMove == Right) {
+			setCursor(Qt::SizeHorCursor);
+			_cursorchanged = true;
+		}
+		else if (_mouseMove == TopLeft || _mouseMove == BottomRight) {
+			setCursor(Qt::SizeFDiagCursor);
+			_cursorchanged = true;
+		}
+		else if (_mouseMove == TopRight || _mouseMove == BottomLeft) {
+			setCursor(Qt::SizeBDiagCursor);
+			_cursorchanged = true;
+		}
+		else if (_cursorchanged) {
+			unsetCursor();
+			_cursorchanged = false;
+		}
 	}
 }
 
@@ -188,21 +212,29 @@ void Widget::calculateCursorPosition(const QPoint &pos, const QRect &framerect, 
 
 	if (onLeft) {
 		_edge = Left;
-	} else if (onRight) {
+	}
+	else if (onRight) {
 		_edge = Right;
-	} else if (onBottom) {
+	}
+	else if (onBottom) {
 		_edge = Bottom;
-	} else if (onTop) {
+	}
+	else if (onTop) {
 		_edge = Top;
-	} else if (onBottomLeft) {
+	}
+	else if (onBottomLeft) {
 		_edge = BottomLeft;
-	} else if (onBottomRight) {
+	}
+	else if (onBottomRight) {
 		_edge = BottomRight;
-	} else if (onTopRight) {
+	}
+	else if (onTopRight) {
 		_edge = TopRight;
-	} else if (onTopLeft) {
+	}
+	else if (onTopLeft) {
 		_edge = TopLeft;
-	} else {
+	}
+	else {
 		_edge = None;
 	}
 }
