@@ -5,7 +5,7 @@
 
 class QWidget;
 class QPainter;
-class QpainterPath;
+class QpainterPath;.
 class QRubberBand;
 
 class Widget : public QWidget {
