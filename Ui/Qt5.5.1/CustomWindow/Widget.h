@@ -1,5 +1,6 @@
 #pragma once
-#ifdef Q_OS_WIN
+#ifndef WIDGET_H
+#define Q_OS_WIN
 
 #include <QtWidgets>
 
@@ -8,7 +9,7 @@ class QPainter;
 class QpainterPath;
 class QRubberBand;
 
-class Widget : public QWidget {
+class Widget : public QMainWindow {
 	Q_OBJECT
 
 public:
@@ -48,11 +49,11 @@ private:
 	void mouseMove(QMouseEvent *e);
 	void updateCursorShape(const QPoint &pos);
 	void updateRubberBand();
-	void calculateCursorPosition(const QPoint &pos, const QRect &framerect,Edge &_edge);
+	void calculateCursorPosition(const QPoint &pos, const QRect &framerect, Edge &_edge);
 
 protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 	bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
 };
 
-#endif
+#endif // !WIDGET_H
