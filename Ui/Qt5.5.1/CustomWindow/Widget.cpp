@@ -9,7 +9,7 @@ _rubberband(0),
 _radius(5.0) 
 {
 	setMouseTracking(true);
-	setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+	setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 	setAttribute(Qt::WA_Hover);
 	setAttribute(Qt::WA_TranslucentBackground);
 	installEventFilter(this);
@@ -76,7 +76,7 @@ void Widget::mouseLeave(QEvent *e) {
 }
 
 void Widget::mousePress(QMouseEvent *e) {
-	if (e->buttons() & Qt::LeftButton) {
+	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = true;
 		if (_edge != None) {
 			updateRubberBand();
@@ -86,43 +86,56 @@ void Widget::mousePress(QMouseEvent *e) {
 }
 
 void Widget::mouseRealese(QMouseEvent *e) {
-	_leftButtonPressed = false;
-	_edge = None;
-	if (_rubberband) {
-		updateRubberBand();
+	if (e->button() == Qt::LeftButton) {
+		_leftButtonPressed = false;
+		_edge = None;
+		if (_rubberband) {
+			updateRubberBand();
+		}
 	}
 }
 
 void Widget::mouseMove(QMouseEvent *e) {
-	if (_leftButtonPressed & _edge != None) {
-		QRect originalRect = _rubberband->frameGeometry();
-		int left = originalRect.left();
-		int top = originalRect.top();
-		int right = originalRect.right();
-		int bottom = originalRect.bottom();
-		if (_edge == Top) {
-			top = e->globalPos().y();
-		} else if (_edge == Bottom) {
-			bottom = e->globalPos().y();
-		} else if (_edge == Left) {
-			left = e->globalPos().x();
-		} else if (_edge == Right) {
-			right = e->globalPos().x();
-		} else if (_edge == TopLeft) {
-			left = e->globalPos().x();
-			top = e->globalPos().y();
-		} else if (_edge == TopRight) {
-			top = e->globalPos().y();
-			right = e->globalPos().x();
-		} else if (_edge == BottomLeft) {
-			left = e->globalPos().x();
-			bottom = e->globalPos().y();
-		} else if (_edge == BottomRight) {
-			bottom = e->globalPos().y();
-			right = e->globalPos().x();
+	if (_leftButtonPressed) {
+		if (_edge != None) {
+			QRect originalRect = _rubberband->frameGeometry();
+			int left = originalRect.left();
+			int top = originalRect.top();
+			int right = originalRect.right();
+			int bottom = originalRect.bottom();
+			if (_edge == Top) {
+				top = e->globalPos().y();
+			}
+			else if (_edge == Bottom) {
+				bottom = e->globalPos().y();
+			}
+			else if (_edge == Left) {
+				left = e->globalPos().x();
+			}
+			else if (_edge == Right) {
+				right = e->globalPos().x();
+			}
+			else if (_edge == TopLeft) {
+				left = e->globalPos().x();
+				top = e->globalPos().y();
+			}
+			else if (_edge == TopRight) {
+				top = e->globalPos().y();
+				right = e->globalPos().x();
+			}
+			else if (_edge == BottomLeft) {
+				left = e->globalPos().x();
+				bottom = e->globalPos().y();
+			}
+			else if (_edge == BottomRight) {
+				bottom = e->globalPos().y();
+				right = e->globalPos().x();
+			}
+			_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
+			setGeometry(_rubberband->geometry());
 		}
-		_rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
-		setGeometry(_rubberband->geometry());
+	} else {
+		updateCursorShape(e->globalPos());
 	}
 }
 
@@ -154,11 +167,11 @@ void Widget::updateCursorShape(const QPoint &pos) {
 }
 
 void Widget::calculateCursorPosition(const QPoint &pos) {
-	bool onLeft = pos.x() <= frameGeometry().x() + _borderWidth && pos.x() >= frameGeometry().x() - _borderWidth &&
+	bool onLeft = pos.x() >= frameGeometry().x() - _borderWidth && pos.x() <= frameGeometry().x() + _borderWidth &&
 		pos.y() <= frameGeometry().y() + frameGeometry().height() - _borderWidth && pos.y() >= frameGeometry().y() + _borderWidth;
 
 	bool onRight = pos.x() >= frameGeometry().x() + frameGeometry().width() - _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() &&
-		pos.y() >= frameGeometry().y() + _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height() - _borderWidth ;
+		pos.y() >= frameGeometry().y() + _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height() - _borderWidth;
 
 	bool onBottom = pos.x() >= frameGeometry().x() + _borderWidth && pos.x() <= frameGeometry().x() + frameGeometry().width() - _borderWidth  &&
 		pos.y() >= frameGeometry().y() + frameGeometry().height() - _borderWidth && pos.y() <= frameGeometry().y() + frameGeometry().height();
