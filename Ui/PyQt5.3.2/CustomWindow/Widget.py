@@ -15,7 +15,7 @@ class Edge(object):
     BottomRight = 0x8
 
 
-class Widget(QWidget):
+class Widget(QMainWindow):
     def __init__(self, borderwidth = None, radius = None, *args, **kwargs):
         super(Widget, self).__init__(*args, **kwargs)
         self._cursorChanged = False
