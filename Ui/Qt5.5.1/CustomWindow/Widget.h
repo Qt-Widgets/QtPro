@@ -1,6 +1,5 @@
 #pragma once
 #ifndef WIDGET_H
-#define Q_OS_WIN
 
 #include <QtWidgets>
 
@@ -23,15 +22,15 @@ public:
 private:
 	enum Edge
 	{
-		None,
-		Left,
-		Top,
-		Right,
-		Bottom,
-		TopLeft,
-		TopRight,
-		BottomLeft,
-		BottomRight
+		None = 0x0,
+		Left = 0x1,
+		Top = 0x2,
+		Right = 0x3,
+		Bottom = 0x4,
+		TopLeft = 0x5,
+		TopRight = 0x6,
+		BottomLeft = 0x7,
+		BottomRight = 0x8
 	};
 	QRubberBand *_rubberband;
 	bool _cursorchanged;
