@@ -90,9 +90,6 @@ void Widget::mousePress(QMouseEvent *e) {
 void Widget::mouseRealese(QMouseEvent *e) {
 	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = false;
-		if (_rubberband) {
-			setGeometry(_rubberband->frameGeometry());
-		}
 	}
 }
 
@@ -106,7 +103,6 @@ void Widget::mouseMove(QMouseEvent *e) {
 			int top = origRect.top();
 			int right = origRect.right();
 			int bottom = origRect.bottom();
-			origRect.getCoords(&left, &top, &right, &bottom);
 			if (_mousePress == Top) {
 				top = e->globalPos().y();
 			}
