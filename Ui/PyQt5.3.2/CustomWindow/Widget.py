@@ -1,19 +1,18 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys
 
 
 class Edge(object):
-    NoEdge = 0
-    Left = 1
-    Right = 2
-    Top = 3
-    Bottom = 4
-    TopLeft = 5
-    TopRight = 6
-    BottomLeft = 7
-    BottomRight = 8
+    NoEdge = 0x0
+    Left = 0x1
+    Right = 0x2
+    Top = 0x3
+    Bottom = 0x4
+    TopLeft = 0x5
+    TopRight = 0x6
+    BottomLeft = 0x7
+    BottomRight = 0x8
 
 
 class Widget(QWidget):
