@@ -1,3 +1,9 @@
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+import sys
+from Widget import *
+
 CACHED_SHADOW_RECT_SIZE = (50, 50)
 
 
@@ -25,7 +31,7 @@ class _DropShadowWidget(QWidget):
         margin = 20
         QWidget.setContentsMargins(self, margin,margin , margin, margin)
         self.setWindowFlags(Qt.FramelessWindowHint)
-        self.offset = QPointF(0., 0.)
+        self.offset = QPointF(0, 0)
         self.radius = 20
         self.color = QColor(Qt.black)
         self._shadowPixmap = None
