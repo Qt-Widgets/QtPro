@@ -174,10 +174,10 @@ class Widget(QMainWindow):
         onRight = pos.x() >= framerect.x() + framerect.width() - self._borderWidth and \
                   pos.x() <= framerect.x() + framerect.width() and \
                   pos.y() >= framerect.y() + self._borderWidth and \
-                  pos.y() <= framerect.y() + framerect.height() - self._borderWidth - 2
+                  pos.y() <= framerect.y() + framerect.height() - self._borderWidth 
 
         onBottom = pos.x() >= framerect.x() + self._borderWidth and \
-                   pos.x() <= framerect.x() + framerect.width() - self._borderWidth - 2 and \
+                   pos.x() <= framerect.x() + framerect.width() - self._borderWidth  and \
                    pos.y() >= framerect.y() + framerect.height() - self._borderWidth and \
                    pos.y() <= framerect.y() + framerect.height()
 
