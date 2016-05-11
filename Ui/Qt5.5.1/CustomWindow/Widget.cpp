@@ -92,7 +92,7 @@ Widget::~Widget() {}
 
 void Widget::paintEvent(QPaintEvent *) {
 	QPainter painter(this);
-	drawShadow(painter, 10, 2.0, QColor(120, 120, 120, 32), QColor(255, 255, 255, 0), 0.0, 1.0, 0.6, width(), height());
+	drawShadow(painter, _borderWidth, _radius, QColor(120, 120, 120, 32), QColor(255, 255, 255, 0), 0.0, 1.0, 0.6, width(), height());
 }
 
 bool Widget::eventFilter(QObject *o, QEvent*e) {
