@@ -36,3 +36,74 @@ void Widget::paintEvent(QPaintEvent *) {
 	QRectF rect2(topLeft2, bottomRight2);
 	painter.drawRoundRect(rect2, 0.0, 0.0);
 }
+
+
+
+
+
+
+
+
+void Widget::paintEvent(QPaintEvent *) {
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setPen(Qt::NoPen);
+
+
+	QLinearGradient gradient(QPointF(0, 0), QPointF(width(), height()));
+	gradient.setSpread(QGradient::ReflectSpread);
+
+	QColor grey1(237, 237, 237, 64);// #EDEDED    orignal : 150, 150, 150, 125
+	QColor grey2(255, 255, 255, 0); // #FDFDFD   original : 225, 225, 225, 125
+
+	gradient.setColorAt(0.0, grey1);
+	gradient.setColorAt(1.0, grey2);
+
+	painter.setBrush(QBrush(gradient));
+
+
+	QPointF topLeft(0, 0);
+	QPointF bottomRight(width(), height());
+	QRectF rect(topLeft, bottomRight);
+	painter.drawRoundRect(rect, 0.0, 0.0);
+
+	QBrush brush2(QColor("#FFFFFF"), Qt::SolidPattern);
+	painter.setBrush(brush2);
+
+	QPointF topLeft2(5, 5);
+	QPointF bottomRight2(width() - 5, height() - 5);
+	QRectF rect2(topLeft2, bottomRight2);
+	//painter.drawRoundRect(rect2, 0.0, 0.0);
+}
+
+
+
+
+
+
+
+
+
+
+QPainter painter(this);
+	painter.setBrush(QColor("#FFFFFF"));
+	painter.setPen(Qt::NoPen);
+	painter.setRenderHint(QPainter::Antialiasing);
+
+	QPainterPath path;
+	path.addRoundedRect(QRect(0, 0, width(), height()), _radius, _radius);
+	painter.drawPath(path.simplified());
+
+	QLinearGradient grad;
+	QColor grey1(150, 150, 150, 125);
+	QColor grey2(225, 225, 225, 125);
+	grad.setStart(0, 0);
+	grad.setFinalStop(width(), 0);
+	grad.setColorAt(0.0, grey1);
+	grad.setColorAt(0.1, grey2);
+	painter.setBrush(QBrush(grad));
+	QPointF top(3, 3);
+	QPointF bottom(width(), height());
+	painter.setPen(Qt::NoPen);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.drawRoundRect(QRectF(top, bottom), _radius, _radius);
