@@ -1,4 +1,5 @@
-void drawShadow(QPainter &_painter, qint16 _margin, qreal _radius, QColor _start, QColor _end, qreal _startPosition, qreal _endPosition0, qreal _endPosition1, qreal _width, qreal _height) {
+void drawShadow(QPainter &_painter, qint16 _margin, qreal _radius,
+QColor _start, QColor _end, qreal _startPosition, qreal _endPosition0, qreal _endPosition1, qreal _width, qreal _height) {
 	_painter.setPen(Qt::NoPen);
 
 	QLinearGradient gradient;
