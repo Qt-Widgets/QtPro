@@ -1,9 +1,11 @@
-#include <QtWidgets\QPainter>
-#include <QtWidgets\QLinerGradient>
-#include <QtWidgets\QPointF>
-#include <QtWidgets\QRectF>
-#include <QtWidgets\QBrush>
+#include <QtWidgets>
 
+class QPainter;
+class QPointF;
+class QRectF;
+class QColor;
+class QBrush;
+class QLinerGradient;
 
 void drawShadow(QPainter &_painter, const qint16 _margin, const qreal _radius, const QColor _start, const QColor _end,
 	const qreal _startPosition, const qreal _endPosition0, const qreal _endPosition1, const qreal _width, const qreal _height) {
