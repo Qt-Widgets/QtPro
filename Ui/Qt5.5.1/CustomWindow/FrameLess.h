@@ -1,13 +1,12 @@
 #pragma once
-#ifndef WIDGET_H
 
 #include <QtWidgets>
 
 class QWidget;
-class QPainter;
-class QpainterPath;
+class QObject;
+class QEvent;
+class QRect;
 class QRubberBand;
-class QMainWindow;
 
 class FrameLess : public QObject {
 	Q_OBJECT
@@ -51,5 +50,3 @@ private:
 protected:
 	bool eventFilter(QObject *o, QEvent *e) Q_DECL_OVERRIDE;
 };
-
-#endif // !WIDGET_H
