@@ -78,5 +78,7 @@ void drawShadow(QPainter &_painter, const qint16 _margin, const qreal _radius, c
 	// Widget
 	_painter.setBrush(QBrush("#FFFFFF"));
 	_painter.setRenderHint(QPainter::Antialiasing);
-	_painter.drawRoundRect(QRectF(QPointF(_margin, _margin), QPointF(_width - _margin, _height - _margin)), _radius, _radius);
+	QPainterPath path;
+	path.addRoundedRect(QRectF(QPointF(_margin, _margin), QPointF(_width - _margin, _height - _margin)), _radius, _radius);
+	_painter.drawPath(path.simplified());
 }
