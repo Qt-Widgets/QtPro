@@ -19,8 +19,8 @@ CustomWindow By Qt
 
 `void setBorderWidth(const qint16 _border)`
 
-**dependency
+#dependencies
 * Qt5.5.1
 
-**Build
+#Build
 *Visual Studio 2013
