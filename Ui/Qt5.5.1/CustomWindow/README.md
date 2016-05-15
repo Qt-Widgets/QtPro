@@ -1,3 +1,3 @@
 CustomWindow BY Qt
 ===
-![Screenshot](Resources/Image/CustomWindow.jpg)
+![Screenshot](QtPro/Resources/Image/CustomWindow.jpg)
