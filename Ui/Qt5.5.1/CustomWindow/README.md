@@ -3,7 +3,7 @@ CustomWindow BY Qt
 
 ![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
 
-## Public Functions
+# Public Functions
 
 `Window(QWidget *parent = 0);`
 
@@ -19,10 +19,10 @@ CustomWindow BY Qt
 
 `void setBorderWidth(const qint16 &border)`
 
-#dependencies
+# Dependencies
 * Qt5.5.1
 
-#Build
+# Build
 * Visual Studio 2013
 
 # Licensing
