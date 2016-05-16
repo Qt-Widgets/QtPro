@@ -1,4 +1,4 @@
-CustomWindow BY Qt Ver0.0.9
+CustomWindow BY Qt 
 ==================
 
 ![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
