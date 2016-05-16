@@ -1,6 +1,6 @@
 CustomWindow By Qt
 ===
-![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow.gif)
+![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
 
 ## Public Functions
 `Window(QWidget *parent = 0)`
