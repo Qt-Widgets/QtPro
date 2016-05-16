@@ -5,7 +5,7 @@ CustomWindow BY Qt
 
 # Public Functions
 
-**`Window(QWidget *parent = 0)`**
+*`Window(QWidget *parent = 0)`*
 
 `Window(const QString &title, QWidget *parent = 0)`
 
