@@ -16,8 +16,6 @@ An easy to use and Custom top-level window created by Qt
 
 **`void setRadius(const qreal &radius)`**
 
-**`void setShadow(bool set)`**
-
 **`void setBorderWidth(const qint16 &border)`**
 
 # Dependencies
