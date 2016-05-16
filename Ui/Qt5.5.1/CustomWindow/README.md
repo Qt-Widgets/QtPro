@@ -18,6 +18,14 @@ An easy to use and Custom top-level window created by Qt
 
 **`void setBorderWidth(const qint16 &border)`**
 
+**`void setCloseDisable(bool disable);`**
+
+**`void setMaximizeDisable(bool disable);`**
+
+**`void setMinimizeDisable(bool disable);`**
+
+**`qint16 borderWidth() const;`**
+
 # Dependencies
 * Qt5.5.1
 
