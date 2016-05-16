@@ -1,6 +1,6 @@
 CustomWindow BY Qt 
 ==================
-
+An easy to use and Custom top-level window created by Qt
 ![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
 
 # Public Functions
