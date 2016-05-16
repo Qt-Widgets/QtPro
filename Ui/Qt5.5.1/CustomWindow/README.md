@@ -5,19 +5,19 @@ CustomWindow BY Qt
 
 # Public Functions
 
-*`Window(QWidget *parent = 0)`*
+***`Window(QWidget *parent = 0)`***
 
-`Window(const QString &title, QWidget *parent = 0)`
+**`Window(const QString &title, QWidget *parent = 0)`**
 
-`void setIcon(const QPixmap &icon)`
+**`void setIcon(const QPixmap &icon)`**
 
-`void setColor(const QColor &titleColor)`
+**`void setColor(const QColor &titleColor)`**
 
-`void setRadius(const qreal &radius)`
+**`void setRadius(const qreal &radius)`**
 
-`void setShadow(bool set)`
+**`void setShadow(bool set)`**
 
-`void setBorderWidth(const qint16 &border)`
+**`void setBorderWidth(const qint16 &border)`**
 
 # Dependencies
 * Qt5.5.1
