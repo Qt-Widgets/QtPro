@@ -9,43 +9,43 @@ Public Functions
 <table>
     <tr>
       <td></td>
-      <td><strong>Window(QWidget *parent = 0)</strong></td>
+      <td><strong>`Window`(QWidget *parent = 0)</strong></td>
     </tr>
     <tr>
       <td></td>
-      <td><strong>Window(const QString &title, QWidget *parent = 0)</strong></td>
+      <td><strong>`Window`(const QString &title, QWidget *parent = 0)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setIcon(const QPixmap &icon)</strong></td>
+      <td><strong>`setIcon`(const QPixmap &icon)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setColor(const QColor &titleColor)</strong></td>
+      <td><strong>`setColor`(const QColor &titleColor)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setRadius(const qreal &radius)</strong></td>
+      <td><strong>`setRadius`(const qreal &radius)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setBorderWidth(const qint16 &border)</strong></td>
+      <td><strong>`setBorderWidth`(const qint16 &border)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setCloseDisable(bool disable)</strong></td>
+      <td><strong>`setCloseDisable`(bool disable)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setMaximizeDisable(bool disable)</strong></td>
+      <td><strong>`setMaximizeDisable`(bool disable)</strong></td>
     </tr>
     <tr>
       <td>void</td>
-      <td><strong>setMinimizeDisable(bool disable)</strong></td>
+      <td><strong>`setMinimizeDisable`(bool disable)</strong></td>
     </tr>
     <tr>
       <td>qint16</td>
-      <td><strong>borderWidth() const</strong></td>
+      <td><strong>`borderWidth`() const</strong></td>
     </tr>
 </table>
 
