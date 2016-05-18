@@ -16,7 +16,7 @@ Public Functions
       <td><strong>Window(const QString &title, QWidget *parent = 0)</strong></td>
     </tr>
     <tr>
-      <td></td>
+      <td>void</td>
       <td><strong>setIcon(const QPixmap &icon)</strong></td>
     </tr>
 </table>
