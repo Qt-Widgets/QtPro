@@ -12,12 +12,12 @@ Public Functions
       <td><code>Window(QWidget *parent = 0)</code></td>
     </tr>
     <tr>
-      <td></td>
-      <td>**`Window(const QString &title, QWidget *parent = 0)`**</td>
+      <td><code></code></td>
+      <td><code>Window(const QString &title, QWidget *parent = 0)</code></td>
     </tr>
     <tr>
-      <td>**`void`**</td>
-      <td>**`void setIcon(const QPixmap &icon)`**</td>
+      <td><code>void</code></td>
+      <td><code>void setIcon(const QPixmap &icon)</code></td>
     </tr>
 </table>
 
