@@ -9,11 +9,11 @@ Public Functions
 <table>
     <tr>
       <td></td>
-      <td><ccharp>Window(QWidget *parent = 0)</ccharp></td>
+      <td><strong>Window(QWidget *parent = 0)</strong></td>
     </tr>
     <tr>
-      <td><code></code></td>
-      <td><code>Window(const QString &title, QWidget *parent = 0)</code></td>
+      <td></td>
+      <td><strong>Window(const QString &title, QWidget *parent = 0)</strong></td>
     </tr>
     <tr>
       <td><code>void</code></td>
