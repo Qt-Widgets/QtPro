@@ -19,21 +19,35 @@ Public Functions
       <td>void</td>
       <td><strong>setIcon(const QPixmap &icon)</strong></td>
     </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setColor(const QColor &titleColor)</strong></td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setRadius(const qreal &radius)</strong></td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setBorderWidth(const qint16 &border)</strong></td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setCloseDisable(bool disable)</strong></td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setMaximizeDisable(bool disable)</strong></td>
+    </tr>
+    <tr>
+      <td>void</td>
+      <td><strong>setMinimizeDisable(bool disable)</strong></td>
+    </tr>
+    <tr>
+      <td>qint16</td>
+      <td><strong>borderWidth() const</strong></td>
+    </tr>
 </table>
-
-**`void setColor(const QColor &titleColor)`**
-
-**`void setRadius(const qreal &radius)`**
-
-**`void setBorderWidth(const qint16 &border)`**
-
-**`void setCloseDisable(bool disable);`**
-
-**`void setMaximizeDisable(bool disable);`**
-
-**`void setMinimizeDisable(bool disable);`**
-
-**`qint16 borderWidth() const;`**
 
 # Dependencies
 * Qt5.5.1
