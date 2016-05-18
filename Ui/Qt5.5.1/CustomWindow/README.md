@@ -9,7 +9,7 @@ Public Functions
 <table>
     <tr>
       <td></td>
-      <td><strong>Window(QWidget *parent = 0)</strong></td>
+      <td><code>Window(QWidget *parent = 0)</code></td>
     </tr>
     <tr>
       <td></td>
