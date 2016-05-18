@@ -47,6 +47,5 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
     <tr>
       <td>boobs.lua</td>
       <td>Gets a random boobs or butts pic</td>
-      <td>!boobs: Get a boobs NSFW image. :underage:<br>!butts: Get a butts NSFW image. :underage:<br></td>
     </tr>
 </table>
