@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2016, Iman Ahmadvand (IMAN4K)
+All rights reserved.
+Contact:iman72411@yahoo.com
+*/
+
 #pragma once
 
 #include <QtWidgets>
