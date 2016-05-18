@@ -40,14 +40,6 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 
 <table>
-  <thead>
-    <tr>
-      <td><strong>Name</strong></td>
-      <td><strong>Description</strong></td>
-      <td><strong>Usage</strong></td>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td>9gag.lua</td>
       <td>9GAG for telegram</td>
