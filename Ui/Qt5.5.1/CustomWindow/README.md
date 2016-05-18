@@ -9,15 +9,17 @@ Public Functions
 <table>
     <tr>
       <td></td>
-      <td>**`Window(QWidget *parent = 0)`**/td>
+      <td>**`Window(QWidget *parent = 0)`**</td>
     </tr>
     <tr>
       <td></td>
       <td>**`Window(const QString &title, QWidget *parent = 0)`**</td>
     </tr>
+    <tr>
+      <td>**`void`**</td>
+      <td>**`void setIcon(const QPixmap &icon)`**</td>
+    </tr>
 </table>
-
-**`void setIcon(const QPixmap &icon)`**
 
 **`void setColor(const QColor &titleColor)`**
 
