@@ -107,7 +107,7 @@ void TitleWidget::timercall() {
 	case TitleWidget::Over:
 	{
 		_opacity -= _step;
-		if (_opacity < 0.550) {
+		if (_opacity < 0.650) {
 			_timer.stop();
 			_state = None;
 		}
