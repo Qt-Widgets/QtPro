@@ -37,6 +37,8 @@ public:
 	void setDisable(bool disable);
 	bool isDisable() const;
 	void setSize(const qint16 &size);
+	void setColor(const QColor &color);
+	QColor color() const;
 
 protected:
 	enum State {
