@@ -118,6 +118,7 @@ public:
 
 private:
 	QLine _line0;
+	
 protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 };
