@@ -1,18 +1,31 @@
 /*
-Copyright (c) 2016, Iman Ahmadvand (IMAN4K)
-All rights reserved.
-Contact:iman72411@yahoo.com
+CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Qt
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details
+Full License:https://github.com/QtTools/CustomWindow/blob/master/LICENSE
+
+Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
 */
 
 #pragma once
 
-#include <QtWidgets>
-
-class QWidget;
-class QObject;
-class QEvent;
-class QRect;
-class QRubberBand;
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QRubberBand>
+#include <QtCore/QObject>
+#include <QtCore/QEvent>
+#include <QtCore/QRect>
+#include <QtCore/QPoint>
+#include <QtCore/Qt>
+#include <QtGui/QHoverEvent>
+#include <QtGui/QMouseEvent>
 
 class FrameLess : public QObject {
 	Q_OBJECT
