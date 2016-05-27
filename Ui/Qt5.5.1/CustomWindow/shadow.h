@@ -1,5 +1,5 @@
 /*
-CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Qt
+CustomWindow is a simple, native and easy to use custom top-level window created by Qt
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,12 +15,12 @@ Full License:https://github.com/QtTools/CustomWindow/blob/master/LICENSE
 Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
 */
 
-#include <QPainter>
-#include <QPointF>
-#include <QRectF>
-#include <QColor>
-#include <QBrush>
-#include <QPainterPath>
+#include <QtGui/QPainter>
+#include <QtCore/QPointF>
+#include <QtCore/QRectF>
+#include <QtGui/QColor>
+#include <QtGui/QBrush>
+#include <QtGui/QPainterPath>
 
 #if defined Q_OS_WIN
 
