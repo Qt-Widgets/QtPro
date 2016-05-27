@@ -21,15 +21,15 @@ from PyQt5.QtGui import QHoverEvent, QMouseEvent
 
 
 class Edge(object):
-    NoEdge = 0x0
-    Left = 0x1
-    Right = 0x2
-    Top = 0x3
-    Bottom = 0x4
-    TopLeft = 0x5
-    TopRight = 0x6
-    BottomLeft = 0x7
-    BottomRight = 0x8
+    NoEdge = 0x00
+    Left = 0x01
+    Right = 0x02
+    Top = 0x03
+    Bottom = 0x04
+    TopLeft = 0x05
+    TopRight = 0x06
+    BottomLeft = 0x07
+    BottomRight = 0x08
 
 
 class FrameLess(QObject):
