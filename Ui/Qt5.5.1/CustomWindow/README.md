@@ -1,6 +1,6 @@
 CustomWindow BY Qt 
 ==================
-a simple, native and easy to use custom top-level window created by Qt
+A simple, native and easy to use custom top-level window created by Qt
 
 ![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
 
