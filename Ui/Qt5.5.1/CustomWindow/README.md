@@ -1,6 +1,6 @@
 CustomWindow BY Qt 
 ==================
-An easy to use and Custom top-level window created by Qt
+a simple, native and easy to use custom top-level window created by Qt
 
 ![Screenshot](https://raw.githubusercontent.com/IMAN4K/QtPro/master/Resources/Image/CustomWindow BY Qt.gif)
 
@@ -54,6 +54,9 @@ Public Functions
 
 # Build
 * Visual Studio 2013
+
+# Supported OS
+* Microsoft Windows 7 - Windows 10
 
 # Licensing
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
