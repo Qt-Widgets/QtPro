@@ -65,7 +65,7 @@ void FrameLess::mouseLeave(QEvent *e) {
 }
 
 void FrameLess::mousePress(QMouseEvent *e) {
-	if (e->button() == Qt::LeftButton) {
+	if (e->buttons() & Qt::LeftButton) {
 		_leftButtonPressed = true;
 		calculateCursorPosition(e->globalPos(), _parent->frameGeometry(), _mousePress);
 		if (_mousePress != None) {
@@ -75,7 +75,7 @@ void FrameLess::mousePress(QMouseEvent *e) {
 }
 
 void FrameLess::mouseRealese(QMouseEvent *e) {
-	if (e->button() == Qt::LeftButton) {
+	if (e->buttons() & Qt::LeftButton) {
 		_leftButtonPressed = false;
 	}
 }
@@ -83,11 +83,11 @@ void FrameLess::mouseRealese(QMouseEvent *e) {
 void FrameLess::mouseMove(QMouseEvent *e) {
 	if (_leftButtonPressed) {
 		if (_mousePress != None) {
-			QRect origRect = _rubberband->frameGeometry();
-			int left = origRect.left();
-			int top = origRect.top();
-			int right = origRect.right();
-			int bottom = origRect.bottom();
+			QRect originalRect = _rubberband->frameGeometry();
+			int left = originalRect.left();
+			int top = originalRect.top();
+			int right = originalRect.right();
+			int bottom = originalRect.bottom();
 			if (_mousePress == Top) {
 				top = e->globalPos().y();
 			} else if (_mousePress == Bottom) {
@@ -205,3 +205,6 @@ void FrameLess::setBorderWidth(const qint16 &borderWidth) {
 qint16 FrameLess::borderWidth() const {
 	return _borderWidth;
 }
+
+
+
