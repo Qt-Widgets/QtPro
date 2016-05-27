@@ -37,15 +37,15 @@ public:
 private:
 	QWidget *_parent = new QWidget();
 	enum Edge {
-		None = 0x0,
-		Left = 0x1,
-		Top = 0x2,
-		Right = 0x3,
-		Bottom = 0x4,
-		TopLeft = 0x5,
-		TopRight = 0x6,
-		BottomLeft = 0x7,
-		BottomRight = 0x8
+		None = 0x00,
+		Left = 0x01,
+		Top = 0x02,
+		Right = 0x03,
+		Bottom = 0x04,
+		TopLeft = 0x05,
+		TopRight = 0x06,
+		BottomLeft = 0x07,
+		BottomRight = 0x08
 	};
 	QRubberBand *_rubberband;
 	bool _cursorchanged;
