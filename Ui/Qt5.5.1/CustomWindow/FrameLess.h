@@ -28,8 +28,6 @@ Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
 #include <QtGui/QMouseEvent>
 
 class FrameLess : public QObject {
-	Q_OBJECT
-
 public:
 	explicit FrameLess(QWidget *parent);
 	~FrameLess();
@@ -63,7 +61,6 @@ private:
 	void mouseRealese(QMouseEvent *e);
 	void mouseMove(QMouseEvent *e);
 	void updateCursorShape(const QPoint &pos);
-	void updateRubberBand();
 	void calculateCursorPosition(const QPoint &pos, const QRect &framerect, Edge &_edge);
 
 protected:
