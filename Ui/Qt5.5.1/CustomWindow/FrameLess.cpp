@@ -1,3 +1,20 @@
+/*
+CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Qt
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details
+Full License:https://github.com/QtTools/CustomWindow/blob/master/LICENSE
+
+Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
+*/
+
 #include "FrameLess.h"
 
 FrameLess::FrameLess(QWidget *parent) :
@@ -65,7 +82,7 @@ void FrameLess::mouseLeave(QEvent *e) {
 }
 
 void FrameLess::mousePress(QMouseEvent *e) {
-	if (e->buttons() & Qt::LeftButton) {
+	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = true;
 		calculateCursorPosition(e->globalPos(), _parent->frameGeometry(), _mousePress);
 		if (_mousePress != None) {
@@ -75,7 +92,7 @@ void FrameLess::mousePress(QMouseEvent *e) {
 }
 
 void FrameLess::mouseRealese(QMouseEvent *e) {
-	if (e->buttons() & Qt::LeftButton) {
+	if (e->button() == Qt::LeftButton) {
 		_leftButtonPressed = false;
 	}
 }
@@ -83,11 +100,10 @@ void FrameLess::mouseRealese(QMouseEvent *e) {
 void FrameLess::mouseMove(QMouseEvent *e) {
 	if (_leftButtonPressed) {
 		if (_mousePress != None) {
-			QRect originalRect = _rubberband->frameGeometry();
-			int left = originalRect.left();
-			int top = originalRect.top();
-			int right = originalRect.right();
-			int bottom = originalRect.bottom();
+			int left = _rubberband->frameGeometry().left();
+			int top = _rubberband->frameGeometry().top();
+			int right = _rubberband->frameGeometry().right();
+			int bottom = _rubberband->frameGeometry().bottom();
 			if (_mousePress == Top) {
 				top = e->globalPos().y();
 			} else if (_mousePress == Bottom) {
@@ -205,6 +221,3 @@ void FrameLess::setBorderWidth(const qint16 &borderWidth) {
 qint16 FrameLess::borderWidth() const {
 	return _borderWidth;
 }
-
-
-
