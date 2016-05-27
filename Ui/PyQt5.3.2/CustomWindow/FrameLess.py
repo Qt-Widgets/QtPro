@@ -1,5 +1,5 @@
 """
-CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Python Qt Binding (PyQt5.3.2)
+CustomWindow is a simple, native and easy to use custom top-level window created by Python Qt Binding (PyQt5.3.2)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@ class FrameLess(QObject):
         self._mousePress = Edge.NoEdge
         self._borderWidth = 5
         self._rubberBand = QRubberBand(QRubberBand.Rectangle)
-        self._radius = 5.0
         self._parent.setWindowFlags(Qt.FramelessWindowHint | Qt.CustomizeWindowHint | Qt.Window)
         self._parent.setAttribute(Qt.WA_Hover)
         self._parent.setMouseTracking(True)
