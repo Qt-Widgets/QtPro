@@ -1,4 +1,21 @@
-from PyQt5.QtWidgets import QWidget, QRubberBand, QApplication
+"""
+CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Qt
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details
+Full License:https://github.com/QtTools/CustomWindow/blob/master/LICENSE
+
+Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
+"""
+
+from PyQt5.QtWidgets import QWidget, QRubberBand
 from PyQt5.QtCore import QObject, QEvent, QRect, QPoint , Qt
 from PyQt5.QtGui import QHoverEvent, QMouseEvent
 import sys
@@ -218,11 +235,3 @@ class FrameLess(QObject):
 
     def borderWidth(self):
         return self._borderWidth
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    new = QWidget()
-    FrameLess(new)
-    new.show()
-    app.exec_()
