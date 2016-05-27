@@ -1,5 +1,5 @@
 /*
-CustomWindow is a simple and easy to use custom top-level window (for Windows OS) created by Qt
+CustomWindow is a simple, native and easy to use custom top-level window created by Qt
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,17 +16,16 @@ Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
 */
 
 #pragma once
-#ifndef TITLEWIDGET_H
-#define TITLEWIDGET_H
 
-#include <QWidget>
-#include <QPainter>
-#include <QTimer>
-#include <QMouseEvent>
-#include <QPixmap>
-#include <QLine>
-#include <QRect>
-#include <QPen>
+#include <QtWidgets/QWidget>
+#include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QPen>
+#include <QtGui/QColor>
+#include <QtCore/QTimer>
+#include <QtCore/QLine>
+#include <QtCore/QRect>
 
 
 class TitleWidget : public QWidget
@@ -52,11 +51,11 @@ protected:
 	State _state;
 	qint16 _size;
 	qint16	_rait;
-	QColor _color;
 	qreal _weight;
 	qreal _opacity;
 	qreal _step;
 	QTimer _timer;
+	QPen _pen;
 
 protected:
 	void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
@@ -145,5 +144,3 @@ private:
 protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 };
-
-#endif // !TITLEWIDGET_H
