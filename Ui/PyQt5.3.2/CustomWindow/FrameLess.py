@@ -18,7 +18,6 @@ Copyright (c) 2016 Iman Ahmadvand (IMAN4K), Contact:iman72411@yahoo.com
 from PyQt5.QtWidgets import QWidget, QRubberBand
 from PyQt5.QtCore import QObject, QEvent, QRect, QPoint , Qt
 from PyQt5.QtGui import QHoverEvent, QMouseEvent
-import sys
 
 
 class Edge(object):
