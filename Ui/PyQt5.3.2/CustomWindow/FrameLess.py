@@ -21,7 +21,7 @@ from PyQt5.QtGui import QHoverEvent, QMouseEvent
 
 
 class Edge(object):
-    NoEdge = 0x0
+    NoEdge = 0x00
     Left = 0x01
     Right = 0x02
     Top = 0x03
