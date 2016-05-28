@@ -53,10 +53,10 @@ Public Functions
 * Qt5.5.1
 
 # Build
-* Visual Studio 2013
+* Visual Studio® 2013
 
 # Supported OS
-* Microsoft Windows 7 - Windows 10
+* Microsoft Windows® 7 - Windows® 10
 
 # Licensing
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
