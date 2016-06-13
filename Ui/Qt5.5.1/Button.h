@@ -27,6 +27,7 @@ private:
 protected:
 	QSize sizeHint() const Q_DECL_OVERRIDE;
 	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+	void mouseReleaseEvent(QMouseEvent *) Q_DECL_OVERRIDE;
 };
 
 #endif // BUTTON_H
