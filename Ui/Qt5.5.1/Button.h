@@ -1,32 +1,32 @@
 #pragma once
-#ifndef BUTTON_H
-#define BUTTON_H
 
 #include <QtWidgets>
 
-class QPainter;
-
-class Button : public QWidget
+class Button :public QWidget
 {
 	Q_OBJECT
-private:
-	enum State
-	{
-		Normal,
-		Disable,
-		Hover,
-		Over
-	};
+
 public:
-	explicit Button(QWidget *parent = 0);
+	Button();
 	~Button();
-	State _state = Normal;
+	void setText(const QString &text);
+	void setDisable(bool _disable);
+	bool isDisable() const;
+
+private:
+	enum State {
+		None = 0x00,
+		Hover = 0x02,
+		Over = 0x04,
+		Disabe = 0x08
+	};
+
+	bool _disable;
+	State _state;
+
 protected:
-	virtual void paintEvent(QPaintEvent *);
-	virtual QSize minimumSizeHint() const;
-	virtual QSize sizeHint() const;
-signals:
-	void clicked();
+	QSize sizeHint() const Q_DECL_OVERRIDE;
+	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
 };
 
 #endif // BUTTON_H
