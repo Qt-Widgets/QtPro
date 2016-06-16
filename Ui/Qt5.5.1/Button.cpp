@@ -330,7 +330,8 @@ void FlatButton::timercall() {
 
 IconButton::IconButton(QWidget *parent):Button(parent) {
 	_height = _rait = 56;
-	_rect = QRect(16, 16, 24, 24);
+	_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+	_opacity = 0.120; // 12% shade on press
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
@@ -339,9 +340,9 @@ IconButton::IconButton(const QPixmap &icon, QWidget *parent) :Button(parent) {
 		qDebug() << icon;
 	} else {
 		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // scale for low resoloution
-		_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+		_rect = QRect(16, 16, 24, 24); 
 		_height = _rait = 56;
-		_opacity = 0.120; // 12% shade on press
+		_opacity = 0.120; 
 
 		// detect qpixmap color
 		QImage img = icon.toImage();
@@ -355,11 +356,11 @@ IconButton::IconButton(const QPixmap &icon, const QColor &brush, QWidget *parent
 	if (icon.isNull()) {
 		qDebug() << icon;
 	} else {
-		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // scale for low resoloution
-		_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); 
+		_rect = QRect(16, 16, 24, 24); 
 		_height = _rait = 56;
 		_brush = brush;
-		_opacity = 0.120; // 12% shade on press
+		_opacity = 0.120; 
 		connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 	}
 }
@@ -426,6 +427,17 @@ void IconButton::timercall() {
 	}
 }
 
+void IconButton::setPixmap(const QPixmap &icon) {
+	if (icon.isNull()) {
+		qDebug() << icon;
+	} else {
+		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+		QImage img = icon.toImage();
+		_brush = QColor(img.pixel((img.width() / 2) - (img.width() / 4), (img.height() / 2) - (img.height() / 4)));
+	}
+}
+
 
 
 LinkButton::LinkButton(QWidget *parent ):Button(parent) {
@@ -444,7 +456,7 @@ void LinkButton::enterEvent(QEvent *e) {
 }
 
 void LinkButton::leaveEvent(QEvent *e) {
-	Button::enterEvent(e);
+	Button::leaveEvent(e);
 	_font.setUnderline(false);
 	repaint();
 }
@@ -479,9 +491,9 @@ FloatActionButton::FloatActionButton(const QPixmap &icon, const QColor &brush, Q
 	}
 	else {
 		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // scale for low resoloution
-		_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+		_rect = QRect(16, 16, 24, 24); 
 		_height = _rait = 56;
-		_opacity = 0.120; // 12% shade on press
+		_opacity = 0.120;
 		_margin = 3;
 		_brush = brush;
 
@@ -577,5 +589,17 @@ void FloatActionButton::timercall() {
 		}
 		repaint();
 	} break;
+	}
+}
+
+void FloatActionButton::setPixmap(const QPixmap &icon) {
+	if (icon.isNull()) {
+		qDebug() << icon;
+	}
+	else {
+		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+		QImage img = icon.toImage();
+		_brush = QColor(img.pixel((img.width() / 2) - (img.width() / 4), (img.height() / 2) - (img.height() / 4)));
 	}
 }
