@@ -158,7 +158,7 @@ void RaisedButton::timercall() {
 	case Button::Hover:
 	{
 		_opacity += 0.001;
-		if (_opacity > 0.120) { // 12% shade 
+		if (_opacity > 0.120) { // 12% shade on hover
 			_timer.stop();
 		}
 		repaint();
@@ -194,24 +194,19 @@ void RaisedButton::timercall() {
 
 
 
-FlatButton::FlatButton(QWidget *parent):Button(parent) {
-	_pointsize = 14;
-	_blank = width();
-	_opacity = 0.120;
-	_brush = "#E91E63";
-	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
-}
+
 
 FlatButton::FlatButton(const QString &text, QWidget *parent) : Button(parent) {
 	_text = text;
+	_rait = _height;
+	_brush = "#FF5252";
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 FlatButton::FlatButton(const QString &text, const QColor &color, QWidget *parent) :Button(parent) {
 	_text = text;
 	_brush = color;
-	_pointsize = 14;
-	_opacity = 0.120;
+	_rait = _height;
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
@@ -221,45 +216,91 @@ void FlatButton::paintEvent(QPaintEvent*) {
 	QPainter p(this);
 	p.setPen(Qt::NoPen);
 	p.setRenderHint(QPainter::Antialiasing);
+	QPainterPath _primary;
 
+	if (!_disabled) {
+		p.setBrush(_brush);
+		p.setOpacity(_opacity);
+		_primary.addRoundedRect(QRect(0, 0, width(), height()), _radius, _radius);
+		p.drawPath(_primary.simplified());
 
-	p.setBrush(_brush);
-	p.setOpacity(_opacity);
+		p.drawEllipse(_x - (_height / 2) + (_rait / 2), _y - (_height / 2) + (_rait / 2), _height - _rait, _height - _rait);
 
-	p.drawEllipse(QRect(rect().x() + (_blank / 2), rect().y() + (_blank / 2), rect().width() - _blank, rect().height() - _blank));
+		p.setOpacity(1.0);
+		p.setFont(_font);
+		p.setPen(_brush);
+		p.drawText(rect(), Qt::AlignCenter, _text);
+	} else {
+		p.setBrush(QColor("#000000"));
+		p.setOpacity(0.120); // Disabled background : 12% @ #000000
+		_primary.addRoundedRect(QRect(0, 0, width(), height()), _radius, _radius);
+		p.drawPath(_primary.simplified());
+
+		p.setFont(_font);
+		p.setPen(QColor("#000000"));
+		p.setOpacity(0.260); // Disabled text : 26% @ #000000
+		p.drawText(QRect(rect().x(), rect().y(), rect().width(), rect().height()), Qt::AlignCenter, _text);
+	}
+}
+
+void FlatButton::enterEvent(QEvent *e) {
+	_timer.start(2);
+	Button::enterEvent(e);
+}
+
+void FlatButton::leaveEvent(QEvent *e) {
+	_timer.start(2);
+	Button::leaveEvent(e);
 }
 
 void FlatButton::mousePressEvent(QMouseEvent *e) {
 	_x = e->x();
 	_y = e->y();
+	_opacity = 0.260; // 26% shade on press
+	_rait = _height;
+	_timer.start(2);
 	Button::mousePressEvent(e);
 }
 
 void FlatButton::mouseReleaseEvent(QMouseEvent *e)  {
-	Button::mouseReleaseEvent(e);
+	Q_UNUSED(e);
 }
 
 void FlatButton::timercall() {
 	switch (_state)
 	{
-	case Button::None:
+	case Button::None: break;
 	case Button::Hover:
-	case Button::Over:break;
+	{
+		_opacity = _opacity + 0.001;
+		if (_opacity > 0.120) { // 12% shade on hover
+			_timer.stop();
+		}
+		repaint();
+	} break;
+	case Button::Over:
+	{
+		_opacity -= 0.001;
+		if (_opacity <  0.000) {
+			_timer.stop();
+		}
+		repaint();
+	} break;
 	case Button::Pressed:
 	{
-		_blank -= 1;
-		if (_blank < 0 ) {
+		_rait -= 2;
+		if (_rait < -width()*2 ) {
 			_timer.stop();
+			_state = Released;
+			_timer.start(3);
 		}
 		repaint();
 	} break;
 	case Button::Released:
 	{
 		_opacity -= 0.001;
-		if (_opacity < 0.000) {
+		if (_opacity < 0.120) {
 			_timer.stop();
-			_opacity = 0.0120;
-			_blank = width();
 		}
 		repaint();
 	} break;
@@ -269,36 +310,38 @@ void FlatButton::timercall() {
 
 
 IconButton::IconButton(const QPixmap &icon, QWidget *parent) :Button(parent) {
-	_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-	_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
-	_height = _rait = 56;
-	_opacity = 0.120; // 12% shade on press
+	if (icon.isNull()) {
+		qDebug() << icon;
+	} else {
+		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // scale for low resoloution
+		_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+		_height = _rait = 56;
+		_opacity = 0.120; // 12% shade on press
 
-	// detect qpixmap color
-	QImage img = icon.toImage();
-	_brush = QColor(img.pixel((img.width() / 2) - (img.width() / 4), (img.height() / 2) - (img.height() / 4)));
+		// detect qpixmap color
+		QImage img = icon.toImage();
+		_brush = QColor(img.pixel((img.width() / 2) - (img.width() / 4), (img.height() / 2) - (img.height() / 4)));
 
-	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+		connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+	}
 }
 
 IconButton::IconButton(const QPixmap &icon, const QColor &brush, QWidget *parent) :Button(parent) {
-	_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-	_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
-	_height = _rait = 56;
-	_brush = brush;
-	_opacity = 0.120; // 12% shade on press
-	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+	if (icon.isNull()) {
+		qDebug() << icon;
+	} else {
+		_icon = icon.scaled(24, 24, Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // scale for low resoloution
+		_rect = QRect(16, 16, 24, 24); // 16dp padding @ desktop
+		_height = _rait = 56;
+		_brush = brush;
+		_opacity = 0.120; // 12% shade on press
+		connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+	}
 }
 
 void IconButton::paintEvent(QPaintEvent*) {
 	QPainter p(this);
 	p.setPen(Qt::NoPen);
-	p.setBrush(_brush);
-	p.setOpacity(1.0);
-
-	QPainterPath path;
-	path.addRoundedRect(rect(), 25.0, 25.0);
-	//p.drawPath(path.simplified());
 
 	p.setRenderHint(QPainter::SmoothPixmapTransform);
 	p.drawPixmap(_rect, _icon);
@@ -327,8 +370,17 @@ void IconButton::timercall() {
 	switch (_state)
 	{
 	case Button::None:
-	case Button::Hover:
-	case Button::Over:break;
+	case Button::Hover: break;
+	case Button::Over:
+	{
+		_opacity -= 0.001;
+		if (_opacity < 0.000) {
+			_timer.stop();
+			_opacity = 0.120;
+			_rait = _height;
+		}
+		repaint();
+	} break;
 	case Button::Pressed:
 	{
 		_rait -= 2.0;
@@ -353,22 +405,19 @@ void IconButton::timercall() {
 
 
 
-LinkButton::LinkButton(QWidget *parent) :Button(parent) {
-	_pointsize = 12;
-}
-
 LinkButton::LinkButton(const QString &text, QWidget *parent) : Button(parent) {
 	_text = text;
 	_pointsize = 12;
 }
 
-void LinkButton::enterEvent(QEvent *) {
-	setCursor(Qt::PointingHandCursor);
+void LinkButton::enterEvent(QEvent *e) {
+	Button::enterEvent(e);
 	_font.setUnderline(true);
 	repaint();
 }
 
-void LinkButton::leaveEvent(QEvent *) {
+void LinkButton::leaveEvent(QEvent *e) {
+	Button::enterEvent(e);
 	_font.setUnderline(false);
 	repaint();
 }
