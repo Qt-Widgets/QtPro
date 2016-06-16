@@ -1,68 +1,85 @@
-class Window : public QDialog 
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QPixmap>
+#include <QtGui/QImage>
+#include <QtGui/QPen>
+#include <QtGui/QFont>
+#include <QtGui/QColor>
+#include <QtGui/QShowEvent>
+#include <QtGui/QCloseEvent>
+#include <QtCore/QObject>
+#include <QtCore/QEvent>
+#include <QtCore/QRect>
+#include <QtCore/QRectF>
+#include <QtCore/Qt>
+#include <QtCore/QSize>
+#include <QtCore/QString>
+#include <QtCore/QTimer>
+#include <QtCore/QDebug>
+
+class Dialog :public QWidget
 {
 	Q_OBJECT
 
 public:
-	Window() {
-		_opacity = 0.000;
-		_state = Show;
-		connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
-	}
+	enum Buttons {
+		NoButton = 0x01,
+		OK = 0x02,
+		Cancel = 0x03,
+		Yes = 0x04,
+		No = 0x05,
+		Delete = 0x06,
+		Close = 0x07,
+		Dicard = 0x08
+	};
+
+public:
+	explicit Dialog(QWidget *parent = 0);
+	explicit Dialog(const QString &title, const QString &text,
+		const Buttons &buttons = Buttons::NoButton, QWidget *parent = 0);
 
 private:
 	qreal _opacity;
 	QTimer _timer;
-	enum State {
-		Close,
-		Show,
-		None
-	};
-	State _state;
-	bool _close = false;
+	bool _close;
+	bool _show;
 
 protected:
-	virtual void showEvent(QShowEvent *) {
-		if (_state == Show) {
-			_timer.start(1);
-		}
-		setStyleSheet("background:#FFFFFF;");
-	}
-	virtual void closeEvent(QCloseEvent *e) {
-		_state = Close;
-		if (_close) {
-			e->accept();
-		} else {
-			e->ignore();
-		}
-		_timer.start(2);
-	}
+	QGridLayout _mainlayout;
+	QGridLayout _actionlayout;
+	QGridLayout _contentlayout;
+	QGridLayout _titlelayout;
+
+protected:
+	void showEvent(QShowEvent *) Q_DECL_OVERRIDE;
+	void closeEvent(QCloseEvent *e) Q_DECL_OVERRIDE;
+	Dialog::Buttons clickedButton() {};
 
 	public slots:
-		void timercall() {
-			switch (_state)
-			{
-			case Window::Close:
-			{
-				if (_opacity > 0.000) {
-					setWindowOpacity(_opacity);
-					_opacity -= 0.013;
-				} else {
-					_timer.stop();
-					_state = None;
-					_close = true;
-					close();
-				}
-			} break;
-			case Window::Show:
-			{
-				if (_opacity < 1.000) {
-					_opacity += 0.009;
-					setWindowOpacity(_opacity);
-				} else {
-					_timer.stop();
-				}
-			} break;
-			case Window::None: break;
-			}
-	}
+	void timercall();
+};
+
+
+class DialogMessage :public QDialog
+{
+	Q_OBJECT
+public:
+	explicit DialogMessage(QWidget *parent = 0);
+	explicit DialogMessage(const QString &title, const QString &text,
+		const Dialog::Buttons &buttons = Dialog::Buttons::NoButton, QWidget *parent = 0);
+	void setTitle(const QString &title);
+	void setContent(const QString &text);
+};
+
+
+class DialogForm :public Dialog
+{
+	Q_OBJECT
+
+public:
+	explicit DialogForm(QWidget *parent = 0);
 };
