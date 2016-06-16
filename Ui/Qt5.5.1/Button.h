@@ -121,6 +121,7 @@ public:
 	explicit IconButton(QWidget *parent = 0);
 	explicit IconButton(const QPixmap &icon, QWidget *parent = 0);
 	explicit IconButton(const QPixmap &icon, const QColor &brush, QWidget *parent = 0);
+	void setPixmap(const QPixmap &icon);
 
 protected:
 	QPixmap _icon;
@@ -160,6 +161,7 @@ class FloatActionButton :public Button
 public:
 	explicit FloatActionButton(QWidget *parent = 0);
 	explicit FloatActionButton(const QPixmap &icon, const QColor &brush, QWidget *parent = 0);
+	void setPixmap(const QPixmap &icon);
 
 protected:
 	QPixmap _icon;
