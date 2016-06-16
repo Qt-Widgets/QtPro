@@ -1,5 +1,3 @@
-#pragma once
-
 #include <QtWidgets>
 
 class Button :public QWidget
@@ -92,12 +90,14 @@ public:
 	~FlatButton();
 
 private:
-	qint16 _blank;
+	qint16 _rait;
 
 protected:
 	void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
 	void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+	void enterEvent(QEvent *e) Q_DECL_OVERRIDE;
+	void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
 
 	public slots:
 	void timercall();
@@ -133,11 +133,10 @@ class LinkButton :public Button
 	Q_OBJECT
 
 public:
-	explicit LinkButton(QWidget *parent = 0);
 	explicit LinkButton(const QString &text, QWidget *parent = 0);
 protected:
 	void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
-	void enterEvent(QEvent *) Q_DECL_OVERRIDE;
-	void leaveEvent(QEvent *) Q_DECL_OVERRIDE;
+	void enterEvent(QEvent *e) Q_DECL_OVERRIDE;
+	void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
 	QSize minimumSizeHint() const;
 };
