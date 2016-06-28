@@ -19,6 +19,7 @@
 #include <QtCore/QDebug>
 
 typedef enum ButtonState {
+	None = 0x00,
 	Hover = 0x02,
 	Over = 0x04,
 	Pressed = 0x08,
@@ -47,9 +48,11 @@ protected:
 	QString _fontfamily;
 	QColor _brush;
 	qreal _opacity;
+	qreal _o;
 	qreal _radius;
 	qreal _rait;
 	qreal _duration;
+	qreal _r;
 	qint16 _height;
 	qint16 _padding;
 	qint16 _pointsize;
@@ -63,6 +66,7 @@ protected:
 	void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void enterEvent(QEvent *) Q_DECL_OVERRIDE;
 	void leaveEvent(QEvent *) Q_DECL_OVERRIDE;
+	void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
 	QSize sizeHint() const Q_DECL_OVERRIDE;
 	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
 
