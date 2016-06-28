@@ -10,11 +10,11 @@ _padding(16),
 _opacity(0.000),
 _brush("#2FA9E2"),
 _pointsize(14),
-_fontfamily("Roboto medium")
+_fontfamily("Open Sans Semibold"),
+_duration(0.0)
 {
 	_font.setFamily(_fontfamily);
 	_font.setPointSize(_pointsize);
-	_duration = minimumSizeHint().width() / 90.0;
 }
 
 void Button::mousePressEvent(QMouseEvent *e) {
@@ -53,6 +53,11 @@ void Button::leaveEvent(QEvent*) {
 	if (!_disabled) {
 		_state = Over;
 	}
+}
+
+void Button::resizeEvent(QResizeEvent *e) {
+	_duration = e->size().width() / 100.0; // 90 ms press motion duration
+	QWidget::resizeEvent(e);
 }
 
 QSize Button::sizeHint() const {
@@ -99,15 +104,18 @@ QColor Button::color() const {
 
 
 RaisedButton::RaisedButton(QWidget *parent ):Button(parent) {
+	_rait = _height;
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 RaisedButton::RaisedButton(const QString &text, QWidget *parent) : Button(parent) {
+	_rait = _height;
 	_text = text;
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 RaisedButton::RaisedButton(const QString &text, const QColor &color, QWidget *parent) :Button(parent) {
+	_rait = _height;
 	_text = text;
 	_brush = color;
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
@@ -132,20 +140,21 @@ void RaisedButton::paintEvent(QPaintEvent*) {
 		p.drawPath(_secoundry.simplified());
 
 		p.drawEllipse(QRectF(_x - (_height / 2) + (_rait / 2), _y - (_height / 2) + (_rait / 2), _height - _rait, _height - _rait));
-		// text
+
 		p.setOpacity(1.0);
 		p.setFont(_font);
 		p.setPen(QColor("#FFFFFF"));
 		p.drawText(rect(), Qt::AlignCenter, _text);
+
 	} else {
 		p.setBrush(QColor("#000000"));
-		p.setOpacity(0.120); // 12% @ #000000
+		p.setOpacity(0.120); 
 		_primary.addRoundedRect(QRect(0, 0, width(), height()), _radius, _radius);
 		p.drawPath(_primary.simplified());
 
 		p.setFont(_font);
 		p.setPen(QColor("#000000"));
-		p.setOpacity(0.260); // 26% @ #000000
+		p.setOpacity(0.260); 
 		p.drawText(QRect(rect().x(), rect().y(), rect().width(), rect().height()), Qt::AlignCenter, _text);
 	}
 }
@@ -163,7 +172,7 @@ void RaisedButton::leaveEvent(QEvent *e) {
 void RaisedButton::mousePressEvent(QMouseEvent *e) {
 	_opacity = 0.260; // 26% shade on press
 	_rait = _height;
-	_timer.start(2); // 100ms for press
+	_timer.start(1); // 100ms for press
 	Button::mousePressEvent(e);
 }
 
@@ -177,7 +186,7 @@ void RaisedButton::timercall() {
 	case ButtonState::Hover:
 	{
 		_opacity += 0.001;
-		if (_opacity > 0.120) { // 12% shade on hover
+		if (_opacity >= 0.120) { // 12% shade on hover
 			_timer.stop();
 		}
 		repaint();
@@ -187,6 +196,7 @@ void RaisedButton::timercall() {
 		_opacity -= 0.001;
 		if (_opacity < 0.000) {
 			_timer.stop();
+			_rait = _height;
 		}
 		repaint();
 	} break;
@@ -196,7 +206,7 @@ void RaisedButton::timercall() {
 		if (_rait < -width()*2) {
 			_timer.stop();
 			_state = Released;
-			_timer.start(3);
+			_timer.start(2);
 		}
 		repaint();
 	} break;
@@ -219,16 +229,16 @@ FlatButton::FlatButton(QWidget *parent ):Button(parent) {
 }
 
 FlatButton::FlatButton(const QString &text, QWidget *parent) : Button(parent) {
-	_text = text;
 	_rait = _height;
+	_text = text;
 	_brush = "#FF5252";
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 FlatButton::FlatButton(const QString &text, const QColor &color, QWidget *parent) :Button(parent) {
+	_rait = _height;
 	_text = text;
 	_brush = color;
-	_rait = _height;
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
@@ -252,13 +262,13 @@ void FlatButton::paintEvent(QPaintEvent*) {
 		p.drawText(rect(), Qt::AlignCenter, _text);
 	} else {
 		p.setBrush(QColor("#000000"));
-		p.setOpacity(0.120); // Disabled background : 12% @ #000000
+		p.setOpacity(0.120);
 		_primary.addRoundedRect(QRect(0, 0, width(), height()), _radius, _radius);
 		p.drawPath(_primary.simplified());
 
 		p.setFont(_font);
 		p.setPen(QColor("#000000"));
-		p.setOpacity(0.260); // Disabled text : 26% @ #000000
+		p.setOpacity(0.260);
 		p.drawText(QRect(rect().x(), rect().y(), rect().width(), rect().height()), Qt::AlignCenter, _text);
 	}
 }
@@ -269,7 +279,7 @@ void FlatButton::enterEvent(QEvent *e) {
 }
 
 void FlatButton::leaveEvent(QEvent *e) {
-	_timer.start(1); // 120 ms for leave
+	_timer.start(1); 
 	Button::leaveEvent(e);
 }
 
@@ -278,12 +288,13 @@ void FlatButton::mousePressEvent(QMouseEvent *e) {
 	_y = e->y();
 	_opacity = 0.260; // 26% shade on press
 	_rait = _height;
-	_timer.start(2); // 100ms for press
+	_timer.start(1); // 100ms for press
 	Button::mousePressEvent(e);
 }
 
 void FlatButton::mouseReleaseEvent(QMouseEvent *e)  {
-	Q_UNUSED(e);
+	Button::mouseReleaseEvent(e);
+	_state = Pressed;
 }
 
 void FlatButton::timercall() {
@@ -291,8 +302,8 @@ void FlatButton::timercall() {
 	{
 	case ButtonState::Hover:
 	{
-		_opacity = _opacity + 0.001;
-		if (_opacity > 0.120) { // 12% shade on hover
+		_opacity += 0.001;
+		if (_opacity > 0.120) {
 			_timer.stop();
 		}
 		repaint();
@@ -302,6 +313,7 @@ void FlatButton::timercall() {
 		_opacity -= 0.001;
 		if (_opacity <  0.000) {
 			_timer.stop();
+			_rait = _height;
 		}
 		repaint();
 	} break;
@@ -318,7 +330,7 @@ void FlatButton::timercall() {
 	case ButtonState::Released:
 	{
 		_opacity -= 0.001;
-		if (_opacity < 0.120) {
+		if (_opacity <= 0.120) {
 			_timer.stop();
 		}
 		repaint();
@@ -408,7 +420,7 @@ void IconButton::timercall() {
 	} break;
 	case ButtonState::Pressed:
 	{
-		_rait -= 2.0;
+		_rait -= 2;
 		if (_rait < 2) {
 			_timer.stop();
 		}
@@ -568,6 +580,7 @@ void FloatActionButton::timercall() {
 		_opacity -= 0.001;
 		if (_opacity < 0.000) {
 			_timer.stop();
+			_rait = _height;
 		}
 		repaint();
 	} break;
