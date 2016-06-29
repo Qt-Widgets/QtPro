@@ -1,3 +1,5 @@
+#include <QtWidgets>
+
 class Switcher : public QWidget
 {
 	Q_OBJECT
@@ -5,8 +7,10 @@ class Switcher : public QWidget
 public:
 	explicit Switcher(QWidget *parent = 0);
 	explicit Switcher(const QColor &color, QWidget *parent = 0);
-	void setColor(const QColor &color);
-	QColor color() const;
+	bool isToggled() const;
+	void setToggle(bool set);
+	void setDisable(bool set);
+	bool isDisable() const;
 
 private:
 	bool _disabled;
@@ -18,17 +22,20 @@ private:
 	qint16 _y;
 	QTimer _timer;
 	qint16 _height;
+	qint16 _margin;
 
 protected:
+	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
 	void mousePressEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
+	void enterEvent(QEvent *) Q_DECL_OVERRIDE;
 	QSize sizeHint() const Q_DECL_OVERRIDE;
 	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE;
-
-	public slots:
-	void timercall();
+	void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
 
 signals:
 	void toggled();
+
+	public slots:
+	void timercall();
 };
