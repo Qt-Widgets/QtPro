@@ -1,23 +1,56 @@
 #include "switcher.h"
 
 Switcher::Switcher(QWidget *parent) : QWidget(parent),
+_height(16),
 _opacity(0.000),
-_x(0),
 _disabled(false),
-_switch(true),
-_radius(10.0)
+_switch(false),
+_radius(8.0),
+_margin(3),
+_brush("#009688")
 {
-
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
 
 Switcher::Switcher(const QColor &color, QWidget *parent) : QWidget(parent),
+_height(16),
 _disabled(false),
-_switch(true),
-_x(0),
+_switch(false),
 _opacity(0.000),
-_radius(10.0)
+_radius(8.0),
+_margin(3),
+_brush(color)
 {
-	_brush = color;
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+}
+
+void Switcher::paintEvent(QPaintEvent *e) {
+	QPainter p(this);
+	p.setPen(Qt::NoPen);
+	p.setRenderHint(QPainter::Antialiasing);
+
+	QPainterPath _primary, _secoundry;
+	if (!_disabled) {
+		p.setBrush(_brush);
+		p.setOpacity(0.500);
+		_primary.addRoundedRect(QRect(_margin, _margin, width() - 2 * _margin, height() - 2 * _margin), _radius, _radius);
+		p.drawPath(_primary.simplified());
+
+		p.setOpacity(1.0);
+		p.setBrush(_brush);
+		p.drawEllipse(QRectF(_x - (_height / 2), _y - (_height / 2), height(), height()));
+	}
+	else
+	{
+		p.setBrush(QColor("#000000"));
+		p.setOpacity(0.120);
+		_primary.addRoundedRect(QRect(_margin, _margin, width() - 2 * _margin, height() - 2 * _margin), _radius, _radius);
+		p.drawPath(_primary.simplified());
+
+		p.setOpacity(1.0);
+		p.setBrush(QColor("#BDBDBD"));
+		p.drawEllipse(QRectF(_x - (_height / 2), _y - (_height / 2), height(), height()));
+	}
 }
 
 void Switcher::mousePressEvent(QMouseEvent *e) {
@@ -36,10 +69,15 @@ void Switcher::mouseReleaseEvent(QMouseEvent *e) {
 			e->accept();
 			emit toggled();
 			_switch = _switch ? false : true;
-		} else {
+			_timer.start(10);
+		}  else {
 			e->ignore();
 		}
 	}
+}
+
+void Switcher::enterEvent(QEvent *) {
+	setCursor(Qt::PointingHandCursor);
 }
 
 QSize Switcher::sizeHint() const {
@@ -47,16 +85,43 @@ QSize Switcher::sizeHint() const {
 }
 
 QSize Switcher::minimumSizeHint() const {
-	return QSize(_height * 2, _height);
+	return QSize(2 * (_height + _margin), _height + 2 * _margin);
+}
+
+void Switcher::resizeEvent(QResizeEvent *e) {
+	_x = _height / 2;
+	_y = _height / 2;
+	QWidget::resizeEvent(e);
 }
 
 void Switcher::timercall() {
-	if (_switch)
-	{
-
+	if (_switch) {
+		_x += 1;
+		if (_x >= width() - _height) {
+			_timer.stop();
+		}
+		repaint();
+	} else {
+		_x -= 1;
+		if (_x <= _height / 2) {
+			_timer.stop();
+		}
+		repaint();
 	}
-	else
-	{
+}
 
-	}
+bool Switcher::isToggled() const {
+	return _switch;
+}
+
+void Switcher::setToggle(bool set) {
+	_switch = set;
+}
+
+void Switcher::setDisable(bool set) {
+	_disabled = set;
+}
+
+bool Switcher::isDisable() const {
+	return _disabled;
 }
