@@ -19,7 +19,8 @@ _switch(false),
 _opacity(0.000),
 _radius(8.0),
 _margin(3),
-_brush(color)
+_brush(color),
+_thumb("#EDEDED")
 {
 	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
 }
@@ -31,17 +32,20 @@ void Switcher::paintEvent(QPaintEvent *e) {
 
 	QPainterPath _primary, _secoundry;
 	if (!_disabled) {
-		p.setBrush(_brush);
-		p.setOpacity(0.500);
+		if (_switch) {
+			p.setBrush(_brush);
+			p.setOpacity(0.500);
+		} else {
+			p.setBrush(QColor("#000000"));
+			p.setOpacity(0.380);
+		}
 		_primary.addRoundedRect(QRect(_margin, _margin, width() - 2 * _margin, height() - 2 * _margin), _radius, _radius);
 		p.drawPath(_primary.simplified());
-
+	
+		p.setBrush(_thumb);
 		p.setOpacity(1.0);
-		p.setBrush(_brush);
 		p.drawEllipse(QRectF(_x - (_height / 2), _y - (_height / 2), height(), height()));
-	}
-	else
-	{
+	} else {
 		p.setBrush(QColor("#000000"));
 		p.setOpacity(0.120);
 		_primary.addRoundedRect(QRect(_margin, _margin, width() - 2 * _margin, height() - 2 * _margin), _radius, _radius);
@@ -69,6 +73,7 @@ void Switcher::mouseReleaseEvent(QMouseEvent *e) {
 			e->accept();
 			emit toggled();
 			_switch = _switch ? false : true;
+			_thumb = _switch ? _brush : QBrush("#EDEDED");
 			_timer.start(10);
 		}  else {
 			e->ignore();
