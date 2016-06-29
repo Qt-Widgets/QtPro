@@ -1,3 +1,7 @@
+#pragma once
+#ifndef SWITCHER_H
+#define SWITCHER_H
+
 #include <QtWidgets>
 
 class Switcher : public QWidget
@@ -23,6 +27,8 @@ private:
 	QTimer _timer;
 	qint16 _height;
 	qint16 _margin;
+	QBrush _thumb;
+	QBrush _track;
 
 protected:
 	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
@@ -39,3 +45,5 @@ signals:
 	public slots:
 	void timercall();
 };
+
+#endif // !SWITCHER_H
