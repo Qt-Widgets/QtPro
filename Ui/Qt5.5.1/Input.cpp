@@ -59,14 +59,6 @@ void Input::keyPressEvent(QKeyEvent *e) {
 	QWidget::keyPressEvent(e);
 }
 
-void Input::resizeEvent(QResizeEvent *e) {
-	_dividerMargin = width() / 2;
-	_labelPointSizeStep = 0.1;
-	_dividerMarginStep = ((width() / 2) / 75.0);
-	_labelMarginStep = 0.25;
-	QWidget::resizeEvent(e);
-}
-
 QSize Input::minimumSizeHint() const {
 	QFontMetrics fm(_font);
 	return QSize(fm.width(_label) + 20, 60);
@@ -138,6 +130,14 @@ void LabelInput::focusOutEvent(QFocusEvent *e) {
 	Input::focusOutEvent(e);
 }
 
+void LabelInput::resizeEvent(QResizeEvent *e) {
+	_dividerMargin = width() / 2;
+	_labelPointSizeStep = 0.08;
+	_dividerMarginStep = ((width() / 2) / 75.0);
+	_labelMarginStep = 0.25;
+	QWidget::resizeEvent(e);
+}
+
 void LabelInput::timercall() {
 	switch (_state)
 	{
@@ -199,6 +199,14 @@ void FlatInput::paintEvent(QPaintEvent *) {
 	p.setPen(QPen(QColor("#000000")));
 	p.setFont(_font);
 	p.drawText(rect(), Qt::AlignLeft, "" + _label);
+
+	QStyleOptionFrameV2 option2;
+	QLineEdit sample;
+	option2.initFrom(&sample);
+	option2.rect = QRect(0, _textPadding, width(), height() - _textPadding);
+	option2.state |= QStyle::State_Sunken;
+	option2.lineWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &option2, &sample);
+	style()->drawPrimitive(QStyle::PE_PanelLineEdit, &option2, &p, this);
 }
 
 void FlatInput::focusInEvent(QFocusEvent *e) {
@@ -209,6 +217,12 @@ void FlatInput::focusInEvent(QFocusEvent *e) {
 void FlatInput::focusOutEvent(QFocusEvent *e) {
 	_timer.start(2);
 	Input::focusOutEvent(e);
+}
+
+void FlatInput::resizeEvent(QResizeEvent *e) {
+	_dividerMargin = width() / 2;
+	_dividerMarginStep = ((width() / 2) / 75.0);
+	QWidget::resizeEvent(e);
 }
 
 QSize FlatInput::minimumSizeHint() const {
@@ -225,9 +239,7 @@ void FlatInput::timercall() {
 	case FocusIn:
 	{
 		_dividerMargin -= _dividerMarginStep;
-		if (hasFocus()) {
-			_opacity -= 0.001;
-		}
+		_opacity -= 0.001;
 		if (_dividerMargin <= 0.0) {
 			_timer.stop();
 		}
