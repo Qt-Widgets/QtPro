@@ -1,99 +1,247 @@
-#include <QtWidgets>
+#include "Input.h"
 
-class Input : public QWidget
+Input::Input(QWidget *parent) : QWidget(parent),
+_label("Input..."),
+_brush("#62C0F7"),
+_dividerMargin(0.0),
+_state(None),
+_labelPointSize(16.0),
+_height(60),
+_dividerPadding(4.0),
+_textPadding(8.0),
+_labelMargin(0.0),
+_fontFamily("Open Sans Light"),
+_textwidth(30)
 {
-	Q_OBJECT
+	_font.setFamily(_fontFamily);
+	_font.setPointSizeF(_labelPointSize);
+	setFocusPolicy(Qt::TabFocus);
+}
 
-public:
-	explicit Input(QWidget *parent = 0);
-	QString text() const;
-	void setText(const QString &text);
-	void setPlaceHolderText(const QString &hinttext);
-	QString placeHolderText() const;
+void Input::focusInEvent(QFocusEvent *e) {
+	_state = FocusIn;
+	QWidget::focusInEvent(e);
+}
 
-protected:
-	enum State {
-		None = 0x00,
-		Hover = 0x02,
-		Over = 0x04,
-		FocusIn = 0x08,
-		FocusOut = 0x0B
-	};
-	State _state;
-	QString _label;
-	QString _text;
-	QString _fontFamily;
-	QColor _brush;
-	QTimer _timer;
-	QFont _font;
-	qreal _dividerMargin;
-	qreal _dividerMarginStep;
-	qreal _opacity;
-	qreal _labelPointSize;
-	qreal _labelPointSizeStep;
-	qreal _labelMargin;
-	qreal _labelMarginStep;
-	qreal _pointSizeStep;
-	qint16 _height;
-	qint16 _dividerPadding;
-	qint16 _textPadding;
-	qint16 _textwidth;
+void Input::focusOutEvent(QFocusEvent *e) {
+	_state = FocusOut;
+	QWidget::focusOutEvent(e);
+}
 
-protected:
-	void enterEvent(QEvent *e) Q_DECL_OVERRIDE;
-	void leaveEvent(QEvent *e) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent *) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
-	void focusInEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
-	void focusOutEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
-	void resizeEvent(QResizeEvent *e) Q_DECL_OVERRIDE;
-	void keyPressEvent(QKeyEvent *e) Q_DECL_OVERRIDE;
-	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-	QSize sizeHint() const Q_DECL_OVERRIDE;
+void Input::enterEvent(QEvent *e) {
+	_state = Hover;
+	setCursor(Qt::IBeamCursor);
+	QWidget::enterEvent(e);
+}
 
-signals:
-	void textChanged();
-	void focused();
-};
+void Input::leaveEvent(QEvent *e) {
+	_state = Over;
+	unsetCursor();
+	QWidget::leaveEvent(e);
+}
+
+void Input::mousePressEvent(QMouseEvent *e) {
+	if (e->buttons() & Qt::LeftButton) {
+		setFocus();
+		emit focused();
+	}
+	QWidget::mousePressEvent(e);
+}
+
+void Input::mouseReleaseEvent(QMouseEvent *e) {
+	QWidget::mousePressEvent(e);
+}
+
+void Input::keyPressEvent(QKeyEvent *e) {
+	if (e->type() == QEvent::KeyPress || e->key() == Qt::Key_Tab) {
+		setFocus();
+	}
+	QWidget::keyPressEvent(e);
+}
+
+void Input::resizeEvent(QResizeEvent *e) {
+	_dividerMargin = width() / 2;
+	_labelPointSizeStep = 0.1;
+	_dividerMarginStep = ((width() / 2) / 75.0);
+	_labelMarginStep = 0.25;
+	QWidget::resizeEvent(e);
+}
+
+QSize Input::minimumSizeHint() const {
+	QFontMetrics fm(_font);
+	return QSize(fm.width(_label) + 20, 60);
+}
+
+QSize Input::sizeHint() const {
+	return minimumSizeHint();
+}
+
+void Input::setPlaceHolderText(const QString &placeholder) {
+	_label = placeholder;
+}
+
+QString Input::placeHolderText() const {
+	return _label;
+}
+
+void Input::setText(const QString &text) {
+	_text = text;
+}
+
+QString Input::text() const {
+	return _text;
+}
 
 
 
-class LabelInput :public Input
+LabelInput::LabelInput(QWidget *parent ) : Input(parent) {
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+}
+
+LabelInput::LabelInput(const QString &placeholder, QWidget *parent) : Input(parent) {
+	_label = placeholder;
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+}
+
+void LabelInput::paintEvent(QPaintEvent *) {
+	QPainter p(this);
+
+	p.setPen(QPen(QColor("#000000"), 1.0));
+	p.setOpacity(0.2);
+	p.drawLine(QPointF(0, height() - _dividerPadding), QPointF(width(), height() - _dividerPadding));
+
+	if (_state == FocusIn || _state == FocusOut) {
+		p.setOpacity(1.0);
+		p.setPen(QPen(_brush, 2.0));
+		p.drawLine(QPointF(_dividerMargin, height() - _dividerPadding), QPointF(width() - _dividerMargin, height() - _dividerPadding));
+	}
+
+	_font.setPointSizeF(_labelPointSize);
+	p.setFont(_font);
+	if (_state == FocusIn || _state == FocusOut) {
+		p.setPen(QPen(_brush));
+	}
+	else {
+		p.setOpacity(0.25);
+		p.setPen(QPen(QColor("#000000")));
+	}
+	p.drawText(QRectF(QPointF(0, height() - _textPadding - _textwidth - _labelMargin), QPointF(rect().width(), rect().height() - _textPadding)), Qt::AlignLeft, " " + _label);
+}
+
+void LabelInput::focusInEvent(QFocusEvent *e) {
+	_timer.start(2);
+	Input::focusInEvent(e);
+}
+
+void LabelInput::focusOutEvent(QFocusEvent *e) {
+	_timer.start(2);
+	Input::focusOutEvent(e);
+}
+
+void LabelInput::timercall() {
+	switch (_state)
+	{
+	case None: break;
+	case Hover: break;
+	case Over: break;
+	case FocusIn:
+	{
+		_dividerMargin -= _dividerMarginStep;
+		_labelMargin += _labelMarginStep;
+		_labelPointSize -= _labelPointSizeStep;
+		if (_dividerMargin <= 0.0) {
+			_timer.stop();
+		}
+		repaint();
+	} break;
+	case FocusOut:
+	{
+		_dividerMargin += _dividerMarginStep;
+		_labelMargin -= _labelMarginStep;
+		_labelPointSize += _labelPointSizeStep;
+		if (_dividerMargin >= width() / 2) {
+			_timer.stop();
+			_state = None;
+		}
+		repaint();
+	} break;
+	}
+}
+
+
+
+FlatInput::FlatInput(QWidget *parent) : Input(parent),
+_opacity(0.250) {
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+}
+
+FlatInput::FlatInput(const QString &placeholder, QWidget *parent) : Input(parent),
+_opacity(0.250)
 {
-	Q_OBJECT
+	_label = placeholder;
+	connect(&_timer, SIGNAL(timeout()), this, SLOT(timercall()));
+}
 
-public:
-	explicit LabelInput(QWidget *parent = 0);
-	explicit LabelInput(const QString &placeholder, QWidget *parent = 0);
+void FlatInput::paintEvent(QPaintEvent *) {
+	QPainter p(this);
 
-protected:
-	void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
-	void focusInEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
-	void focusOutEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
+	p.setPen(QPen(QColor("#000000"), 1.0));
+	p.setOpacity(0.2);
+	p.drawLine(QPointF(0, height() - _dividerPadding), QPointF(width(), height() - _dividerPadding));
 
-	public slots:
-	void timercall();
-};
+	if (_state == FocusIn || _state == FocusOut) {
+		p.setOpacity(1.0);
+		p.setPen(QPen(_brush, 2.0));
+		p.drawLine(QPointF(_dividerMargin, height() - _dividerPadding), QPointF(width() - _dividerMargin, height() - _dividerPadding));
+	}
 
+	p.setOpacity(_opacity);
+	p.setPen(QPen(QColor("#000000")));
+	p.setFont(_font);
+	p.drawText(rect(), Qt::AlignLeft, "" + _label);
+}
 
+void FlatInput::focusInEvent(QFocusEvent *e) {
+	_timer.start(2);
+	Input::focusInEvent(e);
+}
 
-class FlatInput : public Input
-{
-	Q_OBJECT
+void FlatInput::focusOutEvent(QFocusEvent *e) {
+	_timer.start(2);
+	Input::focusOutEvent(e);
+}
 
-public:
-	explicit FlatInput(QWidget *parent = 0);
-	explicit FlatInput(const QString &placeholder, QWidget *parent = 0);
+QSize FlatInput::minimumSizeHint() const {
+	QFontMetrics fm(_font);
+	return QSize(fm.width(_label) + 20, fm.height() + _dividerPadding + _textPadding);
+}
 
-protected:
-	void paintEvent(QPaintEvent *) Q_DECL_OVERRIDE;
-	void focusInEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
-	void focusOutEvent(QFocusEvent *e) Q_DECL_OVERRIDE;
-	QSize minimumSizeHint() const Q_DECL_OVERRIDE;
-
-private:
-	qreal _opacity;
-
-	public slots:
-	void timercall();
-};
+void FlatInput::timercall() {
+	switch (_state)
+	{
+	case None: break;
+	case Hover: break;
+	case Over: break;
+	case FocusIn:
+	{
+		_dividerMargin -= _dividerMarginStep;
+		if (hasFocus()) {
+			_opacity -= 0.001;
+		}
+		if (_dividerMargin <= 0.0) {
+			_timer.stop();
+		}
+		repaint();
+	} break;
+	case FocusOut:
+	{
+		_dividerMargin += _dividerMarginStep;
+		_opacity += 0.001;
+		if (_dividerMargin >= width() / 2) {
+			_timer.stop();
+			_state = None;
+		}
+		repaint();
+	} break;
+	}
+}
