@@ -1,14 +1,14 @@
-#include <QtWidgets>
-
 class Input : public QWidget
 {
 	Q_OBJECT
 
 public:
 	explicit Input(QWidget *parent = 0);
+	explicit Input(const QString &placeholder, QWidget *parent = 0);
 	QString text() const;
 	void setText(const QString &text);
-	void setHintText(const QString &hinttext);
+	void setPlaceHolderText(const QString &hinttext);
+	QString placeHolderText() const;
 
 private:
 	enum State {
@@ -18,25 +18,25 @@ private:
 		FocusIn = 0x08,
 		FocusOut = 0x0B
 	};
+	State _state;
 	QString _label;
 	QString _text;
+	QString _fontFamily;
 	QColor _brush;
-	qreal _penWidth;
-	qreal _margin;
 	QTimer _timer;
-	State _state;
+	QFont _font;
+	qreal _dividerMargin;
+	qreal _dividerMarginStep;
 	qreal _opacity;
 	qreal _labelPointSize;
-	qreal _textPointSize;
+	qreal _labelPointSizeStep;
+	qreal _labelMargin;
+	qreal _labelMarginStep;
+	qreal _pointSizeStep;
 	qint16 _height;
 	qint16 _dividerPadding;
 	qint16 _textPadding;
-	qreal _step;
 	qint16 _textwidth;
-	qreal _offset;
-	QString _fontFamily;
-	QFont _font;
-	QPen _pen;
 
 protected:
 	void paintEvent(QPaintEvent *e) Q_DECL_OVERRIDE;
