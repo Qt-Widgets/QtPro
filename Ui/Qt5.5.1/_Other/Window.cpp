@@ -5,7 +5,7 @@
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 
-LPCWSTR Class_Name_Size = L"Win32APP";
+LPCWSTR CLASS_NAME = L"Win32APP";
 #define  BORDER_WIDTH  5
 
 enum Style : DWORD {
@@ -20,22 +20,23 @@ void HWND_deleter::operator()(HWND handle) const {
 
 const std::wstring& Window::registerWindow() {
 
-	static const std::wstring window_class_name = []{
+	static const std::wstring WINDOW_CLASS = []{
 		WNDCLASSEX wcx{};
 		wcx.cbSize = sizeof(wcx);
 		wcx.style = CS_HREDRAW | CS_VREDRAW;
 		wcx.hInstance = (HINSTANCE)GetModuleHandle(nullptr);
 		wcx.lpfnWndProc = &Window::WndProc;
-		wcx.lpszClassName = L"BorderlessWindowClass";
+		wcx.lpszClassName = CLASS_NAME;
 		wcx.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
 		wcx.hCursor = LoadCursor((HINSTANCE)GetModuleHandle(nullptr), IDC_ARROW);
+
 		const HRESULT result = RegisterClassEx(&wcx);
-		if (FAILED(result))
-			throw std::runtime_error("failed to register window class");
+		
+		if (FAILED(result)) throw std::runtime_error("Faild To Register Window Class");
 
 		return wcx.lpszClassName;
 	}();
-	return window_class_name;
+	return WINDOW_CLASS;
 }
 
 Window::Window()
