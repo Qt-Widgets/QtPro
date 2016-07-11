@@ -3,12 +3,7 @@
 #include <string>
 #include <Windows.h>
 
-struct HWND_deleter {
-	using pointer = HWND;
-	void operator()(HWND handle) const;
-};
-
-using unique_hwnd = std::unique_ptr<HWND__, HWND_deleter>;
+using unique_hwnd = std::unique_ptr<std::remove_pointer <HWND>::type, decltype(&DestroyWindow)>;
 
 class Window
 {
@@ -28,3 +23,4 @@ private:
 	void show() const;
 	void setShadow() const;
 };
+
