@@ -102,7 +102,6 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 
 	DWORD dwStyle = GetWindowLong(hwnd, GWL_STYLE);
 	dwStyle &= ~WS_CAPTION;
-
 	SetWindowLongPtr(hwnd, GWL_STYLE, dwStyle);
 
 	SetWindowPos(hwnd, NULL, NULL, NULL, NULL, NULL, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE);
