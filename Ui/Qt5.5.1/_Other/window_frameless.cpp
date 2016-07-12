@@ -88,8 +88,7 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 		return 0;
 	}
 
-	hwnd = CreateWindowEx(
-		0,
+	hwnd = CreateWindow(
 		Class_Name_Size,
 		(LPCWSTR)L"Sample Win32 APP",
 		WS_OVERLAPPEDWINDOW,
@@ -101,8 +100,6 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 		return 0;
 	}
 
-	ShowWindow(hwnd, nCmdShow);
-
 	DWORD dwStyle = GetWindowLong(hwnd, GWL_STYLE);
 	dwStyle &= ~WS_CAPTION;
 
@@ -112,6 +109,8 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 
 	static const MARGINS _border = { -1, -1, -1, -1 };
 	DwmExtendFrameIntoClientArea(hwnd, &_border);
+
+	ShowWindow(hwnd, nCmdShow);
 
 	while (GetMessage(&msg, NULL, NULL, 0) > 0) {
 		TranslateMessage(&msg);
