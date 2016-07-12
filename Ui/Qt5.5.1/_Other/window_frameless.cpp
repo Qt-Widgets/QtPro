@@ -11,25 +11,31 @@ LPCWSTR Class_Name_Size = L"Win32APP";
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg)
 	{
-	case WM_CLOSE:
-		DestroyWindow(hwnd); break;
-
-	case WM_DESTROY:
-		PostQuitMessage(0); break;
-
 	case WM_NCHITTEST: {
 		RECT winrect;
 		GetWindowRect(hwnd, &winrect);
 		long x = GET_X_LPARAM(lParam);
 		long y = GET_Y_LPARAM(lParam);
 
-		// TOP
-		if (y >= winrect.top && y < winrect.top + BORDER_WIDTH - 3) {
-			return HTTOP;
+		// BOTTOM LEFT
+		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
+			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOMLEFT;
 		}
-		// BOTTOM
-		if (y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-			return HTBOTTOM;
+		// BOTTOM RIGHT
+		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
+			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOMRIGHT;
+		}
+		// TOP LEFT
+		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
+			y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
+			return HTTOPLEFT;
+		}
+		// TOP RIGHT
+		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
+			y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
+			return HTTOPRIGHT;
 		}
 		// LEFT
 		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH) {
@@ -39,28 +45,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH) {
 			return HTRIGHT;
 		}
-		// BOTTOM LEFT
-		if (x >= winrect.left  && x < winrect.left + BORDER_WIDTH &&
-			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-			return HTBOTTOMLEFT;
+		// BOTTOM
+		if (y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOM;
 		}
-		// BOTTOM RIGHT
-		if (x < winrect.right  && x >= winrect.right - BORDER_WIDTH &&
-			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-			return HTBOTTOMRIGHT;
-		}
-		// TOP LEFT
-		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
-			y >= winrect.top  && y < winrect.top + BORDER_WIDTH) {
-			return HTTOPLEFT;
-		}
-		// TOP RIGHT
-		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
-			y >= winrect.top  && y < winrect.top + BORDER_WIDTH) {
-			return HTTOPRIGHT;
+		// TOP
+		if (y >= winrect.top && y < winrect.top + 2) {
+			return HTTOP;
 		}
 		return HTCAPTION;
 	} break;
+
+	case WM_CLOSE:
+		DestroyWindow(hwnd); break;
+
+	case WM_DESTROY:
+		PostQuitMessage(0); break;
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
@@ -88,7 +88,8 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 		return 0;
 	}
 
-	hwnd = CreateWindow(
+	hwnd = CreateWindowEx(
+		0,
 		Class_Name_Size,
 		(LPCWSTR)L"Sample Win32 APP",
 		WS_OVERLAPPEDWINDOW,
@@ -105,15 +106,12 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 	DWORD dwStyle = GetWindowLong(hwnd, GWL_STYLE);
 	dwStyle &= ~WS_CAPTION;
 
-	SetWindowLong(hwnd, GWL_STYLE, dwStyle);
+	SetWindowLongPtr(hwnd, GWL_STYLE, dwStyle);
 
-	//SetWindowPos(hwnd, NULL, NULL, NULL, NULL, NULL, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE);
+	SetWindowPos(hwnd, NULL, NULL, NULL, NULL, NULL, SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE);
 
-	int _m = -1;
-	static const MARGINS shadow_state = { _m, _m, _m, _m };
-	//DwmExtendFrameIntoClientArea(hwnd, &shadow_state);
-
-	UpdateWindow(hwnd);
+	static const MARGINS _border = { -1, -1, -1, -1 };
+	DwmExtendFrameIntoClientArea(hwnd, &_border);
 
 	while (GetMessage(&msg, NULL, NULL, 0) > 0) {
 		TranslateMessage(&msg);
