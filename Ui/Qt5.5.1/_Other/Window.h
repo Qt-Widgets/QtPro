@@ -19,8 +19,6 @@ private:
 	static const std::wstring& registerWindow();
 	static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	void setBorderLess() const;
 	void show() const;
-	void setShadow() const;
+	void removeBorder() const;
 };
-
