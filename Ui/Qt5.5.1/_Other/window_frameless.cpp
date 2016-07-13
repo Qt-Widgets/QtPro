@@ -99,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 
 	hwnd = CreateWindow(
 		Class_Name_Size,
-		(LPCWSTR)L"Sample Win32 APP",
+		NULL,
 		(WS_VISIBLE | WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX),
 		CW_USEDEFAULT, CW_USEDEFAULT, 240, 120,
 		NULL, NULL, hInsance, NULL);
