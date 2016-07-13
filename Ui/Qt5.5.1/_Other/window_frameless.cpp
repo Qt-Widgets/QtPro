@@ -8,6 +8,9 @@
 LPCWSTR Class_Name_Size = L"Win32APP";
 #define BORDER_WIDTH 8
 
+enum Style : DWORD {
+	BorderLess = (WS_CAPTION | WS_VISIBLE | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
+};
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg)
@@ -100,7 +103,7 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 	hwnd = CreateWindow(
 		Class_Name_Size,
 		NULL,
-		(WS_VISIBLE | WS_CAPTION | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX),
+		Style::BorderLess,
 		CW_USEDEFAULT, CW_USEDEFAULT, 240, 120,
 		NULL, NULL, hInsance, NULL);
 
