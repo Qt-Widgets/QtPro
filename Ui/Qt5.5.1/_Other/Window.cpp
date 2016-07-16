@@ -120,7 +120,10 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpar
 			if (y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
 				return HTTOP;
 			}
-			return HTCAPTION;
+			if (x >= winrect.left && x <= winrect.right 
+				&& y >= winrect.top && y <= winrect.top + NC_HEIGHT) {
+				return HTCAPTION;
+			}
 		} break;
 
 		case WM_DESTROY:
