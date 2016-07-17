@@ -7,6 +7,7 @@
 
 LPCWSTR Class_Name_Size = L"Win32APP";
 #define BORDER_WIDTH 8
+#define NC_HEIGHT 36
 
 enum Style : DWORD {
 	BorderLess = (WS_CAPTION | WS_VISIBLE | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
@@ -15,7 +16,12 @@ enum Style : DWORD {
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg)
 	{
-
+	case WM_ACTIVATE: {
+		MARGINS frame = { -1, -1, -1, -1 };
+		DwmExtendFrameIntoClientArea(hwnd, &frame);
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, Style::BorderLess);
+		return 0;
+	} break;
 	case WM_NCCALCSIZE:
 	{
 		NCCALCSIZE_PARAMS *pncsp = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
@@ -69,7 +75,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (y >= winrect.top && y < winrect.top + 2) {
 			return HTTOP;
 		}
-		return HTCAPTION;
+		if (x >= winrect.left && x <= winrect.right
+			&& y >= winrect.top && y <= winrect.top + NC_HEIGHT) {
+			return HTCAPTION;
+		}
 	} break;
 	case WM_DESTROY:
 		PostQuitMessage(0); break;
@@ -103,7 +112,7 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 	hwnd = CreateWindow(
 		Class_Name_Size,
 		NULL,
-		Style::BorderLess,
+		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, 240, 120,
 		NULL, NULL, hInsance, NULL);
 
@@ -112,10 +121,7 @@ int WINAPI WinMain(HINSTANCE hInsance, HINSTANCE hPrevInsance, LPSTR lpCmdLine, 
 		return 0;
 	}
 
-	MARGINS frame = { -1, -1, -1, -1 };
-	DwmExtendFrameIntoClientArea(hwnd, &frame);
-
-	ShowWindow(hwnd, nCmdShow);
+	ShowWindow(hwnd, SW_SHOW);
 
 	while (GetMessage(&msg, NULL, NULL, 0) > 0) {
 		TranslateMessage(&msg);
