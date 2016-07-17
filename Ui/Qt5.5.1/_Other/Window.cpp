@@ -1,6 +1,4 @@
 #include "test.h"
-#include <cassert>
-#include <stdexcept>
 #include <windowsx.h>
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
@@ -8,9 +6,6 @@
 LPCWSTR CLASS_NAME = L"Win32APP";
 #define BORDER_WIDTH 8
 
-enum class Style : DWORD {
-	BorderLess = (WS_CAPTION | WS_VISIBLE | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX)
-};
 
 const std::wstring& Window::registerWindow() {
 
@@ -39,114 +34,129 @@ const std::wstring& Window::registerWindow() {
 	return WINDOW_CLASS;
 }
 
-Window::Window()
-	: hWnd(
-	CreateWindow(
-	registerWindow().c_str(),
-	NULL,
-	static_cast<DWORD>(Style::BorderLess),
-	CW_USEDEFAULT, CW_USEDEFAULT, 480, 320,
-	NULL, NULL,
-	(HINSTANCE)GetModuleHandle(nullptr),
-	NULL) ,&DestroyWindow)
+Window::Window(QApplication *app, const int &x, const int &y, const int &width, const int &height)
 {
-	if (!hWnd) throw std::runtime_error("Failed To Create Window");
+	_hWnd =
+		CreateWindow(
+		registerWindow().c_str(),
+		NULL,
+		static_cast<DWORD>(Style::BorderLess),
+		x, y, width, height,
+		0, 0,
+		(HINSTANCE)GetModuleHandle(0),
+		NULL);
+	if (!_hWnd) throw std::runtime_error("Failed To Create Window");
 
-	SetWindowLongPtr(hWnd.get(), GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+	SetWindowLongPtr(_hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
-	SetWindowPos(hWnd.get(), nullptr, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
+	SetWindowPos(_hWnd, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
 
+	setNcHeight(36);
 	removeBorder();
-
 	show();
+
+	_app = app;
 }
 
 LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-	if (Window* window_ptr = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA))) {
-		auto & window = *window_ptr;
+	Window *window_ptr = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+	if (!window_ptr) return DefWindowProc(hwnd, msg, wparam, lparam);
 
-		switch (msg)
-		{
-		case WM_NCCALCSIZE: {
-			NCCALCSIZE_PARAMS *pncsp = reinterpret_cast<NCCALCSIZE_PARAMS*>(lparam);
+	auto & window = *window_ptr;
 
-			pncsp->rgrc[0].left = pncsp->rgrc[0].left + BORDER_WIDTH;
-			pncsp->rgrc[0].top = pncsp->rgrc[0].top + 0;
-			pncsp->rgrc[0].right = pncsp->rgrc[0].right - BORDER_WIDTH;
-			pncsp->rgrc[0].bottom = pncsp->rgrc[0].bottom - BORDER_WIDTH;
+	switch (msg)
+	{
+	case WM_NCCALCSIZE: {
+		NCCALCSIZE_PARAMS *pncsp = reinterpret_cast<NCCALCSIZE_PARAMS*>(lparam);
 
-			return 0;
-		} break;
+		pncsp->rgrc[0].left = pncsp->rgrc[0].left + BORDER_WIDTH;
+		pncsp->rgrc[0].top = pncsp->rgrc[0].top + 0;
+		pncsp->rgrc[0].right = pncsp->rgrc[0].right - BORDER_WIDTH;
+		pncsp->rgrc[0].bottom = pncsp->rgrc[0].bottom - BORDER_WIDTH;
 
-		case WM_NCHITTEST: {
-			RECT winrect;
-			GetWindowRect(hwnd, &winrect);
-			long x = GET_X_LPARAM(lparam);
-			long y = GET_Y_LPARAM(lparam);
+		return 0;
+	} break;
 
-			// BOTTOM LEFT
-			if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
-				y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-				return HTBOTTOMLEFT;
-			}
-			// BOTTOM RIGHT
-			if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
-				y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-				return HTBOTTOMRIGHT;
-			}
-			// TOP LEFT
-			if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
-				y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
-				return HTTOPLEFT;
-			}
-			// TOP RIGHT
-			if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
-				y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
-				return HTTOPRIGHT;
-			}
-			// LEFT
-			if (x >= winrect.left && x < winrect.left + BORDER_WIDTH) {
-				return HTLEFT;
-			}
-			// RIGHT
-			if (x < winrect.right && x >= winrect.right - BORDER_WIDTH) {
-				return HTRIGHT;
-			}
-			// BOTTOM
-			if (y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
-				return HTBOTTOM;
-			}
-			// TOP
-			if (y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
-				return HTTOP;
-			}
-			if (x >= winrect.left && x <= winrect.right 
-				&& y >= winrect.top && y <= winrect.top + NC_HEIGHT) {
-				return HTCAPTION;
-			}
-		} break;
+	case WM_NCHITTEST: {
+		RECT winrect;
+		GetWindowRect(hwnd, &winrect);
+		long x = GET_X_LPARAM(lparam);
+		long y = GET_Y_LPARAM(lparam);
 
-		case WM_DESTROY:
-			window._closed = true;
-			PostQuitMessage(0);
-			return 0;
+		// BOTTOM LEFT
+		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
+			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOMLEFT;
 		}
+		// BOTTOM RIGHT
+		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
+			y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOMRIGHT;
+		}
+		// TOP LEFT
+		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH &&
+			y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
+			return HTTOPLEFT;
+		}
+		// TOP RIGHT
+		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH &&
+			y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
+			return HTTOPRIGHT;
+		}
+		// LEFT
+		if (x >= winrect.left && x < winrect.left + BORDER_WIDTH) {
+			return HTLEFT;
+		}
+		// RIGHT
+		if (x < winrect.right && x >= winrect.right - BORDER_WIDTH) {
+			return HTRIGHT;
+		}
+		// BOTTOM
+		if (y < winrect.bottom && y >= winrect.bottom - BORDER_WIDTH) {
+			return HTBOTTOM;
+		}
+		// TOP
+		if (y >= winrect.top && y < winrect.top + BORDER_WIDTH) {
+			return HTTOP;
+		}
+		if (x >= winrect.left && x <= winrect.right
+			&& y >= winrect.top && y <= winrect.top + window.NC_HEIGHT) {
+			return HTCAPTION;
+		}
+	} break;
+
+	case WM_GETMINMAXINFO: {
+		MINMAXINFO* minMaxInfo = (MINMAXINFO*)lparam;
+		minMaxInfo->ptMinTrackSize.x = window.minimumWidth();
+		minMaxInfo->ptMinTrackSize.y = window.minimumHeight();
+
+		return 0;
+	} break;
+	case WM_DESTROY: {
+		window._closed = true;
+		PostQuitMessage(0);
+
+		return 0;
+	} break;
 	}
+
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
 void Window::removeBorder() const {
 	static const MARGINS frame = { -1, -1, -1, -1 };
-	DwmExtendFrameIntoClientArea(hWnd.get(), &frame);
+	DwmExtendFrameIntoClientArea(_hWnd, &frame);
 }
 
 void Window::show() const {
-	ShowWindow(hWnd.get(), SW_SHOW);
-	MSG msg{};
-	while (!isClosed()) {
-		while (GetMessage(&msg, NULL, NULL, 0) > 0) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
+	ShowWindow(_hWnd, SW_SHOW);
+}
+
+void Window::setMinimumSize(const int &width, const int &height) {
+	_width = width;
+	_height = height;
+}
+
+void Window::setNcHeight(const int &non_client_height) {
+	NC_HEIGHT = non_client_height;
 }
