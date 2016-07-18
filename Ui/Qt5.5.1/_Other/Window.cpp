@@ -138,9 +138,9 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lpar
 
 		return 0;
 	} break;
-	}
 
-	return DefWindowProc(hwnd, msg, wparam, lparam);
+	default: return DefWindowProc(hwnd, msg, wparam, lparam); break;
+	}
 }
 
 void Window::removeBorder() const {
