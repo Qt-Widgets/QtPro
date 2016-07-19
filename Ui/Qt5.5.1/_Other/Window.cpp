@@ -1,9 +1,9 @@
 #include "window.h"
-#include "windowsx.h"
+#include <windowsx.h>
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 #pragma comment(lib,"user32.lib")
-#pragma warning(disable:4715)
+#pragma warning(disable:4715) // not all control paths return a value
 
 
 LPCWSTR CLASS_NAME = L"Win32APP";
